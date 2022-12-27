@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "281808901895",
+    "project_id": "jobfe-a636f",
+    "storage_bucket": "jobfe-a636f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281808901895:android:a50571e6bf5a4867e6d7a2",
+        "android_client_info": {
+          "package_name": "com.JobFE.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281808901895-th25s6e0cntsob18t46r8idpu931hehh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACH2--oMRDHXumMYuwt14Yk2QsODFO8UM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "281808901895-th25s6e0cntsob18t46r8idpu931hehh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
