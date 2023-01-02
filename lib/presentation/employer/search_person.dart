@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hires/presentation/employer/widget/person_card.dart';
 import 'package:hires/presentation/search_result_2_screen/widgets/jobcard.dart';
@@ -16,26 +17,11 @@ class SearchResultPerson extends StatefulWidget {
 
 class _SearchResultPersonState extends State<SearchResultPerson> {
   var resume = Resume();
-  List<Object> _data = [];
-
-  Future fetchpersondata() async {
-    var data = await db.collectionGroup("resume").get();
-
-    setState(() {
-      _data = List.from(data.docs.map((doc) => Resume.fromSnapshot(doc)));
-    });
-  }
-
-  @override
-  void initState() {
-    fetchpersondata();
-    super.initState();
-  }
+  final Stream<QuerySnapshot> getresume =
+      db.collectionGroup('resume').snapshots();
 
   @override
   Widget build(BuildContext context) {
-    int total = _data.length;
-    print(total);
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
@@ -161,127 +147,144 @@ class _SearchResultPersonState extends State<SearchResultPerson> {
             ),
           ],
           backgroundColor: isDark ? ColorConstant.darkContainer : Colors.white),
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: isDark ? ColorConstant.darkContainer : ColorConstant.whiteA700,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: getVerticalSize(
-                1.00,
-              ),
-              width: getHorizontalSize(
-                327.00,
-              ),
-              margin: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  5.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: getresume,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            var resumedata = snapshot.data!.docs;
+            int total = snapshot.data!.docs.length;
+            return Container(
+              width: double.infinity,
               decoration: BoxDecoration(
-                color: ColorConstant.gray402,
+                color: isDark
+                    ? ColorConstant.darkContainer
+                    : ColorConstant.whiteA700,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: getVerticalSize(
-                  12.00,
-                ),
-                bottom: getVerticalSize(
-                  8.00,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: context.locale == Constants.engLocal
-                          ? getHorizontalSize(
-                              24.00,
-                            )
-                          : getHorizontalSize(0),
-                      right: context.locale == Constants.arLocal
-                          ? getHorizontalSize(
-                              24.00,
-                            )
-                          : getHorizontalSize(0),
+                  Container(
+                    height: getVerticalSize(
+                      1.00,
                     ),
-                    child: Text(
-                      "ทั้งหมด $total คน",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: ColorConstant.teal600,
-                        fontSize: getFontSize(
-                          14,
-                        ),
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w500,
+                    width: getHorizontalSize(
+                      327.00,
+                    ),
+                    margin: EdgeInsets.only(
+                      left: getHorizontalSize(
+                        24.00,
                       ),
+                      top: getVerticalSize(
+                        5.00,
+                      ),
+                      right: getHorizontalSize(
+                        24.00,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: ColorConstant.gray402,
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
                       top: getVerticalSize(
-                        4.00,
+                        12.00,
                       ),
-                      left: context.locale == Constants.engLocal
-                          ? getHorizontalSize(
-                              0.00,
-                            )
-                          : getHorizontalSize(24),
-                      right: context.locale == Constants.arLocal
-                          ? getHorizontalSize(
-                              0.00,
-                            )
-                          : getHorizontalSize(24),
                       bottom: getVerticalSize(
-                        3.00,
+                        8.00,
                       ),
                     ),
-                    child: Container(
-                      height: getVerticalSize(
-                        14.00,
-                      ),
-                      width: getHorizontalSize(
-                        12.60,
-                      ),
-                      child: SvgPicture.asset(
-                        ImageConstant.imgIconlylightfi,
-                        fit: BoxFit.fill,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: context.locale == Constants.engLocal
+                                ? getHorizontalSize(
+                                    24.00,
+                                  )
+                                : getHorizontalSize(0),
+                            right: context.locale == Constants.arLocal
+                                ? getHorizontalSize(
+                                    24.00,
+                                  )
+                                : getHorizontalSize(0),
+                          ),
+                          child: Text(
+                            "ทั้งหมด $total คน",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.teal600,
+                              fontSize: getFontSize(
+                                14,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: getVerticalSize(
+                              4.00,
+                            ),
+                            left: context.locale == Constants.engLocal
+                                ? getHorizontalSize(
+                                    0.00,
+                                  )
+                                : getHorizontalSize(24),
+                            right: context.locale == Constants.arLocal
+                                ? getHorizontalSize(
+                                    0.00,
+                                  )
+                                : getHorizontalSize(24),
+                            bottom: getVerticalSize(
+                              3.00,
+                            ),
+                          ),
+                          child: Container(
+                            height: getVerticalSize(
+                              14.00,
+                            ),
+                            width: getHorizontalSize(
+                              12.60,
+                            ),
+                            child: SvgPicture.asset(
+                              ImageConstant.imgIconlylightfi,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: getVerticalSize(10)),
+                      shrinkWrap: true,
+                      itemCount: total,
+                      itemBuilder: (context, index) {
+                        final resume =
+                            resumedata[index].data()! as Map<String, dynamic>;
+                        return PersonCard(resume);
+                      },
                     ),
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: getVerticalSize(10)),
-                shrinkWrap: true,
-                itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  return PersonCard(_data[index] as Resume);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 }

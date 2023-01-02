@@ -4,30 +4,40 @@ final db = FirebaseFirestore.instance;
 
 class Job {
   String? JobId;
-  String? Description;
+  var Description;
   String? Jobtype;
   String? Location;
   String? Title;
   Timestamp? created_at;
+  String? Age;
+  String? Exp;
+  String? Gender;
   String? featured;
   Job();
   Map<String, dynamic> toJson() => {
-        // "JobId": JobId,
+        "JobId": JobId,
         "Description": Description,
         "Jobtype": Jobtype,
         "Location": Location,
         "Title": Title,
         "created_at": created_at,
+        "Age": Age,
+        "Exp": Exp,
+        "Gender": Gender,
         "featured": featured
       };
 
   Job.fromSnapshot(snapshot)
       :
         // JobId = snapshot.data()['JobId'],
+        JobId = snapshot.data()['JobId'],
         Description = snapshot.data()['Description'],
         Jobtype = snapshot.data()['Jobtype'],
         Location = snapshot.data()['Location'],
         Title = snapshot.data()['Title'],
+        Gender = snapshot.data()['Requirements']['Gender'],
+        Age = snapshot.data()['Requirements']['Age'],
+        Exp = snapshot.data()['Requirements']['Exp'],
         created_at = snapshot.data()['created_at'];
 
   Future<bool> Savejob(String uid, String JobId) async {
@@ -52,41 +62,99 @@ class Job {
     }
   }
 
-  Future<void> DelSavedJob(String uid, String? JobId) async {
-    print(uid);
-    await FirebaseFirestore.instance
+  Future<bool> AppliedJob(String uid, String JobId, String title) async {
+    var col = FirebaseFirestore.instance
+        .collectionGroup('jobPost')
+        .where('JobId', isEqualTo: JobId);
+    var snapshot = await col.get();
+    String? eid = snapshot.docs[0].reference.parent.parent?.id;
+    // print(eid);
+    final QuerySnapshot result = await db
+        .collectionGroup("applied")
+        .where('JobId', isEqualTo: JobId)
+        .where('uid', isEqualTo: uid)
+        .get();
+
+    final List<DocumentSnapshot> documents = result.docs;
+
+    if (documents.length > 0) {
+      print("exist");
+      return true;
+    } else {
+      await db
+          .collection('users')
+          .doc(eid)
+          .collection('jobPost')
+          .doc(JobId)
+          .collection("applied")
+          .add({
+        "title": title,
+        "JobId": JobId,
+        "eid": eid,
+        "uid": uid,
+        "status": "รอการตอบกลับ",
+        "interview_date": "",
+        "date": DateTime.now(),
+      });
+      return false;
+    }
+  }
+
+  // Future<void> DelappliedJob(String uid, String? JobId) async {
+  //   // print(JobId);
+  //   var result = await db
+  //       .collectionGroup("applied")
+  //       .where('JobId', isEqualTo: JobId)
+  //       .where('uid', isEqualTo: uid)
+  //       .get();
+  //   var snapshot = await result;
+  //   String? applied_id = snapshot.docs[0].reference.id;
+  //   String? eid = snapshot.docs[0].reference.parent.parent?.parent.parent?.id;
+
+  //   // print(eid);
+  //   await db
+  //       .collection('users')
+  //       .doc(eid)
+  //       .collection('jobPost')
+  //       .doc(JobId)
+  //       .collection('applied')
+  //       .doc(applied_id)
+  //       .delete();
+  // }
+  Future<void> DelSavedJob(String uid, String? DocId) async {
+    print("DociD $DocId");
+    await db
         .collection('users')
         .doc(uid)
         .collection('saved')
-        .where("JobId" == JobId)
-        .get()
-        .then((value) {
-      // print(value.docs[0]);
-    });
+        .doc(DocId)
+        .delete();
   }
 
   Future<void> CreateJob({
     required String id,
     required String title,
-    required String description,
     required String jobtype,
     required String province,
+    required List<String> description,
+    required Map Requirements,
   }) async {
     await db.collection('users').doc(id).collection('jobPost').add({
       "Title": title,
       "Description": description,
       "Jobtype": jobtype,
-      "Location": "text",
+      "Location": province,
+      "Requirements": Requirements,
       "created_at": DateTime.now(),
     }).then((value) {
-      // FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(id)
-      //     .collection('jobPost')
-      //     .doc(value.id)
-      //     .add({
-      //   "JobId": "value.id",
-      // });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(id)
+          .collection('jobPost')
+          .doc(value.id)
+          .set({
+        "JobId": value.id,
+      }, SetOptions(merge: true));
     });
   }
   // Future<void> ShowSave(String uid) async {

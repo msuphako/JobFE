@@ -1,52 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hires/job.dart';
+import 'package:hires/presentation/employer/widget/job_card.dart';
 import 'package:hires/presentation/home_screen/home_screen.dart';
 import '../saved_screen/widgets/saved_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 
-class SavedScreen extends StatefulWidget {
+class ShowJobPost extends StatefulWidget {
+  static String id = "ShowJobPost";
+
   @override
-  State<SavedScreen> createState() => _SavedScreenState();
+  State<ShowJobPost> createState() => _ShowJobPostState();
 }
 
-class _SavedScreenState extends State<SavedScreen>
+class _ShowJobPostState extends State<ShowJobPost>
     with SingleTickerProviderStateMixin {
-  final user = FirebaseAuth.instance.currentUser!;
-  var job = Job();
-  List<Object> _datajobs = [];
-
-  Future fetchjobsdata() async {
-    List<String> jobslist = [];
-    final QuerySnapshot result =
-        await db.collection('users').doc(user.uid).collection("saved").orderBy("date",descending: true).get();
-    final List<DocumentSnapshot> documents = result.docs;
-    documents.forEach((element) async {
-      Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-      jobslist.add(data['JobId']);
-    });
-    print(jobslist);
-    var data = await db.collection("jobs").where("JobId", whereIn:jobslist).get();
-    setState(() {
-      _datajobs = List.from(data.docs.map((doc) => Job.fromSnapshot(doc)));
-    });
-  }
-
-  @override
-  void initState() {
-    fetchjobsdata();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  final Stream<QuerySnapshot> test = db.collectionGroup('jobPost').snapshots();
 
   @override
   Widget build(BuildContext context) {
-    int total = _datajobs.length;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +50,7 @@ class _SavedScreenState extends State<SavedScreen>
             ),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(context, HomeScreen.id);
+                Navigator.pop(context);
               },
               child: Container(
                   height: getSize(
@@ -123,9 +96,7 @@ class _SavedScreenState extends State<SavedScreen>
                             ),
                           ),
                           child: Text(
-                            total != 0
-                                ? "You saved $total Jobs 👍"
-                                : "No save Jobs",
+                            "No save Jobs",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: getFontSize(
@@ -137,21 +108,68 @@ class _SavedScreenState extends State<SavedScreen>
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.only(top: getVerticalSize(20)),
-                        height: MediaQuery.of(context).size.height * .740,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: _datajobs.length,
-                            itemBuilder: (context, index) {
-                              return SaveJobCard(_datajobs[index] as Job);
-                              // return SavedItemWidget();
-                            },
-                          ),
-                        ),
+
+                      // Container(
+                      //   padding: EdgeInsets.only(top: getVerticalSize(20)),
+                      //   height: MediaQuery.of(context).size.height * .740,
+                      //   child: Align(
+                      //     alignment: Alignment.center,
+                      //     child: ListView.builder(
+                      //       physics: BouncingScrollPhysics(),
+                      //       shrinkWrap: true,
+                      //       itemCount: _datajobs.length,
+                      //       itemBuilder: (context, index) {
+                      //         return SaveJobCard(_datajobs[index] as Job,
+                      //             SavedDocId[index], this.callback);
+                      //         // return SavedItemWidget();
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      StreamBuilder<QuerySnapshot>(
+                        stream: test,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Something went wrong');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          var jobdata = snapshot.data!.docs;
+                          int total = snapshot.data!.docs.length;
+
+                          // Accessing single QueryDocumentSnapshot and then using .data() getting its map.
+                          return Container(
+                            padding: EdgeInsets.only(top: getVerticalSize(20)),
+                            height: MediaQuery.of(context).size.height * .740,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: total,
+                                itemBuilder: (context, index) {
+                                  final job = jobdata[index].data()!
+                                      as Map<String, dynamic>;
+
+                                  return Job_Card(job);
+                                },
+                              ),
+                            ),
+                          );
+
+                          // return ListView(
+                          //   children: snapshot.data!.docs
+                          //       .map((DocumentSnapshot document) {
+                          //     Map<String, dynamic> data =
+                          //         document.data()! as Map<String, dynamic>;
+                          //     return Job_Card_test();
+                          //   }).toList(),
+                          // );
+                        },
                       ),
                     ],
                   ),

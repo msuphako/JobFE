@@ -1,4 +1,6 @@
 import 'package:hires/auth.dart';
+import 'package:hires/presentation/employer/interview.dart';
+import 'package:hires/presentation/employer/jobapplication.dart';
 
 import 'package:hires/presentation/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,48 +26,179 @@ class _EmpCategoriesState extends State<EmpCategories> {
     isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Categories",
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: getFontSize(
-              16,
+        title: Column(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(
+                  top: getVerticalSize(
+                    10.00,
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: isDark ? ColorConstant.darkBg : ColorConstant.gray50,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: size.width,
+                    margin: EdgeInsets.only(
+                      top: getVerticalSize(
+                        6.00,
+                      ),
+                      bottom: getVerticalSize(
+                        6.00,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: getHorizontalSize(
+                          24.00,
+                        ),
+                        right: getHorizontalSize(
+                          23.00,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: getVerticalSize(
+                                3.00,
+                              ),
+                            ),
+                            child: Text(
+                              "Categories",
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: getFontSize(
+                                  18,
+                                ),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          child: Container(
+                                            height: getVerticalSize(200),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(Icons.logout,
+                                                    color:
+                                                        ColorConstant.redA700),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: getVerticalSize(30)),
+                                                  child: Text(
+                                                    "Logout From your account?",
+                                                    style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: getFontSize(18),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left:
+                                                          getHorizontalSize(50),
+                                                      right:
+                                                          getHorizontalSize(50),
+                                                      top: getVerticalSize(50),
+                                                      bottom:
+                                                          getVerticalSize(20)),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text(
+                                                          "Cancel",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "Poppins",
+                                                            fontSize:
+                                                                getFontSize(18),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          auth.signOut();
+                                                        },
+                                                        child: Text(
+                                                          "Logout",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Poppins",
+                                                              fontSize:
+                                                                  getFontSize(
+                                                                      18),
+                                                              color:
+                                                                  Colors.red),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  height: getSize(
+                                    24.00,
+                                  ),
+                                  width: getSize(
+                                    24.00,
+                                  ),
+                                  child: Icon(
+                                    Icons.logout,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-          ),
+          ],
         ),
         centerTitle: true,
         elevation: 0,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: getHorizontalSize(
-                18.00,
-              ),
-              right: getHorizontalSize(
-                18.00,
-              ),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushReplacementNamed(context, HomeScreen.id);
-              },
-              child: Container(
-                  height: getSize(
-                    24.00,
-                  ),
-                  width: getSize(
-                    24.00,
-                  ),
-                  child: Icon(Icons.arrow_back_ios,
-                      size: getSize(20),
-                      color: isDark ? Colors.white : Colors.black)),
-            ),
-          ),
-        ),
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
@@ -73,15 +206,11 @@ class _EmpCategoriesState extends State<EmpCategories> {
             crossAxisCount: 2,
             padding: EdgeInsets.all(3.0),
             children: <Widget>[
+              CategorieBox("ใบสมัครงาน", Icons.fact_check, AppScreen.id,
+                  context: context),
+
               CategorieBox(
-                  "ประวัติที่บันทึก", Icons.description, ProfileStyle1Screen.id,
-                  context: context),
-              CategorieBox("ใบสมัครงาน", Icons.fact_check, ProfileStyle1Screen.id,
-                  context: context),
-              CategorieBox("ข้อมูลบริษัท", Icons.domain,
-                  ResumePortfolioUploadScreen.id,
-                  context: context),
-              CategorieBox("นัดสำภาษณ์", Icons.interpreter_mode, ProfileStyle1Screen.id,
+                  "นัดสำภาษณ์", Icons.interpreter_mode, InterviewScreen.id,
                   context: context),
               CategorieBox(
                   "บัญชี", Icons.account_circle, ProfileStyle1Screen.id,
@@ -91,21 +220,20 @@ class _EmpCategoriesState extends State<EmpCategories> {
               // CategorieBox("Alphabet", Icons.alarm, "", context: context),
               // CategorieBox("Alphabet", Icons.alarm, "", context: context),
             ],
-          )
-          ),
-        bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: OverflowBar(
-            overflowAlignment: OverflowBarAlignment.center,
-            alignment: MainAxisAlignment.center,
-            overflowSpacing: 5.0,
-            children: <Widget>[
-              SignoutBox(context: context),
-            ],
-          ),
-        ),
-    ),
+          )),
+      // bottomNavigationBar: BottomAppBar(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(8),
+      //     child: OverflowBar(
+      //       overflowAlignment: OverflowBarAlignment.center,
+      //       alignment: MainAxisAlignment.center,
+      //       overflowSpacing: 5.0,
+      //       children: <Widget>[
+      //         SignoutBox(context: context),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 
@@ -182,9 +310,7 @@ class _EmpCategoriesState extends State<EmpCategories> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-
-            ),
+            padding: EdgeInsets.only(),
             child: Text(
               "ออกจากระบบ",
               overflow: TextOverflow.ellipsis,
@@ -253,7 +379,7 @@ class _EmpCategoriesState extends State<EmpCategories> {
                     child: Icon(
                       icon,
                       size: 40.0,
-                      color: Colors.grey,
+                      color: Colors.teal,
                     ),
                   ),
                 ),

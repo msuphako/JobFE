@@ -3,17 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:hires/job.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
+import 'package:hires/presentation/homepage_3_screen/widgets/featured_jobs.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
+import 'package:hires/presentation/profile_style_1_screen/profile_style_1_screen.dart';
 
 class SaveJobCard extends StatefulWidget {
-  final Job _datajobs;
-  SaveJobCard(this._datajobs);
+  Map<String, dynamic> _datajobs;
+  final String SavedDocId;
+  Function callback;
+  SaveJobCard(this._datajobs, this.SavedDocId, this.callback);
 
   @override
-  State<SaveJobCard> createState() => _SaveJobCardState();
+  State<SaveJobCard> createState() => _SaveJobCardState(_datajobs);
 }
 
 class _SaveJobCardState extends State<SaveJobCard> {
+  Map<String, dynamic> _datajobs;
+  _SaveJobCardState(this._datajobs);
   var job = Job();
 
   @override
@@ -23,8 +29,8 @@ class _SaveJobCardState extends State<SaveJobCard> {
     return GestureDetector(
       onTap: () {
         // Navigator.pushNamed(context, JobDetails1Screen.id);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => JobDetails1Screen(JobId: widget._datajobs.JobId!)));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => JobDetails1Screen(_datajobs)));
       },
       child: Padding(
         padding: EdgeInsets.only(
@@ -177,7 +183,7 @@ class _SaveJobCardState extends State<SaveJobCard> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        widget._datajobs.Title!,
+                                        widget._datajobs["Title"],
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -228,23 +234,24 @@ class _SaveJobCardState extends State<SaveJobCard> {
                                 ),
                               ),
                               child: GestureDetector(
-                               onTap: () {
-                                 job.DelSavedJob(user.uid,widget._datajobs.JobId);
-                                //  showAlert();
-                               },
-                              child: Container(
-                                height: getSize(
-                                  20.00,
+                                onTap: () {
+                                  // job.DelSavedJob(user.uid, widget.SavedDocId);
+                                  // ShowDelAlert(context);
+                                  widget.callback();
+                                  // Navigator.pushNamed(
+                                  //     context, ProfileStyle1Screen.id);
+                                },
+                                child: Container(
+                                  height: getSize(
+                                    20.00,
+                                  ),
+                                  width: getSize(
+                                    20.00,
+                                  ),
+                                  child: Icon(Icons.delete,
+                                      size: getSize(30), color: Colors.red),
                                 ),
-                                width: getSize(
-                                  20.00,
-                                ),
-                                child: Icon(
-                                  Icons.delete,
-                                  size: getSize(30),
-                                  color: Colors.red),
                               ),
-                            ),
                             ),
                           ],
                         ),
@@ -277,7 +284,7 @@ class _SaveJobCardState extends State<SaveJobCard> {
                                   ),
                                 ),
                                 Text(
-                                  widget._datajobs.Location!,
+                                  widget._datajobs["Location"],
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
@@ -302,5 +309,37 @@ class _SaveJobCardState extends State<SaveJobCard> {
         ),
       ),
     );
+  }
+
+  void ShowDelAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pop(context);
+          });
+          return Dialog(
+            child: Container(
+              height: getVerticalSize(100),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: getVerticalSize(5), bottom: getVerticalSize(10)),
+                    child: Text(
+                      "Already Saved",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: getFontSize(20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

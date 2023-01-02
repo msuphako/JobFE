@@ -4,6 +4,8 @@ import 'package:hires/core/theme/theme_constants.dart';
 import 'package:hires/job.dart';
 import 'package:hires/presentation/applications_screen/applications_screen.dart';
 import 'package:hires/presentation/categories_screen/widgets/categories_item_widget.dart';
+import 'package:hires/presentation/employer/gg.dart';
+import 'package:hires/presentation/employer/showjobpost.dart';
 import 'package:hires/presentation/employer/widget/jobpost.dart';
 import 'package:hires/presentation/homepage_3_screen/popular_jobs.dart';
 import 'package:hires/presentation/homepage_3_screen/widgets/featured_jobs.dart';
@@ -184,28 +186,28 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                               decoration: BoxDecoration(
                                   color: isDark
                                       ? ColorConstant.yellow
-                                      : ColorConstant.red300,
+                                      : ColorConstant.teal600,
                                   borderRadius: BorderRadius.circular(
                                     getHorizontalSize(8),
                                   )),
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                top: getVerticalSize(
-                                  12.00,
-                                ),
-                                right: getHorizontalSize(
-                                  2.00,
-                                ),
-                                bottom: getVerticalSize(5)),
-                            child: Image.network(
-                                "https:firebasestorage.googleapis.com/v0/b/jobfe-a636f.appspot.com/o/istockphoto-612716462-612x612.jpg?alt=media&token=09dbb46b-5f8f-47e2-8c29-c43"),
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.bottomCenter,
+                        //   child: Padding(
+                        //     padding: EdgeInsets.only(
+                        //         top: getVerticalSize(
+                        //           12.00,
+                        //         ),
+                        //         right: getHorizontalSize(
+                        //           2.00,
+                        //         ),
+                        //         bottom: getVerticalSize(5)),
+                        //     child: Image.network(
+                        //         "https:firebasestorage.googleapis.com/v0/b/jobfe-a636f.appspot.com/o/istockphoto-612716462-612x612.jpg?alt=media&token=09dbb46b-5f8f-47e2-8c29-c43"),
+                        //   ),
+                        // ),
                         Align(
                           alignment: Alignment.topRight,
                           child: Container(
@@ -449,17 +451,11 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                 physics: BouncingScrollPhysics(),
                                 crossAxisCount: 2,
                                 children: [
-                                  CategorieBox("โพสงาน", Icons.description,
+                                  CategorieBox("ประกาศงาน", Icons.description,
                                       ProfileStyle1Screen.id,
                                       context: context),
-                                  CategorieBox("ประวัติที่บันทึก",
-                                      Icons.description, ProfileStyle1Screen.id,
-                                      context: context),
-                                  CategorieBox("ประวัติที่บันทึก",
-                                      Icons.description, ProfileStyle1Screen.id,
-                                      context: context),
-                                  CategorieBox("ประวัติที่บันทึก",
-                                      Icons.description, ProfileStyle1Screen.id,
+                                  CategorieBox("ดูงานที่ประกาศ",
+                                      Icons.description, ShowJobPost.id,
                                       context: context),
                                 ],
                               ),
@@ -505,22 +501,22 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(top: getVerticalSize(20)),
-                            height: MediaQuery.of(context).size.height * .740,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 3,
-                                itemBuilder: (context, index) {
-                                  return Job_Card();
-                                  // return SavedItemWidget();
-                                },
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.only(top: getVerticalSize(20)),
+                          //   height: MediaQuery.of(context).size.height * .740,
+                          //   child: Align(
+                          //     alignment: Alignment.center,
+                          //     child: ListView.builder(
+                          //       physics: BouncingScrollPhysics(),
+                          //       shrinkWrap: true,
+                          //       itemCount: 3,
+                          //       itemBuilder: (context, index) {
+                          //         return Job_Card_test();
+                          //         // return SavedItemWidget();
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -538,83 +534,82 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
       {required BuildContext context}) {
     return Align(
       alignment: Alignment.center,
-      child: GestureDetector(
-        onTap: () {
-          if (title == "โพสงาน") {
-            showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                )),
-                builder: (context) {
-                  return JobPostForm();
-                });
-          }
-          // Navigator.pushNamed(context, SoloCategoryJobListingScreen.id);
-        },
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: getHorizontalSize(
-                    35.00,
-                  ),
-                  top: getVerticalSize(
-                    20.00,
-                  ),
-                  right: getHorizontalSize(
-                    35.00,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    getHorizontalSize(
-                      116.00,
+      child: Card(
+        child: Container(
+          width: 175,
+          height: 140,
+          child: GestureDetector(
+            onTap: () {
+              if (title == "ประกาศงาน") {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    )),
+                    builder: (context) {
+                      return JobPostForm();
+                    });
+              } else {
+                Navigator.pushNamed(context, page);
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: getHorizontalSize(
+                      35.00,
+                    ),
+                    top: getVerticalSize(
+                      30.00,
+                    ),
+                    right: getHorizontalSize(
+                      35.00,
                     ),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 40.0,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: getHorizontalSize(
-                    35.00,
-                  ),
-                  top: getVerticalSize(
-                    16.00,
-                  ),
-                  right: getHorizontalSize(
-                    35.00,
-                  ),
-                  bottom: getVerticalSize(
-                    16.00,
-                  ),
-                ),
-                child: Text(
-                  title,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: getFontSize(
-                      18,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      getHorizontalSize(
+                        116.00,
+                      ),
                     ),
-                    color: isDark ? Colors.white : Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
+                    child: Icon(
+                      icon,
+                      size: 40.0,
+                      color: Colors.teal,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: getVerticalSize(
+                      5.00,
+                    ),
+                    bottom: getVerticalSize(
+                      16.00,
+                    ),
+                  ),
+                  child: Text(
+                    title,
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: getFontSize(
+                        18,
+                      ),
+                      color: isDark ? Colors.white : Colors.black,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

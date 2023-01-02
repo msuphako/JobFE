@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hires/presentation/application_tracking_screen/application_tracking_screen.dart';
+import 'package:hires/presentation/apply_screen/apply_screen.dart';
 
 import 'package:hires/presentation/categories_screen/categories_screen.dart';
 import 'package:hires/presentation/employer/employee_categories.dart';
 import 'package:hires/presentation/employer/employer_home.dart';
 
 import 'package:hires/presentation/employer/employer_register.dart';
+import 'package:hires/presentation/employer/interview.dart';
+import 'package:hires/presentation/employer/jobapplication.dart';
 import 'package:hires/presentation/employer/search_person.dart';
+import 'package:hires/presentation/employer/gg.dart';
 
 import 'package:hires/presentation/home_screen/home_screen.dart';
 
@@ -17,12 +21,15 @@ import 'package:hires/presentation/job_details_screen/job_details_screen.dart';
 import 'package:hires/presentation/log_in_screen/log_in_screen.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
 import 'package:hires/presentation/messages_screen/messages_screen.dart';
-import 'package:hires/presentation/profile_style_1_screen/profile.dart';
+import 'package:hires/presentation/profile_style_1_screen/resume.dart';
+import 'package:hires/presentation/profile_style_2_screen/profile_style_2_screen.dart';
 
 import 'package:hires/presentation/register_screen/register_screen.dart';
 
 import 'package:hires/presentation/resume_portfolio_upload_screen/resume_portfolio_upload_screen.dart';
 import 'package:hires/presentation/resume_portfolio_uploading_screen/resume_portfolio_uploading_screen.dart';
+import 'package:hires/presentation/saved_screen/SavedScreen.dart';
+import 'package:hires/presentation/saved_screen/applyscreen.dart';
 import 'package:hires/presentation/search_option_3_screen/search_option_3_screen.dart';
 import 'package:hires/presentation/set_b1_screen/set_b1_screen.dart';
 import 'package:hires/presentation/set_b2_screen/set_b2_screen.dart';
@@ -37,6 +44,7 @@ import 'package:hires/translations/codegen_loader.g.dart';
 import 'core/theme/theme_constants.dart';
 import 'core/theme/theme_manager.dart';
 
+import 'presentation/employer/showjobpost.dart';
 import 'presentation/profile_style_1_screen/profile_style_1_screen.dart';
 import 'presentation/register1_screen/register1_screen.dart';
 import 'presentation/resume_portfolio_uploaded_screen/resume_portfolio_uploaded_screen.dart';
@@ -105,7 +113,9 @@ class _MyAppState extends State<MyApp> {
         routes: {
           SearchOption3Screen.id: (context) => SearchOption3Screen(),
           Profile.id: (context) => Profile(),
-          ChatScreen.id: (context) => ChatScreen(),
+          ChatScreen.id: (context) => ChatScreen(
+                friendId: '',
+              ),
           RegisterScreen.id: (context) => RegisterScreen(),
           Register1Screen.id: (context) => RegisterScreen(),
           LogInScreen.id: (context) => LogInScreen(),
@@ -113,8 +123,14 @@ class _MyAppState extends State<MyApp> {
           EmpHomeScreen.id: (context) => EmpHomeScreen(),
           EmpCategories.id: (context) => EmpCategories(),
           SettingsScreen.id: (context) => SettingsScreen(),
+          ShowJobPost.id: (context) => ShowJobPost(),
+
           // HomeScreen.id:(context)=>HomeScreen(),
           CategoriesScreen.id: (context) => CategoriesScreen(),
+          SavedScreen.id: (context) => SavedScreen(),
+          AppScreen.id: (context) => AppScreen(),
+          AppliedScreen.id: (context) => AppliedScreen(),
+
           ApplicationTrackingScreen.id: (context) =>
               ApplicationTrackingScreen(),
           //       Popular.id:(context)=>Popular(),
@@ -126,9 +142,7 @@ class _MyAppState extends State<MyApp> {
           // CompaniesScreen.id:(context)=>CompaniesScreen(),
           // ForgotPasswordPage.id:(context)=>ForgotPasswordPage(),
           JobDetailsScreen.id: (context) => JobDetailsScreen(),
-          JobDetails1Screen.id: (context) => JobDetails1Screen(
-                JobId: '',
-              ),
+
           //       JobPreferences2Screen.id:(context)=>JobPreferences2Screen(),
           //       JobProposalScreen.id:(context)=>JobProposalScreen(),
           //       JobTypeScreen.id:(context)=>JobTypeScreen(),
@@ -137,10 +151,11 @@ class _MyAppState extends State<MyApp> {
           //       LogIn1Screen.id:(context)=>LogIn1Screen(),
           //       LogIn2Screen.id:(context)=>LogIn2Screen(),
           MessagesScreen.id: (context) => MessagesScreen(),
+          InterviewScreen.id: (context) => InterviewScreen(),
           //       NotificationsScreen.id:(context)=>NotificationsScreen(),
           //       ProfileDropDraweritem.id:(context)=>ProfileDropDraweritem(),
           ProfileStyle1Screen.id: (context) => ProfileStyle1Screen(),
-          //       ProfileStyle2Screen.id:(context)=>ProfileStyle2Screen(),
+          ProfileStyle2Screen.id: (context) => ProfileStyle2Screen(),
           //       RegisterScreen.id:(context)=>RegisterScreen(),
           //       Register1Screen.id:(context)=>RegisterScreen(),
           //       ResetPasswordConfirmationScreen.id:(context)=>ResetPasswordConfirmationScreen(),

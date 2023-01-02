@@ -4,8 +4,14 @@ import 'package:hires/presentation/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/profile_style_1_screen/profile_style_1_screen.dart';
+import 'package:hires/presentation/profile_style_2_screen/profile_style_2_screen.dart';
 import 'package:hires/presentation/resume_portfolio_upload_screen/resume_portfolio_upload_screen.dart';
+import 'package:hires/presentation/saved_screen/applyscreen.dart';
+import 'package:hires/presentation/saved_screen/old.dart';
+import 'package:hires/presentation/saved_screen/SavedScreen.dart';
 import 'package:hires/presentation/settings_screen/settings_screen.dart';
+
+import '../profile_style_1_screen/resume.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static String id = "CategoriesScreen";
@@ -73,15 +79,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             crossAxisCount: 2,
             padding: EdgeInsets.all(3.0),
             children: <Widget>[
+              CategorieBox("งานที่บันทึก", Icons.bookmark, SavedScreen.id,
+                  context: context),
+              CategorieBox("งานที่สมัคร", Icons.receipt, AppliedScreen.id,
+                  context: context),
               CategorieBox(
-                  "งานที่บันทึก", Icons.bookmark, ProfileStyle1Screen.id,
+                  "สร้างเรซูเม่", Icons.description_rounded, Profile.id,
                   context: context),
-              CategorieBox("งานที่สมัคร", Icons.receipt, ProfileStyle1Screen.id,
-                  context: context),
-              CategorieBox("สร้างเรซูเม่", Icons.description_rounded,
-                  ResumePortfolioUploadScreen.id,
-                  context: context),
-              CategorieBox("นัดสำภาษณ์", Icons.interpreter_mode, ProfileStyle1Screen.id,
+              CategorieBox("นัดสำภาษณ์", Icons.interpreter_mode, Profile.id,
                   context: context),
               CategorieBox(
                   "บัญชี", Icons.account_circle, ProfileStyle1Screen.id,
@@ -91,9 +96,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               // CategorieBox("Alphabet", Icons.alarm, "", context: context),
               // CategorieBox("Alphabet", Icons.alarm, "", context: context),
             ],
-          )
-          ),
-        bottomNavigationBar: BottomAppBar(
+          )),
+      bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: OverflowBar(
@@ -105,7 +109,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ],
           ),
         ),
-    ),
+      ),
     );
   }
 
@@ -182,9 +186,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-
-            ),
+            padding: EdgeInsets.only(),
             child: Text(
               "ออกจากระบบ",
               overflow: TextOverflow.ellipsis,

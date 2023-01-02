@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hires/job.dart';
-import 'package:hires/presentation/search_result_2_screen/widgets/jobcard.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
+import 'package:hires/presentation/search_result_2_screen/widgets/JobCard.dart';
 
 class SearchResult2Screen extends StatefulWidget {
   static String id = "SearchResult2Screen";
@@ -28,9 +30,12 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
     super.initState();
   }
 
+  int total = 0;
+
   @override
   Widget build(BuildContext context) {
-    int total = _datajobs.length;
+    final Stream<QuerySnapshot> jobpost =
+        db.collectionGroup('jobPost').snapshots();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
@@ -101,127 +106,146 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
             ),
           ],
           backgroundColor: isDark ? ColorConstant.darkContainer : Colors.white),
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: isDark ? ColorConstant.darkContainer : ColorConstant.whiteA700,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: getVerticalSize(
-                1.00,
-              ),
-              width: getHorizontalSize(
-                327.00,
-              ),
-              margin: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  10.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: jobpost,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+
+            var jobdata = snapshot.data!.docs;
+            int total = snapshot.data!.docs.length;
+            return Container(
+              width: double.infinity,
               decoration: BoxDecoration(
-                color: ColorConstant.gray402,
+                color: isDark
+                    ? ColorConstant.darkContainer
+                    : ColorConstant.whiteA700,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: getVerticalSize(
-                  24.00,
-                ),
-                bottom: getVerticalSize(
-                  16.00,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: context.locale == Constants.engLocal
-                          ? getHorizontalSize(
-                              24.00,
-                            )
-                          : getHorizontalSize(0),
-                      right: context.locale == Constants.arLocal
-                          ? getHorizontalSize(
-                              24.00,
-                            )
-                          : getHorizontalSize(0),
+                  Container(
+                    height: getVerticalSize(
+                      1.00,
                     ),
-                    child: Text(
-                      "$total Jobs Found",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: ColorConstant.teal600,
-                        fontSize: getFontSize(
-                          14,
-                        ),
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w500,
+                    width: getHorizontalSize(
+                      327.00,
+                    ),
+                    margin: EdgeInsets.only(
+                      left: getHorizontalSize(
+                        24.00,
                       ),
+                      top: getVerticalSize(
+                        10.00,
+                      ),
+                      right: getHorizontalSize(
+                        24.00,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: ColorConstant.gray402,
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
                       top: getVerticalSize(
-                        4.00,
+                        24.00,
                       ),
-                      left: context.locale == Constants.engLocal
-                          ? getHorizontalSize(
-                              0.00,
-                            )
-                          : getHorizontalSize(24),
-                      right: context.locale == Constants.arLocal
-                          ? getHorizontalSize(
-                              0.00,
-                            )
-                          : getHorizontalSize(24),
                       bottom: getVerticalSize(
-                        3.00,
+                        16.00,
                       ),
                     ),
-                    child: Container(
-                      height: getVerticalSize(
-                        14.00,
-                      ),
-                      width: getHorizontalSize(
-                        12.60,
-                      ),
-                      child: SvgPicture.asset(
-                        ImageConstant.imgIconlylightfi,
-                        fit: BoxFit.fill,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: context.locale == Constants.engLocal
+                                ? getHorizontalSize(
+                                    24.00,
+                                  )
+                                : getHorizontalSize(0),
+                            right: context.locale == Constants.arLocal
+                                ? getHorizontalSize(
+                                    24.00,
+                                  )
+                                : getHorizontalSize(0),
+                          ),
+                          child: Text(
+                            "$total Jobs Found",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.teal600,
+                              fontSize: getFontSize(
+                                14,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: getVerticalSize(
+                              4.00,
+                            ),
+                            left: context.locale == Constants.engLocal
+                                ? getHorizontalSize(
+                                    0.00,
+                                  )
+                                : getHorizontalSize(24),
+                            right: context.locale == Constants.arLocal
+                                ? getHorizontalSize(
+                                    0.00,
+                                  )
+                                : getHorizontalSize(24),
+                            bottom: getVerticalSize(
+                              3.00,
+                            ),
+                          ),
+                          child: Container(
+                            height: getVerticalSize(
+                              14.00,
+                            ),
+                            width: getHorizontalSize(
+                              12.60,
+                            ),
+                            child: SvgPicture.asset(
+                              ImageConstant.imgIconlylightfi,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: getVerticalSize(10)),
+                      shrinkWrap: true,
+                      itemCount: total,
+                      itemBuilder: (context, index) {
+                        final job =
+                            jobdata[index].data()! as Map<String, dynamic>;
+
+                        return JobCardSearch(job);
+                      },
+                    ),
+                  )
                 ],
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: getVerticalSize(10)),
-                shrinkWrap: true,
-                itemCount: _datajobs.length,
-                itemBuilder: (context, index) {
-                  return JobCard(_datajobs[index] as Job);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 }

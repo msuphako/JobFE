@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:hires/job.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
-import 'package:hires/presentation/employer/widget/empjobdetail.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 
-class Job_Card extends StatefulWidget {
+class SaveCard extends StatefulWidget {
   Map<String, dynamic> savejob;
-  Job_Card(this.savejob);
+  String DocId;
+  SaveCard(this.savejob, this.DocId);
   @override
-  State<Job_Card> createState() => Job_CardState();
+  State<SaveCard> createState() => _SaveCardState();
 }
 
-class Job_CardState extends State<Job_Card> {
+class _SaveCardState extends State<SaveCard> {
   final user = FirebaseAuth.instance.currentUser!;
   var job = Job();
   fetchjobsdata() {
@@ -40,7 +40,7 @@ class Job_CardState extends State<Job_Card> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return FutureBuilder<QuerySnapshot>(
         future: jobpost.get(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text("data ${snapshot.hasError}");
           }
@@ -49,11 +49,11 @@ class Job_CardState extends State<Job_Card> {
           }
           if (snapshot.hasData) {
             var data = snapshot.data?.docs[0];
-            // print(data!["JobId"]);
+            print(data!["JobId"]);
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EmpJobDetail(data["JobId"])));
+                    builder: (context) => JobDetails1Screen(data["JobId"])));
               },
               child: Padding(
                 padding: EdgeInsets.only(
@@ -265,7 +265,7 @@ class Job_CardState extends State<Job_Card> {
                                       child: GestureDetector(
                                         onTap: () {
                                           job.DelSavedJob(
-                                              user.uid, data["JobId"]);
+                                              user.uid, widget.DocId);
                                           //  showAlert();
                                         },
                                         child: Container(

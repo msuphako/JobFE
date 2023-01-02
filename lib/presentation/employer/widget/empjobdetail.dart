@@ -86,15 +86,15 @@ void ShowApplyAlert(BuildContext context, bool isApply) {
       });
 }
 
-class JobDetails1Screen extends StatefulWidget {
-  static String id = "JobDetails1Screen";
+class EmpJobDetail extends StatefulWidget {
+  static String id = "EmpJobDetail";
   String JobId;
-  JobDetails1Screen(this.JobId);
+  EmpJobDetail(this.JobId);
   @override
-  State<JobDetails1Screen> createState() => _JobDetails1ScreenState();
+  State<EmpJobDetail> createState() => _EmpJobDetailState();
 }
 
-class _JobDetails1ScreenState extends State<JobDetails1Screen>
+class _EmpJobDetailState extends State<EmpJobDetail>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
 
@@ -133,41 +133,6 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
             var data = snapshot.data?.docs[0];
             print(data!["JobId"]);
             return Scaffold(
-              resizeToAvoidBottomInset: false,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: getHorizontalSize(16)),
-                child: Container(
-                  width: getHorizontalSize(330),
-                  height: getVerticalSize(50),
-                  child: FloatingActionButton.extended(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(getHorizontalSize(12))),
-                      backgroundColor: ColorConstant.teal600,
-                      foregroundColor: ColorConstant.whiteA700,
-                      extendedTextStyle: TextStyle(
-                        color: ColorConstant.gray50,
-                        fontSize: getFontSize(
-                          14,
-                        ),
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.07,
-                      ),
-                      onPressed: () async {
-                        bool IsApplied = await job.AppliedJob(
-                            user.uid, data["JobId"], data["Title"]);
-                        ShowApplyAlert(context, IsApplied);
-                      },
-                      // onPressed: () {
-                      //   Navigator.pushNamed(context, ApplyScreen.id);
-                      // },
-                      label: Text('Apply Now')),
-                ),
-              ),
               body: SafeArea(
                   child: Container(
                 width: size.width,
@@ -295,24 +260,23 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                             ),
                                             child: GestureDetector(
                                               onTap: () async {
-                                                bool issaved =
-                                                    await job.Savejob(user.uid,
-                                                        data["JobId"]);
-                                                ShowSaveAlert(context, issaved);
+                                                // bool issaved =
+                                                //     await job.Savejob(user.uid,
+                                                //         data["JobId"]);
+                                                // ShowSaveAlert(context, issaved);
                                               },
                                               child: Container(
-                                                height: getSize(
-                                                  23.00,
-                                                ),
-                                                width: getSize(
-                                                  23.00,
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  ImageConstant
-                                                      .imgFluentbookmark8,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
+                                                  height: getSize(
+                                                    23.00,
+                                                  ),
+                                                  width: getSize(
+                                                    23.00,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    size: 40,
+                                                    color: Colors.white,
+                                                  )),
                                             ),
                                           ),
                                         ],

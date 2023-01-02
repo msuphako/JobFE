@@ -1,17 +1,114 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/theme/theme_constants.dart';
 import 'package:hires/job.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
+import 'package:hires/presentation/employer/employee_view.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
-import 'package:hires/presentation/profile_style_1_screen/profile.dart';
+import 'package:hires/presentation/profile_style_1_screen/resume.dart';
 import 'package:hires/presentation/profile_style_1_screen/profile_style_1_screen.dart';
 import 'package:hires/presentation/profile_style_2_screen/profile_style_2_screen.dart';
 import 'package:hires/resume.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 
-class PersonCard extends StatelessWidget {
-  final Resume _data;
+class ThMessages implements LookupMessages {
+  @override
+  String prefixAgo() => '';
+  @override
+  String prefixFromNow() => 'ใน';
+  @override
+  String suffixAgo() => 'ที่แล้ว';
+  @override
+  String suffixFromNow() => 'จากนี้';
+  @override
+  String lessThanOneMinute(int seconds) => 'เมื่อครู่';
+  @override
+  String aboutAMinute(int minutes) => 'หนึ่งนาที';
+  @override
+  String minutes(int minutes) => '$minutes นาที';
+  @override
+  String aboutAnHour(int minutes) => 'หนึ่งชั่วโมง';
+  @override
+  String hours(int hours) => '$hours ชั่วโมง';
+  @override
+  String aDay(int hours) => 'หนึ่งวัน';
+  @override
+  String days(int days) => '$days วัน';
+  @override
+  String aboutAMonth(int days) => 'หนึ่งเดือน';
+  @override
+  String months(int months) => '$months เดือน';
+  @override
+  String aboutAYear(int year) => 'หนึ่งปี';
+  @override
+  String years(int years) => '$years ปี';
+  @override
+  String wordSeparator() => '';
+}
+
+/// Thai short messages
+class ThShortMessages implements LookupMessages {
+  @override
+  String prefixAgo() => '';
+  @override
+  String prefixFromNow() => '';
+  @override
+  String suffixAgo() => '';
+  @override
+  String suffixFromNow() => '';
+  @override
+  String lessThanOneMinute(int seconds) => 'เมื่อครู่';
+  @override
+  String aboutAMinute(int minutes) => '1 นาที';
+  @override
+  String minutes(int minutes) => '$minutes นาที';
+  @override
+  String aboutAnHour(int minutes) => '~1 ชม';
+  @override
+  String hours(int hours) => '$hours ชม';
+  @override
+  String aDay(int hours) => '~1 ว';
+  @override
+  String days(int days) => '$days ว';
+  @override
+  String aboutAMonth(int days) => '~1 ด';
+  @override
+  String months(int months) => '$months ด';
+  @override
+  String aboutAYear(int year) => '~1 ป';
+  @override
+  String years(int years) => '$years ป';
+  @override
+  String wordSeparator() => ' ';
+}
+
+class PersonCard extends StatefulWidget {
+  Map<String, dynamic> _data;
   PersonCard(this._data);
+
+  @override
+  State<PersonCard> createState() => _PersonCardState();
+}
+
+class _PersonCardState extends State<PersonCard> {
+  String title = "";
+  String showtime = "";
+  @override
+  void initState() {
+    var data = List<String>.from(widget._data['jobwanted'] as List);
+    data.forEach((element) {
+      title += "$element ";
+    });
+    Timestamp date = widget._data["create_at"];
+    DateTime dtime = date.toDate();
+    timeago.setLocaleMessages('th', ThMessages());
+    showtime = timeago.format(dtime, locale: 'th');
+    // print(timeago.format(dtime, locale: 'th'));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +128,6 @@ class PersonCard extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Container(
-            height: getVerticalSize(220),
             child: Stack(alignment: Alignment.center, children: [
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -78,7 +174,7 @@ class PersonCard extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: getVerticalSize(
-                                        16.00,
+                                        0.00,
                                       ),
                                       bottom: getVerticalSize(
                                         5.00,
@@ -91,27 +187,13 @@ class PersonCard extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(),
-                                          child: Text(
-                                            "",
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: getFontSize(
-                                                18,
-                                              ),
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
                                         Row(
                                           children: [
                                             Container(
-                                              width: 200,
+                                              width: 270,
                                               child: Text(
-                                                _data.title!,
+                                                title,
+                                                maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
@@ -119,22 +201,27 @@ class PersonCard extends StatelessWidget {
                                                     18,
                                                   ),
                                                   fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: ColorConstant.teal600,
                                                 ),
                                               ),
                                             ),
-                                            Text(
-                                              _data.create_date!,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize: getFontSize(
-                                                  14,
-                                                ),
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                            // Padding(
+                                            //   padding:
+                                            //       EdgeInsets.only(left: 8.0),
+                                            //   child: Text(
+                                            //     showtime,
+                                            //     overflow: TextOverflow.ellipsis,
+                                            //     textAlign: TextAlign.left,
+                                            //     style: TextStyle(
+                                            //       fontSize: getFontSize(
+                                            //         14,
+                                            //       ),
+                                            //       fontFamily: 'Poppins',
+                                            //       fontWeight: FontWeight.w500,
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ],
@@ -174,7 +261,7 @@ class PersonCard extends StatelessWidget {
                                             ),
                                           ),
                                           child: Text(
-                                            _data.gender!,
+                                            widget._data["gender"],
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
@@ -214,7 +301,7 @@ class PersonCard extends StatelessWidget {
                                             ),
                                           ),
                                           child: Text(
-                                            _data.age!,
+                                            widget._data["age"] + " ปี",
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
@@ -262,11 +349,11 @@ class PersonCard extends StatelessWidget {
                                         Padding(
                                           padding: EdgeInsets.only(
                                             right: getHorizontalSize(
-                                              24.00,
+                                              14.00,
                                             ),
                                           ),
                                           child: Text(
-                                            _data.occupation!,
+                                            widget._data["position"],
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
@@ -296,7 +383,7 @@ class PersonCard extends StatelessWidget {
                                         Padding(
                                           padding: EdgeInsets.only(),
                                           child: Text(
-                                            "ประสบการณ์ : ",
+                                            "ระยะเวลา : ",
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
@@ -318,7 +405,7 @@ class PersonCard extends StatelessWidget {
                                             ),
                                           ),
                                           child: Text(
-                                            _data.exp! + " ปี",
+                                            widget._data["duration"],
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
@@ -348,7 +435,7 @@ class PersonCard extends StatelessWidget {
                                         Padding(
                                           padding: EdgeInsets.only(),
                                           child: Text(
-                                            "ตำแหน่ง : ",
+                                            "จังหวัด : ",
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
@@ -370,7 +457,7 @@ class PersonCard extends StatelessWidget {
                                             ),
                                           ),
                                           child: Text(
-                                            _data.location!,
+                                            widget._data["province_work"],
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.right,
                                             style: TextStyle(
@@ -393,32 +480,47 @@ class PersonCard extends StatelessWidget {
                                         EdgeInsets.only(top: 10, bottom: 10),
                                     child: Row(
                                       children: [
-                                        Container(
-                                          width: 120,
+                                        SizedBox(
+                                          width: 180,
+                                          child: Text(
+                                            showtime,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: getFontSize(
+                                                14,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
                                         ),
                                         TextButton(
                                           style: TextButton.styleFrom(),
                                           onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, Profile.id);
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Emp_view_resume(widget
+                                                            ._data["uid"])));
                                           },
                                           child: Text(
                                             "รายละเอียด",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ),
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.white,
-                                            backgroundColor:
-                                                ColorConstant.teal600,
-                                          ),
-                                          onPressed: () {},
-                                          child: Text(
-                                            "บันทึก",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                        ),
+                                        // TextButton(
+                                        //   style: TextButton.styleFrom(
+                                        //     foregroundColor: Colors.white,
+                                        //     backgroundColor:
+                                        //         ColorConstant.teal600,
+                                        //   ),
+                                        //   onPressed: () {},
+                                        //   child: Text(
+                                        //     "บันทึก",
+                                        //     style: TextStyle(fontSize: 16),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),

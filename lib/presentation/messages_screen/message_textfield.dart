@@ -27,7 +27,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
       "receiverId": widget.friendId,
       "message": message,
       "type": "text",
-      "date": DateTime.now(),
+      "date": FieldValue.serverTimestamp(),
     }).then((value) {
       FirebaseFirestore.instance
           .collection('users')
@@ -36,6 +36,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
           .doc(widget.friendId)
           .set({
         'last_msg': message,
+        'last_date': FieldValue.serverTimestamp(),
+        'isread': true
       });
     });
 
@@ -50,14 +52,18 @@ class _MessageTextFieldState extends State<MessageTextField> {
       "receiverId": widget.friendId,
       "message": message,
       "type": "text",
-      "date": DateTime.now(),
+      "date": FieldValue.serverTimestamp(),
     }).then((value) {
       FirebaseFirestore.instance
           .collection('users')
           .doc(widget.friendId)
           .collection('messages')
           .doc(widget.currentId)
-          .set({"last_msg": message});
+          .set({
+        "last_msg": message,
+        'last_date': FieldValue.serverTimestamp(),
+        'isread': false
+      });
     });
   }
 
@@ -68,11 +74,32 @@ class _MessageTextFieldState extends State<MessageTextField> {
       padding: EdgeInsetsDirectional.all(8),
       child: Row(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 10),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              child: Icon(
+                Icons.image_outlined,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+
           Expanded(
               child: TextFormField(
             controller: _controller,
             onFieldSubmitted: (value) {
-              if(_controller.text!=""){
+              if (_controller.text != "") {
                 SendMessage();
               }
             },
@@ -85,27 +112,37 @@ class _MessageTextFieldState extends State<MessageTextField> {
                     gapPadding: 10,
                     borderRadius: BorderRadius.circular(25))),
           )),
-          SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () async {
-              if(_controller.text!=""){
-                SendMessage();
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Container(
               padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blue,
-              ),
               child: Icon(
-                Icons.send,
-                color: Colors.white,
+                Icons.waving_hand_rounded,
+                color: Colors.teal,
               ),
             ),
-          )
+          ),
+          // SizedBox(
+          //   width: 20,
+          // ),
+          // GestureDetector(
+          //   onTap: () async {
+          //     if (_controller.text != "") {
+          //       SendMessage();
+          //     }
+          //   },
+          //   child: Container(
+          //     padding: EdgeInsets.all(8),
+          //     decoration: BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       color: Colors.blue,
+          //     ),
+          //     child: Icon(
+          //       Icons.send,
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
