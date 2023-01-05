@@ -7,8 +7,8 @@ import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 
 class AppliedCard extends StatefulWidget {
-  Map<String, dynamic> savejob;
-  AppliedCard(this.savejob);
+  Map<String, dynamic> appliedata;
+  AppliedCard(this.appliedata);
   @override
   State<AppliedCard> createState() => AppliedCardState();
 }
@@ -35,7 +35,7 @@ class AppliedCardState extends State<AppliedCard> {
   Widget build(BuildContext context) {
     Query jobpost = FirebaseFirestore.instance
         .collectionGroup('jobPost')
-        .where("JobId", isEqualTo: widget.savejob["JobId"]);
+        .where("JobId", isEqualTo: widget.appliedata["JobId"]);
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return FutureBuilder<QuerySnapshot>(
         future: jobpost.get(),

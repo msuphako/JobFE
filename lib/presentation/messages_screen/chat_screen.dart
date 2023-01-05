@@ -9,9 +9,11 @@ import 'message_textfield.dart';
 class ChatScreen extends StatefulWidget {
   static String id = "ChatScreen";
   final String friendId;
+  final String name;
 
   ChatScreen({
     required this.friendId,
+    required this.name,
   });
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -32,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
               width: 5,
             ),
             Text(
-              widget.friendId,
+              widget.name,
               style: TextStyle(fontSize: 20, color: Colors.white),
             )
           ],

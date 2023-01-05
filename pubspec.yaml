@@ -32,7 +32,8 @@ dependencies:
   search_choices: ^2.2.1
   timeago: ^3.3.0
   date_time_picker: "^2.1.0"
-  
+  cron: ^0.5.1
+  syncfusion_flutter_datepicker: ^20.4.42
 dependency_overrides:
     firebase_core_platform_interface: 4.5.2
 dev_dependencies: 

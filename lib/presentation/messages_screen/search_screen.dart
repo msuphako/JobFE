@@ -58,7 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search your Friend"),
+        title: Text("ค้นหาผู้คน"),
       ),
       body: Column(
         children: [
@@ -163,6 +163,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               MaterialPageRoute(
                                   builder: (context) => ChatScreen(
                                         friendId: searchResult[index]['id'],
+                                        name: searchResult[index]['username'],
                                       )));
                         },
                         child: ListTile(
@@ -192,6 +193,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                         builder: (context) => ChatScreen(
                                               friendId: searchResult[index]
                                                   ['id'],
+                                              name: searchResult[index]
+                                                  ['username'],
                                             )));
                               },
                               icon: Icon(

@@ -80,7 +80,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
               padding: EdgeInsets.all(8),
               child: Icon(
                 Icons.camera_alt_outlined,
-                color: Colors.blue,
+                color: Colors.teal,
               ),
             ),
           ),
@@ -90,7 +90,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
               padding: EdgeInsets.all(8),
               child: Icon(
                 Icons.image_outlined,
-                color: Colors.blue,
+                color: Colors.teal,
               ),
             ),
           ),

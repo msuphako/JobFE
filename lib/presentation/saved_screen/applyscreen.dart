@@ -120,7 +120,7 @@ class _AppliedScreenState extends State<AppliedScreen>
                             return Center(child: CircularProgressIndicator());
                           }
                           if (snapshot.hasData) {
-                            var jobdata = snapshot.data!.docs;
+                            var appliedata = snapshot.data!.docs;
                             int total = snapshot.data!.docs.length;
                             // Accessing single QueryDocumentSnapshot and then using .data() getting its map.
                             return Container(
@@ -134,9 +134,9 @@ class _AppliedScreenState extends State<AppliedScreen>
                                   shrinkWrap: true,
                                   itemCount: total,
                                   itemBuilder: (context, index) {
-                                    final job = jobdata[index].data()!
+                                    final applied = appliedata[index].data()!
                                         as Map<String, dynamic>;
-                                    return AppliedCard(job);
+                                    return AppliedCard(applied);
                                   },
                                 ),
                               ),

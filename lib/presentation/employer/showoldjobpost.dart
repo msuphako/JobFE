@@ -1,33 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hires/job.dart';
-import 'package:hires/presentation/employer/widget/applicationcard.dart';
+import 'package:hires/presentation/employer/interview.dart';
 import 'package:hires/presentation/employer/widget/job_card.dart';
+import 'package:hires/presentation/employer/widget/old_job_card.dart';
 import 'package:hires/presentation/home_screen/home_screen.dart';
-import 'package:hires/presentation/saved_screen/widgets/SaveCard.dart';
 import '../saved_screen/widgets/saved_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 
-import 'widget/Interviewcard.dart';
-
-class InterviewScreen extends StatefulWidget {
-  static String id = "InterviewScreen";
+class ShowOldJobPost extends StatefulWidget {
+  static String id = "ShowOldJobPost";
 
   @override
-  State<InterviewScreen> createState() => _InterviewScreenState();
+  State<ShowOldJobPost> createState() => _ShowOldJobPostState();
 }
 
-final user = FirebaseAuth.instance.currentUser!;
-
-class _InterviewScreenState extends State<InterviewScreen>
+class _ShowOldJobPostState extends State<ShowOldJobPost>
     with SingleTickerProviderStateMixin {
-  final Stream<QuerySnapshot> savedata = db
-      .collectionGroup("applied")
-      .where("eid", isEqualTo: user.uid)
-      .where("status", whereIn: ["รอวันนัดสำภาษณ์", "รอการสำภาษณ์"])
-      // .where("status", isEqualTo: "รอการสำภาษณ์")
-      .snapshots();
+  final Stream<QuerySnapshot> test = db
+      .collection('users')
+      .doc(user.uid)
+      .collection('jobPost')
+      .where("status",
+          whereNotIn: ["กำลังเปิดรับสมัคร", "ปิดรับสมัครชั่วคราว"]).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +31,12 @@ class _InterviewScreenState extends State<InterviewScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "การนัดสัมภาษณ์",
+          "ประกาศที่สิ้นสุด",
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: getFontSize(
-              24,
+              20,
             ),
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
@@ -95,59 +91,40 @@ class _InterviewScreenState extends State<InterviewScreen>
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Container(
-                      //   padding: EdgeInsets.only(top: getVerticalSize(20)),
-                      //   height: MediaQuery.of(context).size.height * .740,
-                      //   child: Align(
-                      //     alignment: Alignment.center,
-                      //     child: ListView.builder(
-                      //       physics: BouncingScrollPhysics(),
-                      //       shrinkWrap: true,
-                      //       itemCount: _datajobs.length,
-                      //       itemBuilder: (context, index) {
-                      //         return SaveJobCard(_datajobs[index] as Job,
-                      //             SavedDocId[index], this.callback);
-                      //         // return SavedItemWidget();
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
                       StreamBuilder<QuerySnapshot>(
-                        stream: savedata,
+                        stream: test,
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Something went wrong');
+                          }
+
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
-                          if (snapshot.hasData) {
-                            var appdata = snapshot.data!.docs;
-                            int total = snapshot.data!.docs.length;
+                          var jobdata = snapshot.data!.docs;
+                          int total = snapshot.data!.docs.length;
 
-                            // Accessing single QueryDocumentSnapshot and then using .data() getting its map.
-                            return Container(
-                              padding:
-                                  EdgeInsets.only(top: getVerticalSize(20)),
-                              height: MediaQuery.of(context).size.height * .740,
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: total,
-                                  itemBuilder: (context, index) {
-                                    final app = appdata[index].data()!
-                                        as Map<String, dynamic>;
+                          // Accessing single QueryDocumentSnapshot and then using .data() getting its map.
+                          return Container(
+                            padding: EdgeInsets.only(top: getVerticalSize(20)),
+                            height: MediaQuery.of(context).size.height * .740,
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: total,
+                                itemBuilder: (context, index) {
+                                  final job = jobdata[index].data()!
+                                      as Map<String, dynamic>;
 
-                                    return InterviewCard(
-                                        app, appdata[index].id);
-                                  },
-                                ),
+                                  return Old_Job_Card(job);
+                                },
                               ),
-                            );
-                          } else {
-                            return Center(child: Text("no saved job"));
-                          }
+                            ),
+                          );
 
                           // return ListView(
                           //   children: snapshot.data!.docs

@@ -58,6 +58,7 @@ class _MessagewidgetState extends State<Messagewidget> {
                     MaterialPageRoute(
                         builder: (context) => ChatScreen(
                               friendId: widget.freindId,
+                              name: data['username'],
                             )));
               },
               child: Container(
@@ -97,7 +98,7 @@ class _MessagewidgetState extends State<Messagewidget> {
                         child: Card(
                             child: Icon(
                           Icons.person,
-                          color: ColorConstant.teal600,
+                          color: ColorConstant.black900,
                         )),
                         // child: SvgPicture.asset(
                         //   ImageConstant.imgGoogle1,
@@ -177,16 +178,16 @@ class _MessagewidgetState extends State<Messagewidget> {
                               ],
                             ),
                           ),
-                          Container(
-                            width: getHorizontalSize(
-                              275.00,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Container(
+                                width: getHorizontalSize(
+                                  200.00,
+                                ),
+                                child: Text(
                                   widget.messages["last_msg"],
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
@@ -200,47 +201,47 @@ class _MessagewidgetState extends State<Messagewidget> {
                                         : FontWeight.w600,
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: EdgeInsets.only(
-                                //     top: getVerticalSize(
-                                //       2.00,
-                                //     ),
-                                //     bottom: getVerticalSize(
-                                //       3.00,
-                                //     ),
-                                //   ),
-                                //   child: Container(
-                                //     alignment: Alignment.center,
-                                //     height: getVerticalSize(
-                                //       16.00,
-                                //     ),
-                                //     width: getHorizontalSize(
-                                //       23.00,
-                                //     ),
-                                //     decoration: BoxDecoration(
-                                //       color: ColorConstant.blueA200,
-                                //       borderRadius: BorderRadius.circular(
-                                //         getHorizontalSize(
-                                //           198.00,
-                                //         ),
-                                //       ),
-                                //     ),
-                                //     child: Text(
-                                //       " : 55",
-                                //       textAlign: TextAlign.center,
-                                //       style: TextStyle(
-                                //         color: ColorConstant.gray50,
-                                //         fontSize: getFontSize(
-                                //           10,
-                                //         ),
-                                //         fontFamily: 'Poppins',
-                                //         fontWeight: FontWeight.w500,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
+                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(
+                              //     top: getVerticalSize(
+                              //       2.00,
+                              //     ),
+                              //     bottom: getVerticalSize(
+                              //       3.00,
+                              //     ),
+                              //   ),
+                              //   child: Container(
+                              //     alignment: Alignment.center,
+                              //     height: getVerticalSize(
+                              //       16.00,
+                              //     ),
+                              //     width: getHorizontalSize(
+                              //       23.00,
+                              //     ),
+                              //     decoration: BoxDecoration(
+                              //       color: ColorConstant.blueA200,
+                              //       borderRadius: BorderRadius.circular(
+                              //         getHorizontalSize(
+                              //           198.00,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     child: Text(
+                              //       " : 55",
+                              //       textAlign: TextAlign.center,
+                              //       style: TextStyle(
+                              //         color: ColorConstant.gray50,
+                              //         fontSize: getFontSize(
+                              //           10,
+                              //         ),
+                              //         fontFamily: 'Poppins',
+                              //         fontWeight: FontWeight.w500,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
                           ),
                         ],
                       ),

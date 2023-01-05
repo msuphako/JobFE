@@ -1,90 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/theme/theme_constants.dart';
 import 'package:hires/job.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/employer/employee_view.dart';
-import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
-import 'package:hires/presentation/messages_screen/message_textfield.dart';
-import 'package:hires/presentation/messages_screen/messages_screen.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:timeago/timeago.dart';
-import 'package:date_time_picker/date_time_picker.dart';
-
-class ThMessages implements LookupMessages {
-  @override
-  String prefixAgo() => '';
-  @override
-  String prefixFromNow() => 'ใน';
-  @override
-  String suffixAgo() => 'ที่แล้ว';
-  @override
-  String suffixFromNow() => 'จากนี้';
-  @override
-  String lessThanOneMinute(int seconds) => 'เมื่อครู่';
-  @override
-  String aboutAMinute(int minutes) => 'หนึ่งนาที';
-  @override
-  String minutes(int minutes) => '$minutes นาที';
-  @override
-  String aboutAnHour(int minutes) => 'หนึ่งชั่วโมง';
-  @override
-  String hours(int hours) => '$hours ชั่วโมง';
-  @override
-  String aDay(int hours) => 'หนึ่งวัน';
-  @override
-  String days(int days) => '$days วัน';
-  @override
-  String aboutAMonth(int days) => 'หนึ่งเดือน';
-  @override
-  String months(int months) => '$months เดือน';
-  @override
-  String aboutAYear(int year) => 'หนึ่งปี';
-  @override
-  String years(int years) => '$years ปี';
-  @override
-  String wordSeparator() => '';
-}
-
-/// Thai short messages
-class ThShortMessages implements LookupMessages {
-  @override
-  String prefixAgo() => '';
-  @override
-  String prefixFromNow() => '';
-  @override
-  String suffixAgo() => '';
-  @override
-  String suffixFromNow() => '';
-  @override
-  String lessThanOneMinute(int seconds) => 'เมื่อครู่';
-  @override
-  String aboutAMinute(int minutes) => '1 นาที';
-  @override
-  String minutes(int minutes) => '$minutes นาที';
-  @override
-  String aboutAnHour(int minutes) => '~1 ชม';
-  @override
-  String hours(int hours) => '$hours ชม';
-  @override
-  String aDay(int hours) => '~1 ว';
-  @override
-  String days(int days) => '$days ว';
-  @override
-  String aboutAMonth(int days) => '~1 ด';
-  @override
-  String months(int months) => '$months ด';
-  @override
-  String aboutAYear(int year) => '~1 ป';
-  @override
-  String years(int years) => '$years ป';
-  @override
-  String wordSeparator() => ' ';
-}
 
 class InterviewCard extends StatefulWidget {
   Map<String, dynamic> appliedata;
@@ -608,6 +529,8 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
                                                                       friendId:
                                                                           widget
                                                                               .appliedata["uid"],
+                                                                      name: _data[
+                                                                          'fullname'],
                                                                     )));
                                                   },
                                                   child: Icon(Icons.chat),
@@ -643,9 +566,28 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
                                                             "JobId"])
                                                         .collection("applied")
                                                         .doc(widget.DocId)
-                                                        .set({
-                                                      "status": "เสร็จสิ้น"
-                                                    }, SetOptions(merge: true));
+                                                        .set(
+                                                            {
+                                                          "status": "เสร็จสิ้น"
+                                                        },
+                                                            SetOptions(
+                                                                merge:
+                                                                    true)).then(
+                                                      (value) {
+                                                        db
+                                                            .collection('users')
+                                                            .doc(user.uid)
+                                                            .collection(
+                                                                'jobPost')
+                                                            .doc(widget
+                                                                    .appliedata[
+                                                                "JobId"])
+                                                            .update({
+                                                          "total": FieldValue
+                                                              .increment(1)
+                                                        });
+                                                      },
+                                                    );
                                                   },
                                                   child: Text(
                                                     "เสร็จสิ้น",

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hires/presentation/application_tracking_screen/application_tracking_screen.dart';
 import 'package:hires/presentation/apply_screen/apply_screen.dart';
@@ -11,6 +12,7 @@ import 'package:hires/presentation/employer/interview.dart';
 import 'package:hires/presentation/employer/jobapplication.dart';
 import 'package:hires/presentation/employer/search_person.dart';
 import 'package:hires/presentation/employer/gg.dart';
+import 'package:hires/presentation/employer/showoldjobpost.dart';
 
 import 'package:hires/presentation/home_screen/home_screen.dart';
 
@@ -52,8 +54,13 @@ import 'presentation/search_result_2_screen/search_result_2_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
+import 'package:cron/cron.dart';
 
 void main() async {
+  final cron = Cron();
+  cron.schedule(Schedule.parse('0 * * * *'), () async {
+    updateStatus();
+  });
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
@@ -115,6 +122,7 @@ class _MyAppState extends State<MyApp> {
           Profile.id: (context) => Profile(),
           ChatScreen.id: (context) => ChatScreen(
                 friendId: '',
+                name: '',
               ),
           RegisterScreen.id: (context) => RegisterScreen(),
           Register1Screen.id: (context) => RegisterScreen(),
@@ -124,6 +132,7 @@ class _MyAppState extends State<MyApp> {
           EmpCategories.id: (context) => EmpCategories(),
           SettingsScreen.id: (context) => SettingsScreen(),
           ShowJobPost.id: (context) => ShowJobPost(),
+          ShowOldJobPost.id: (context) => ShowOldJobPost(),
 
           // HomeScreen.id:(context)=>HomeScreen(),
           CategoriesScreen.id: (context) => CategoriesScreen(),
@@ -274,4 +283,17 @@ class MainPage extends StatelessWidget {
           },
         ),
       );
+}
+
+void updateStatus() async {
+  // Retrieve the documents with a due date that has passed the current date and time
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collectionGroup('jobPost')
+      .where('due_date', isLessThan: DateTime.now())
+      .get();
+
+  // Update the status field of each document
+  for (DocumentSnapshot doc in snapshot.docs) {
+    doc.reference.update({'status': 'สิ้นสุดประกาศ'});
+  }
 }

@@ -3,21 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/theme/theme_constants.dart';
 import 'package:hires/job.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
-import 'package:hires/presentation/employer/widget/empjobdetail.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
-import 'package:hires/thdate.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
-class Job_Card extends StatefulWidget {
+class Old_Job_Card extends StatefulWidget {
   Map<String, dynamic> jobpost;
-  Job_Card(this.jobpost);
+  Old_Job_Card(this.jobpost);
   @override
-  State<Job_Card> createState() => Job_CardState();
+  State<Old_Job_Card> createState() => Old_Job_CardState();
 }
 
-class Job_CardState extends State<Job_Card> {
+class Old_Job_CardState extends State<Old_Job_Card> {
   final user = FirebaseAuth.instance.currentUser!;
   var job = Job();
   fetchjobsdata() {
@@ -57,8 +53,8 @@ class Job_CardState extends State<Job_Card> {
             String start_end =
                 "วันที่ ${start.day}/${start.month}/${start.year + 543} ถึง ${end.day}/${end.month}/${end.year + 543}";
             DateTime dtime = data!["created_at"].toDate();
-            timeago.setLocaleMessages('th', ThMessages());
-            String showtime = timeago.format(dtime, locale: 'th');
+            String showtime =
+                "วันที่ ${dtime.day}/${dtime.month}/${dtime.year + 543}";
             // print(data!["JobId"]);
             return GestureDetector(
               onTap: () {
@@ -244,8 +240,9 @@ class Job_CardState extends State<Job_Card> {
                                                             TextAlign.right,
                                                         style: TextStyle(
                                                           color: data["status"] ==
-                                                                  "กำลังเปิดรับสมัคร"
-                                                              ? Colors.green
+                                                                  "สิ้นสุดประกาศ"
+                                                              ? Colors
+                                                                  .yellow[900]
                                                               : ColorConstant
                                                                   .red700,
                                                           fontSize: getFontSize(
@@ -412,67 +409,6 @@ class Job_CardState extends State<Job_Card> {
                                                 fontWeight: FontWeight.w300,
                                               ),
                                             ),
-                                          ),
-                                          Text(
-                                            data['status'] ==
-                                                    "กำลังเปิดรับสมัคร"
-                                                ? 'เปิด'
-                                                : 'ปิด',
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: getFontSize(
-                                                16,
-                                              ),
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w300,
-                                            ),
-                                          ),
-                                          Switch(
-                                            value: data['status'] ==
-                                                    "กำลังเปิดรับสมัคร"
-                                                ? true
-                                                : false,
-                                            onChanged: (value) async {
-                                              String txt;
-                                              value
-                                                  ? txt = "กำลังเปิดรับสมัคร"
-                                                  : txt = "ปิดรับสมัครชั่วคราว";
-                                              await db
-                                                  .collection('users')
-                                                  .doc(user.uid)
-                                                  .collection("jobPost")
-                                                  .doc(data['JobId'])
-                                                  .set({'status': txt},
-                                                      SetOptions(merge: true));
-                                            },
-                                            inactiveThumbColor: Colors.red,
-                                            inactiveTrackColor:
-                                                Colors.grey.shade400,
-                                            activeTrackColor:
-                                                Colors.lightGreenAccent,
-                                            activeColor: Colors.green,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 1.0, right: 10),
-                                            child: TextButton(
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor: Colors.white,
-                                                  backgroundColor:
-                                                      ColorConstant.red700,
-                                                ),
-                                                onPressed: () async {
-                                                  await db
-                                                      .collection('users')
-                                                      .doc(user.uid)
-                                                      .collection("jobPost")
-                                                      .doc(data['JobId'])
-                                                      .set({
-                                                    'status': 'ประกาศถูกลบ'
-                                                  }, SetOptions(merge: true));
-                                                },
-                                                child: Icon(Icons.delete)),
                                           ),
                                         ],
                                       ),

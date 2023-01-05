@@ -82,16 +82,16 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  "Messages",
+                                  "Chats",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    fontSize: getFontSize(
-                                      16,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                      fontSize: getFontSize(
+                                        18,
+                                      ),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorConstant.teal600),
                                 ),
                               ),
                               // Row(

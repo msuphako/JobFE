@@ -81,7 +81,7 @@ class _EmpCategoriesState extends State<EmpCategories> {
                                   18,
                                 ),
                                 fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),

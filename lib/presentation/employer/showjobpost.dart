@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hires/job.dart';
+import 'package:hires/presentation/employer/interview.dart';
 import 'package:hires/presentation/employer/widget/job_card.dart';
 import 'package:hires/presentation/home_screen/home_screen.dart';
 import '../saved_screen/widgets/saved_item_widget.dart';
@@ -16,7 +17,12 @@ class ShowJobPost extends StatefulWidget {
 
 class _ShowJobPostState extends State<ShowJobPost>
     with SingleTickerProviderStateMixin {
-  final Stream<QuerySnapshot> test = db.collectionGroup('jobPost').snapshots();
+  final Stream<QuerySnapshot> test = db
+      .collection('users')
+      .doc(user.uid)
+      .collection('jobPost')
+      .where("status",
+          whereIn: ["กำลังเปิดรับสมัคร", "ปิดรับสมัครชั่วคราว"]).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +30,12 @@ class _ShowJobPostState extends State<ShowJobPost>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Saved",
+          "งานที่ประกาศ",
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: getFontSize(
-              16,
+              20,
             ),
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
@@ -84,48 +90,6 @@ class _ShowJobPostState extends State<ShowJobPost>
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: getHorizontalSize(
-                              24.00,
-                            ),
-                            top: getVerticalSize(
-                              34.00,
-                            ),
-                          ),
-                          child: Text(
-                            "No save Jobs",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: getFontSize(
-                                24,
-                              ),
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      // Container(
-                      //   padding: EdgeInsets.only(top: getVerticalSize(20)),
-                      //   height: MediaQuery.of(context).size.height * .740,
-                      //   child: Align(
-                      //     alignment: Alignment.center,
-                      //     child: ListView.builder(
-                      //       physics: BouncingScrollPhysics(),
-                      //       shrinkWrap: true,
-                      //       itemCount: _datajobs.length,
-                      //       itemBuilder: (context, index) {
-                      //         return SaveJobCard(_datajobs[index] as Job,
-                      //             SavedDocId[index], this.callback);
-                      //         // return SavedItemWidget();
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
                       StreamBuilder<QuerySnapshot>(
                         stream: test,
                         builder: (BuildContext context,
@@ -136,7 +100,7 @@ class _ShowJobPostState extends State<ShowJobPost>
 
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return Center(child: CircularProgressIndicator());
                           }
                           var jobdata = snapshot.data!.docs;
                           int total = snapshot.data!.docs.length;
@@ -146,7 +110,7 @@ class _ShowJobPostState extends State<ShowJobPost>
                             padding: EdgeInsets.only(top: getVerticalSize(20)),
                             height: MediaQuery.of(context).size.height * .740,
                             child: Align(
-                              alignment: Alignment.center,
+                              alignment: Alignment.topLeft,
                               child: ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 shrinkWrap: true,

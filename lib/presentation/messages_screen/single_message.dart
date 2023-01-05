@@ -17,17 +17,16 @@ class SingleMessage extends StatelessWidget {
             Container(
                 padding: EdgeInsets.all(16),
                 margin: EdgeInsets.all(16),
-                constraints: BoxConstraints(maxWidth: 200),
+                constraints: BoxConstraints(maxWidth: 250),
                 decoration: BoxDecoration(
                     color: isMe
                         ? ColorConstant.teal600
-                        : Color.fromARGB(255, 230, 230, 230),
+                        : Color.fromARGB(255, 240, 240, 240),
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 child: Text(
                   message,
                   style: TextStyle(
-                    color: isMe ? Colors.white : Colors.black,
-                  ),
+                      color: isMe ? Colors.white : Colors.black, fontSize: 18),
                 )),
             // Container(
             //     margin: EdgeInsets.all(1),

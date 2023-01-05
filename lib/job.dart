@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cron/cron.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -93,7 +94,7 @@ class Job {
         "eid": eid,
         "uid": uid,
         "status": "รอการตอบกลับ",
-        "interview_date": "",
+        "interview_date": "ยังไม่ได้กำหนดวัน",
         "date": DateTime.now(),
       });
       return false;
@@ -131,20 +132,38 @@ class Job {
         .delete();
   }
 
+  autorun() {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
+      print('Runs every Five seconds');
+    });
+  }
+
   Future<void> CreateJob({
     required String id,
     required String title,
+    required String detail,
     required String jobtype,
     required String province,
+    required String salary,
+    required DateTime startdate,
+    required DateTime enddate,
     required List<String> description,
     required Map Requirements,
   }) async {
     await db.collection('users').doc(id).collection('jobPost').add({
+      "eid": id,
       "Title": title,
+      "Detail": detail,
       "Description": description,
       "Jobtype": jobtype,
       "Location": province,
       "Requirements": Requirements,
+      "total": 0,
+      "salary": salary,
+      "start_date": startdate,
+      "due_date": enddate,
+      "status": "กำลังเปิดรับสมัคร",
       "created_at": DateTime.now(),
     }).then((value) {
       FirebaseFirestore.instance
