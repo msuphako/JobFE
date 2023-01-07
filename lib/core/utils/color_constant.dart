@@ -8,15 +8,17 @@ class ColorConstant {
 
   static Color red700 = fromHex('#db302e');
 
+  static Color yellow700 = fromHex('#EFBB1A');
+
   static Color deepPurple500 = fromHex('#5e4ab5');
-  
+
   static Color darkbutton = fromHex('#1D2030');
-  
+
   static Color darkContainer = fromHex('#121421');
-  
-  static Color darkBg  = fromHex('#121421');
-  
-  static Color yellow  = fromHex('#FFBC42');
+
+  static Color darkBg = fromHex('#121421');
+
+  static Color yellow = fromHex('#FFBC42');
 
   static Color red300 = fromHex('#ff6e73');
 

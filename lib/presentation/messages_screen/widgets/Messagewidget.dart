@@ -145,7 +145,7 @@ class _MessagewidgetState extends State<Messagewidget> {
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: getFontSize(
-                                      15,
+                                      18,
                                     ),
                                     fontFamily: 'Poppins',
                                     fontWeight: isread
@@ -168,7 +168,7 @@ class _MessagewidgetState extends State<Messagewidget> {
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
                                       fontSize: getFontSize(
-                                        11,
+                                        15,
                                       ),
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w500,
@@ -193,7 +193,7 @@ class _MessagewidgetState extends State<Messagewidget> {
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: getFontSize(
-                                      14,
+                                      16,
                                     ),
                                     fontFamily: 'Poppins',
                                     fontWeight: isread

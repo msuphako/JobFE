@@ -32,6 +32,7 @@ import 'package:hires/presentation/resume_portfolio_upload_screen/resume_portfol
 import 'package:hires/presentation/resume_portfolio_uploading_screen/resume_portfolio_uploading_screen.dart';
 import 'package:hires/presentation/saved_screen/SavedScreen.dart';
 import 'package:hires/presentation/saved_screen/applyscreen.dart';
+import 'package:hires/presentation/saved_screen/interview.dart';
 import 'package:hires/presentation/search_option_3_screen/search_option_3_screen.dart';
 import 'package:hires/presentation/set_b1_screen/set_b1_screen.dart';
 import 'package:hires/presentation/set_b2_screen/set_b2_screen.dart';
@@ -161,6 +162,7 @@ class _MyAppState extends State<MyApp> {
           //       LogIn2Screen.id:(context)=>LogIn2Screen(),
           MessagesScreen.id: (context) => MessagesScreen(),
           InterviewScreen.id: (context) => InterviewScreen(),
+          InterviewEmployeeScreen.id: (context) => InterviewEmployeeScreen(),
           //       NotificationsScreen.id:(context)=>NotificationsScreen(),
           //       ProfileDropDraweritem.id:(context)=>ProfileDropDraweritem(),
           ProfileStyle1Screen.id: (context) => ProfileStyle1Screen(),

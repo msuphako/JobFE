@@ -146,15 +146,16 @@ class _ProfileState extends State<Profile> {
   var _durationController = TextEditingController();
   var _positionController = TextEditingController();
   var _jobdetailController = TextEditingController();
-  List<String> jobwantedlist = [];
   List<String> drivingname = [];
   bool Isshow = false;
+  bool ison = false;
   RangeValues _currentRangeValues = const RangeValues(60, 80);
   int jobTypeIndex = 0;
   int GenderIndex = 0;
   int payTypeIndex = 0;
   String province = "";
   String province_work = "";
+  String totalscore = "";
   bool isEmpty = true;
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -195,7 +196,17 @@ class _ProfileState extends State<Profile> {
         });
   }
 
-  void CreateResume() {
+  void CreateResume(int score) {
+    // print(jobwanteduserlist);
+    int SS = score;
+    setState(() {
+      int s = int.parse(totalscore);
+      if (s < 100) {
+        totalscore = (s + score).toString();
+      } else {
+        SS = 0;
+      }
+    });
     drivingname.clear();
 
     drivinglist.forEach(
@@ -221,15 +232,16 @@ class _ProfileState extends State<Profile> {
       _durationController.text,
       _positionController.text,
       _jobdetailController.text,
-      jobwantedlist,
+      jobwanteduserlist,
       jobTypesList[jobTypeIndex],
       province_work,
+      SS,
     );
     // print(_companynameController.text);
     // print(_durationController.text);
     // print(_positionController.text);
     // print(_jobdetailController.text);
-    // print(jobwantedlist);
+    // print(jobwanteduserlist);
     // print(jobTypesList[jobTypeIndex]);
 
     ShowSaveAlert();
@@ -245,6 +257,8 @@ class _ProfileState extends State<Profile> {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
           setState(() {
+            ison = doc["status"];
+            totalscore = doc["score"].toString();
             _fullnameController.text = doc["fullname"];
             _addressController.text = doc["address"];
             _ageController.text = doc["age"];
@@ -304,6 +318,16 @@ class _ProfileState extends State<Profile> {
         child: Container(
           width: size.width,
           child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Color.fromARGB(255, 248, 253, 249),
+                  Color.fromARGB(255, 240, 245, 249),
+                ],
+              ),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -389,6 +413,19 @@ class _ProfileState extends State<Profile> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            Text(
+                              totalscore + "%",
+                              style: TextStyle(
+                                color: totalscore == '100'
+                                    ? ColorConstant.teal600
+                                    : ColorConstant.black900,
+                                fontSize: getFontSize(
+                                  18,
+                                ),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             Container(
                               height: getSize(
                                 104.00,
@@ -453,6 +490,93 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: 'สถานะเรซูเม่ : ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black)),
+                                  TextSpan(
+                                    text: totalscore == '100'
+                                        ? 'สมบูรณ์!'
+                                        : ' ยังไม่สมบูรณ์!',
+                                    style: TextStyle(
+                                      color: totalscore == '100'
+                                          ? ColorConstant.teal600
+                                          : ColorConstant.red700,
+                                      fontSize: getFontSize(
+                                        18,
+                                      ),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, //Center Column contents vertically,
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center, //Center Column contents horizontally,
+                              children: [
+                                Text(
+                                  "เปิดการมองเห็น",
+                                  style: TextStyle(
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Switch(
+                                  value: ison,
+                                  onChanged: (value) async {
+                                    if (totalscore != '100') {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: ColorConstant.red700,
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.warning_amber,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                "weak",
+                                                style: TextStyle(fontSize: 16),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      resume.SetOnOFf(user.uid, value);
+                                      setState(() {
+                                        ison = value;
+                                      });
+                                    }
+                                    // print(value);
+                                  },
+                                  inactiveThumbColor: Colors.red,
+                                  inactiveTrackColor: Colors.grey.shade400,
+                                  activeTrackColor: Colors.lightGreenAccent,
+                                  activeColor: Colors.green,
+                                ),
+                              ],
                             ),
                             Card(
                               child: Padding(
@@ -1159,7 +1283,7 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume();
+                                          CreateResume(30);
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1342,7 +1466,7 @@ class _ProfileState extends State<Profile> {
                                         ),
                                         onPressed: () {
                                           // resume.test(context);
-                                          CreateResume();
+                                          CreateResume(30);
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1564,7 +1688,7 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume();
+                                          CreateResume(20);
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1611,7 +1735,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                         onChanged: (value) {
-                                          jobwantedlist = value;
+                                          jobwanteduserlist = value;
                                         },
                                         selectedItems: jobwanteduserlist,
                                         // selectedItem: "Brazil",
@@ -1916,7 +2040,7 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume();
+                                          CreateResume(20);
                                         },
                                         child: Text(
                                           "บันทึก",

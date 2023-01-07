@@ -7,37 +7,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 
-class SaveCard extends StatefulWidget {
-  Map<String, dynamic> savejob;
-  String DocId;
-  SaveCard(this.savejob, this.DocId);
+class InterviewEmpoyeeCard extends StatefulWidget {
+  Map<String, dynamic> appliedata;
+  InterviewEmpoyeeCard(this.appliedata);
   @override
-  State<SaveCard> createState() => _SaveCardState();
+  State<InterviewEmpoyeeCard> createState() => InterviewEmpoyeeCardState();
 }
 
-class _SaveCardState extends State<SaveCard> {
+class InterviewEmpoyeeCardState extends State<InterviewEmpoyeeCard> {
   final user = FirebaseAuth.instance.currentUser!;
   var job = Job();
-  fetchjobsdata() {
-    Future<DocumentSnapshot> userData =
-        FirebaseFirestore.instance.collection("users").doc(user.uid).get();
-    return userData;
-  }
-
-  test() {
-    return test;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     Query jobpost = FirebaseFirestore.instance
         .collectionGroup('jobPost')
-        .where("JobId", isEqualTo: widget.savejob["JobId"]);
+        .where("JobId", isEqualTo: widget.appliedata["JobId"]);
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return FutureBuilder<QuerySnapshot>(
         future: jobpost.get(),
@@ -50,19 +35,18 @@ class _SaveCardState extends State<SaveCard> {
           }
           if (snapshot.hasData) {
             var data = snapshot.data?.docs[0];
-            DateTime start = data!["start_date"].toDate();
-            DateTime end = data!["due_date"].toDate();
-            String start_end =
-                "${start.day}/${start.month}/${start.year + 543} ถึง ${end.day}/${end.month}/${end.year + 543}";
+
             DateTime dtime = data!["created_at"].toDate();
             String showtime =
-                " ${dtime.day}/${dtime.month}/${dtime.year + 543}";
+                'วันที่สัมภาษณ์ ' + widget.appliedata["interview_date"];
+            // String showtime =
+            //     " ${dtime.day}/${dtime.month}/${dtime.year + 543}";
             // print(data!["JobId"]);
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        JobDetails1Screen(widget.savejob["JobId"])));
+                        JobDetails1Screen(widget.appliedata["JobId"])));
               },
               child: Padding(
                 padding: EdgeInsets.only(
@@ -214,7 +198,8 @@ class _SaveCardState extends State<SaveCard> {
                                                 padding: const EdgeInsets.only(
                                                     top: 8.0, bottom: 8),
                                                 child: Text(
-                                                  data["status"],
+                                                  widget.appliedata[
+                                                      "interview_date"],
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   textAlign: TextAlign.right,
@@ -345,6 +330,46 @@ class _SaveCardState extends State<SaveCard> {
                                                   ),
                                                 ],
                                               ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                      padding: EdgeInsets.only(
+                                                        right:
+                                                            getHorizontalSize(
+                                                          15.00,
+                                                        ),
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.interpreter_mode,
+                                                        color: ColorConstant
+                                                            .teal600,
+                                                      )),
+                                                  Text(
+                                                    showtime,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.right,
+                                                    style: TextStyle(
+                                                      color: isDark
+                                                          ? Colors.white
+                                                          : ColorConstant
+                                                              .gray800,
+                                                      fontSize: getFontSize(
+                                                        17,
+                                                      ),
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -358,7 +383,7 @@ class _SaveCardState extends State<SaveCard> {
                                           SizedBox(
                                             width: 180,
                                             child: Text(
-                                              showtime,
+                                              "",
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
@@ -378,20 +403,28 @@ class _SaveCardState extends State<SaveCard> {
                                             width: getHorizontalSize(
                                               125.00,
                                             ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue.shade50,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                getHorizontalSize(
-                                                  52.00,
-                                                ),
-                                              ),
-                                            ),
+                                            // decoration: BoxDecoration(
+                                            //   color:
+                                            //       widget.appliedata['status'] ==
+                                            //               "เสร็จสิ้น"
+                                            //           ? ColorConstant.green50
+                                            //           : Colors.yellow.shade50,
+                                            //   borderRadius:
+                                            //       BorderRadius.circular(
+                                            //     getHorizontalSize(
+                                            //       52.00,
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             child: Text(
-                                              "รายละเอียด",
+                                              widget.appliedata['status'],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                color: Colors.blue,
+                                                color: widget.appliedata[
+                                                            'status'] ==
+                                                        "เสร็จสิ้น"
+                                                    ? ColorConstant.teal600
+                                                    : ColorConstant.yellow700,
                                                 fontSize: getFontSize(
                                                   18,
                                                 ),

@@ -488,101 +488,118 @@ class _AppCardState extends State<AppCard> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 40, top: 10, bottom: 10),
+                                          left: 10,
+                                          right: 5,
+                                          top: 10,
+                                          bottom: 10),
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SizedBox(
-                                            width: 150,
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 5.0),
                                             child: Text(
                                               showtime,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontSize: getFontSize(
-                                                  14,
+                                                  15,
                                                 ),
                                                 fontFamily: 'Poppins',
                                                 fontWeight: FontWeight.w300,
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                foregroundColor: Colors.white,
-                                                backgroundColor:
-                                                    ColorConstant.yellow,
-                                              ),
-                                              onPressed: () async {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ChatScreen(
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        ColorConstant.yellow,
+                                                  ),
+                                                  onPressed: () async {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => ChatScreen(
                                                                 friendId: widget
                                                                         .appliedata[
                                                                     "uid"],
                                                                 name: _data[
                                                                     'fullname'])));
-                                              },
-                                              child: Icon(Icons.chat),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                foregroundColor: Colors.white,
-                                                backgroundColor:
-                                                    ColorConstant.teal600,
+                                                  },
+                                                  child: Icon(Icons.chat),
+                                                ),
                                               ),
-                                              onPressed: () async {
-                                                await db
-                                                    .collection('users')
-                                                    .doc(user.uid)
-                                                    .collection('jobPost')
-                                                    .doc(widget
-                                                        .appliedata["JobId"])
-                                                    .collection("applied")
-                                                    .doc(widget.DocId)
-                                                    .set({
-                                                  "status": "รอวันนัดสำภาษณ์"
-                                                }, SetOptions(merge: true));
-                                              },
-                                              child: Text(
-                                                "ตกลง",
-                                                style: TextStyle(fontSize: 16),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        ColorConstant.teal600,
+                                                  ),
+                                                  onPressed: () async {
+                                                    await db
+                                                        .collection('users')
+                                                        .doc(user.uid)
+                                                        .collection('jobPost')
+                                                        .doc(widget.appliedata[
+                                                            "JobId"])
+                                                        .collection("applied")
+                                                        .doc(widget.DocId)
+                                                        .set({
+                                                      "status":
+                                                          "รอวันนัดสำภาษณ์"
+                                                    }, SetOptions(merge: true));
+                                                  },
+                                                  child: Text(
+                                                    "ตกลง",
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 1.0, right: 10),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                foregroundColor: Colors.white,
-                                                backgroundColor:
-                                                    ColorConstant.red700,
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 1.0, right: 10),
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        ColorConstant.red700,
+                                                  ),
+                                                  onPressed: () async {
+                                                    await db
+                                                        .collection('users')
+                                                        .doc(user.uid)
+                                                        .collection('jobPost')
+                                                        .doc(widget.appliedata[
+                                                            "JobId"])
+                                                        .collection("applied")
+                                                        .doc(widget.DocId)
+                                                        .set({
+                                                      "status": "ถูกยกเลิก"
+                                                    }, SetOptions(merge: true));
+                                                  },
+                                                  child: Text(
+                                                    "ยกเลิก",
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
                                               ),
-                                              onPressed: () async {
-                                                await db
-                                                    .collection('users')
-                                                    .doc(user.uid)
-                                                    .collection('jobPost')
-                                                    .doc(widget
-                                                        .appliedata["JobId"])
-                                                    .collection("applied")
-                                                    .doc(widget.DocId)
-                                                    .set({
-                                                  "status": "ถูกยกเลิก"
-                                                }, SetOptions(merge: true));
-                                              },
-                                              child: Text(
-                                                "ยกเลิก",
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                            ),
+                                            ],
                                           ),
                                         ],
                                       ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hires/auth.dart';
 import 'package:hires/job.dart';
@@ -5,6 +7,7 @@ import 'package:hires/presentation/messages_screen/single_message.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'message_textfield.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = "ChatScreen";
@@ -71,13 +74,20 @@ class _ChatScreenState extends State<ChatScreen> {
                         reverse: true,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
+                          String time = '';
                           bool isMe =
                               snapshot.data.docs[index]['senderId'] == user.uid;
+                          if (index % 4 == 0) {
+                            Timestamp date = snapshot.data.docs[index]['date'];
+                            DateTime dtime = date.toDate();
+                            time = DateFormat.jm().format(dtime);
+                          }
+
                           return SingleMessage(
-                            message: snapshot.data.docs[index]['message'],
-                            isMe: isMe,
-                            time: '6:00',
-                          );
+                              message: snapshot.data.docs[index]['message'],
+                              isMe: isMe,
+                              type: snapshot.data.docs[index]['type'],
+                              time: time);
                         });
                   }
                   return Center(child: CircularProgressIndicator());

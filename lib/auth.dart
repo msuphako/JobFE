@@ -178,11 +178,6 @@ class Auth {
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-  // Future<User?> getUserNameFromUID(String uid) async {
-  //   final docuser = FirebaseFirestore.instance.collection('users').doc(uid);
-  //   final snapshot = await docuser.get();
-  //   return User.fromJson(snapshot.data());
-  // }
 
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();

@@ -927,7 +927,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
     final regex = RegExp(pattern);
     if (value!.isEmpty) return 'Enter a email ';
-    return value!.isNotEmpty && !regex.hasMatch(value)
+    return value.isNotEmpty && !regex.hasMatch(value)
         ? 'Enter a valid email address'
         : null;
   }

@@ -20,6 +20,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../search_result_2_screen/widgets/JobCard.dart';
+
 class Homepage3Screen extends StatefulWidget {
   static String id = "Homepage3Screen";
 
@@ -29,8 +31,8 @@ class Homepage3Screen extends StatefulWidget {
 
 class _Homepage3ScreenState extends State<Homepage3Screen> {
   var auth = new Auth();
+  Stream<QuerySnapshot> jobdata = db.collectionGroup('jobPost').snapshots();
 
-  int silderIndex = 1;
   bool status = false;
   var datajobs = [];
   var url;
@@ -68,6 +70,8 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    int silderIndex = 1;
+
     final user = FirebaseAuth.instance.currentUser!;
 
     Future<DocumentSnapshot> userData =
@@ -185,21 +189,21 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                             ),
                           ),
                         ),
-                        // Align(
-                        //   alignment: Alignment.bottomCenter,
-                        //   child: Padding(
-                        //     padding: EdgeInsets.only(
-                        //         top: getVerticalSize(
-                        //           12.00,
-                        //         ),
-                        //         right: getHorizontalSize(
-                        //           2.00,
-                        //         ),
-                        //         bottom: getVerticalSize(5)),
-                        //     child: Image.network(
-                        //         "https:firebasestorage.googleapis.com/v0/b/jobfe-a636f.appspot.com/o/istockphoto-612716462-612x612.jpg?alt=media&token=09dbb46b-5f8f-47e2-8c29-c43"),
-                        //   ),
-                        // ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: getVerticalSize(
+                                  12.00,
+                                ),
+                                right: getHorizontalSize(
+                                  2.00,
+                                ),
+                                bottom: getVerticalSize(5)),
+                            child: Image.network(
+                                "https:firebasestorage.googleapis.com/v0/b/jobfe-a636f.appspot.com/o/istockphoto-612716462-612x612.jpg?alt=media&token=09dbb46b-5f8f-47e2-8c29-c43"),
+                          ),
+                        ),
                         Align(
                           alignment: Alignment.topRight,
                           child: Container(
@@ -279,7 +283,7 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                     context, SearchOption3Screen.id);
                               },
                               decoration: InputDecoration(
-                                hintText: 'Search a job or position',
+                                hintText: 'ค้นหางาน ',
                                 prefixIcon: Padding(
                                   padding: EdgeInsets.only(
                                     left: context.locale == Constants.engLocal
@@ -450,12 +454,12 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                         : getHorizontalSize(0),
                                   ),
                                   child: Text(
-                                    "Featured Jobs",
+                                    "งานที่แนะนำ",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontSize: getFontSize(
-                                        16,
+                                        18,
                                       ),
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -476,12 +480,9 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                         : getHorizontalSize(0),
                                   ),
                                   child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, FeaturedJobes.id);
-                                    },
+                                    onTap: () {},
                                     child: Text(
-                                      "See all",
+                                      "",
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
@@ -520,53 +521,12 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                 viewportFraction: 1.0,
                                 enableInfiniteScroll: false,
                                 scrollDirection: Axis.horizontal,
-                                onPageChanged: (index, reason) {
-                                  setState(() {
-                                    silderIndex = index;
-                                  });
-                                },
+                                onPageChanged: (index, reason) {},
                               ),
                               itemCount: datajobs.length,
                               itemBuilder: (context, index, realIndex) {
                                 return FeaturedJobsWidget(datajobs[index]);
                               },
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              height: getVerticalSize(
-                                8.00,
-                              ),
-                              margin: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  24.00,
-                                ),
-                                top: getVerticalSize(
-                                  0.00,
-                                ),
-                                right: getHorizontalSize(
-                                  20.00,
-                                ),
-                              ),
-                              child: AnimatedSmoothIndicator(
-                                activeIndex: silderIndex,
-                                count: 4,
-                                axisDirection: Axis.horizontal,
-                                effect: ScrollingDotsEffect(
-                                  spacing: 8,
-                                  activeDotScale: 2,
-                                  radius: 2,
-                                  activeDotColor: ColorConstant.teal600,
-                                  dotColor: ColorConstant.gray300,
-                                  dotHeight: getVerticalSize(
-                                    4.00,
-                                  ),
-                                  dotWidth: getHorizontalSize(
-                                    8.00,
-                                  ),
-                                ),
-                              ),
                             ),
                           ),
                           Padding(
@@ -594,12 +554,12 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                         : getHorizontalSize(0),
                                   ),
                                   child: Text(
-                                    "Popular Jobs",
+                                    "งานล่าสุด",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontSize: getFontSize(
-                                        16,
+                                        18,
                                       ),
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -625,13 +585,13 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                           context, PopularJobes.id);
                                     },
                                     child: Text(
-                                      "See all",
+                                      "ดูทั้งหมด",
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                         color: ColorConstant.gray500,
                                         fontSize: getFontSize(
-                                          13,
+                                          16,
                                         ),
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w400,
@@ -642,30 +602,51 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                               ],
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  24.00,
-                                ),
-                                top: getVerticalSize(
-                                  20.00,
-                                ),
-                                right: getHorizontalSize(
-                                  24.00,
-                                ),
-                              ),
-                              child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 3,
-                                itemBuilder: (context, index) {
-                                  return Group568ItemWidget();
-                                },
-                              ),
-                            ),
-                          ),
+                          FutureBuilder<Object>(
+                              future: db
+                                  .collectionGroup('jobPost')
+                                  .limit(4)
+                                  .orderBy("created_at", descending: true)
+                                  .get(),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Something went wrong');
+                                }
+
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+
+                                var jobdata = snapshot.data!.docs;
+                                int total = snapshot.data!.docs.length;
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        24.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        20.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        24.00,
+                                      ),
+                                    ),
+                                    child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: total,
+                                      itemBuilder: (context, index) {
+                                        final job = jobdata[index].data()!
+                                            as Map<String, dynamic>;
+                                        return JobCardSearch(job);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       ),
                     ),

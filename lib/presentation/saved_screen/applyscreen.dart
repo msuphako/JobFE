@@ -22,7 +22,11 @@ class _AppliedScreenState extends State<AppliedScreen>
   final Stream<QuerySnapshot> savedata = db
       .collectionGroup('applied')
       .where("uid", isEqualTo: user.uid)
-      .snapshots();
+      .where('status', whereIn: [
+    "ถูกยกเลิก",
+    "รอวันนัดสำภาษณ์",
+    "รอการตอบกลับ"
+  ]).snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class _AppliedScreenState extends State<AppliedScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "ApplyScreen",
+          "งานที่สมัคร",
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -126,7 +130,7 @@ class _AppliedScreenState extends State<AppliedScreen>
                             return Container(
                               padding:
                                   EdgeInsets.only(top: getVerticalSize(20)),
-                              height: MediaQuery.of(context).size.height * .740,
+                              height: MediaQuery.of(context).size.height * .850,
                               child: Align(
                                 alignment: Alignment.topCenter,
                                 child: ListView.builder(

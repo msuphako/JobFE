@@ -48,21 +48,23 @@ class Resume {
     return resumedata["gender"];
   }
 
-  Future<void> test(context) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Row(
-          children: const [
-            Icon(Icons.shopping_bag),
-            SizedBox(
-              width: 10,
-            ),
-            Text('Product added to my cart !')
-          ],
-        ),
-      ),
-    );
+  SetOnOFf(String uid, bool onoff) async {
+    final QuerySnapshot<Map<String, Object?>> result = await db
+        .collection("users")
+        .doc(uid)
+        .collection("resume")
+        .where('uid', isEqualTo: uid)
+        .get();
+    List<Object?> data = result.docs.map((e) {
+      return e.data();
+    }).toList();
+    Map<dynamic, dynamic> resumedata = data[0] as Map;
+    db
+        .collection("users")
+        .doc(uid)
+        .collection("resume")
+        .doc(resumedata["resume_id"])
+      ..set({"status": onoff}, SetOptions(merge: true));
   }
 
   Future<void> CreateResume(
@@ -86,6 +88,7 @@ class Resume {
     List<String> jobwanted,
     String jobtype,
     String province_work,
+    int score,
   ) async {
     final QuerySnapshot<Map<String, Object?>> result = await db
         .collection("users")
@@ -132,6 +135,7 @@ class Resume {
         "jobwanted": jobwanted,
         "jobtype": jobtype,
         "province_work": province_work,
+        "score": FieldValue.increment(score),
         "last_edit": DateTime.now(),
       }, SetOptions(merge: true));
     } else {
@@ -159,6 +163,8 @@ class Resume {
         "jobwanted": jobwanted,
         "jobtype": jobtype,
         "province_work": province_work,
+        "score": 0,
+        "status": false,
         "create_at": DateTime.now(),
       }).then((value) {
         FirebaseFirestore.instance

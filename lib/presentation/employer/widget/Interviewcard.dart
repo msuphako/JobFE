@@ -75,7 +75,7 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
             .set({
           "interview_date":
               '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}',
-          "statud": "รอการสำภาษณ์"
+          "status": "รอการสำภาษณ์"
         }, SetOptions(merge: true));
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(

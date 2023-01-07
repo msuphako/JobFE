@@ -87,7 +87,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       fontSize: getFontSize(
-                                        18,
+                                        20,
                                       ),
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,

@@ -18,7 +18,10 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
   List<Object> _datajobs = [];
 
   Future fetchjobsdata() async {
-    var data = await db.collectionGroup("jobPost").get();
+    var data = await db
+        .collectionGroup("jobPost")
+        .orderBy('created_at', descending: true)
+        .get();
     setState(() {
       _datajobs = List.from(data.docs.map((doc) => Job.fromSnapshot(doc)));
     });
@@ -34,8 +37,10 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> jobpost =
-        db.collectionGroup('jobPost').snapshots();
+    final Stream<QuerySnapshot> jobpost = db
+        .collectionGroup('jobPost')
+        .orderBy('created_at', descending: true)
+        .snapshots();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
