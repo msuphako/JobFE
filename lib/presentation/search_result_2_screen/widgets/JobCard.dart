@@ -10,7 +10,8 @@ import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart'
 
 class JobCardSearch extends StatefulWidget {
   Map<String, dynamic> data;
-  JobCardSearch(this.data);
+  Map<String, dynamic> userdata;
+  JobCardSearch(this.data, this.userdata);
   @override
   State<JobCardSearch> createState() => JobCardSearchState();
 }
@@ -86,21 +87,50 @@ class JobCardSearchState extends State<JobCardSearch> {
                                           Padding(
                                             padding: EdgeInsets.only(
                                               left: getHorizontalSize(
-                                                24.00,
+                                                12.00,
                                               ),
                                               top: getVerticalSize(
-                                                30.00,
+                                                10.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                12.00,
                                               ),
                                             ),
-                                            child: Image.asset(
-                                              ImageConstant.imgImage29,
-                                              height: getSize(
-                                                43.00,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                getSize(
+                                                  52.00,
+                                                ),
                                               ),
-                                              width: getSize(
-                                                43.00,
+                                              child: Container(
+                                                height: getSize(
+                                                  75.00,
+                                                ),
+                                                width: getSize(
+                                                  75.00,
+                                                ),
+                                                color: ColorConstant.gray300,
+                                                child: widget.userdata[
+                                                            "imgurl"] !=
+                                                        ""
+                                                    ? Image.network(
+                                                        widget
+                                                            .userdata["imgurl"],
+                                                        fit: BoxFit.cover,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: 300,
+                                                      )
+                                                    : Icon(
+                                                        Icons
+                                                            .home_work_outlined,
+                                                        size: 40,
+                                                        color: Colors.teal,
+                                                      ),
                                               ),
-                                              fit: BoxFit.fill,
                                             ),
                                           ),
                                           Padding(

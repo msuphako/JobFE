@@ -242,8 +242,25 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
                       itemBuilder: (context, index) {
                         final job =
                             jobdata[index].data()! as Map<String, dynamic>;
+                        // print(job['eid']);
 
-                        return JobCardSearch(job);
+                        return FutureBuilder<DocumentSnapshot>(
+                            future:
+                                db.collection('users').doc(job['eid']).get(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Something went wrong');
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+
+                              Map<String, dynamic> data =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              return JobCardSearch(job, data);
+                            });
                       },
                     ),
                   )

@@ -6,6 +6,7 @@ import 'package:hires/job.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/employer/widget/empjobdetail.dart';
+import 'package:hires/presentation/job_details1_screen/job_detail_emp.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 import 'package:hires/thdate.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -64,7 +65,7 @@ class Job_CardState extends State<Job_Card> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        JobDetails1Screen(widget.jobpost["JobId"])));
+                        JobDetailsEmpScreen(widget.jobpost["JobId"])));
               },
               child: Padding(
                 padding: EdgeInsets.only(

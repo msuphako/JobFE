@@ -83,291 +83,125 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
     Future<DocumentSnapshot> userData =
         FirebaseFirestore.instance.collection("users").doc(user.uid).get();
     isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      body: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: Padding(
-            padding: EdgeInsets.only(
-              top: getVerticalSize(
-                12.00,
-              ),
-            ),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "ยินดีต้อนรับ",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      color: ColorConstant.teal600,
-                      fontSize: getFontSize(
-                        18,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Padding(
+    return FutureBuilder<DocumentSnapshot>(
+        future: userData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          Map userData = snapshot.data?.data() as Map;
+          String username = userData['username'];
+          String userimage = userData['imgurl'];
+          if (snapshot.hasData) {
+            return Scaffold(
+              body: Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: 100,
+                  title: Padding(
                     padding: EdgeInsets.only(
                       top: getVerticalSize(
-                        2.00,
+                        12.00,
                       ),
                     ),
-                    child: FutureBuilder<DocumentSnapshot>(
-                        future: userData,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            Map userData = snapshot.data?.data() as Map;
-                            String username = userData['username'];
-                            return Text(
-                              username,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: getFontSize(
-                                  18,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w700,
-                              ),
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            Builder(builder: (context) {
-              return GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: getVerticalSize(20),
-                      horizontal: getHorizontalSize(16)),
-                  child: Container(
-                    height: getVerticalSize(
-                      50.00,
-                    ),
-                    width: getHorizontalSize(
-                      52.00,
-                    ),
-                    margin: EdgeInsets.only(
-                      top: getVerticalSize(
-                        1.00,
-                      ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: getHorizontalSize(
-                                2.00,
-                              ),
-                            ),
-                            child: Container(
-                              height: getSize(
-                                50.00,
-                              ),
-                              width: getSize(
-                                50.00,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: isDark
-                                      ? ColorConstant.yellow
-                                      : ColorConstant.teal600,
-                                  borderRadius: BorderRadius.circular(
-                                    getHorizontalSize(8),
-                                  )),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.person,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-        body: SafeArea(
-          child: Container(
-            width: size.width,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: getVerticalSize(
-                  0.00,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: getHorizontalSize(
-                          24.00,
-                        ),
-                        top: getVerticalSize(
-                          10.00,
-                        ),
-                        right: getHorizontalSize(
-                          24.00,
-                        ),
-                      ),
-                      child: Row(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
                         children: [
-                          Container(
-                            height: getVerticalSize(
-                              40.00,
-                            ),
-                            width: getHorizontalSize(
-                              320.00,
-                            ),
-                            child: TextFormField(
-                              readOnly: true,
-                              onTap: () {
-                                // Navigator.pushNamed(context, SearchOption3Screen.id);
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20),
-                                    )),
-                                    builder: (context) {
-                                      return SearchfilterbottomsheetPage();
-                                    });
-                              },
-                              decoration: InputDecoration(
-                                hintText: 'ค้นหาคน หรือ ตำแหน่ง',
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(10),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(10),
-                                  ),
-                                  child: Container(
-                                    height: getSize(
-                                      20.00,
-                                    ),
-                                    width: getSize(
-                                      20.00,
-                                    ),
-                                    child: isDark
-                                        ? SvgPicture.asset(
-                                            ImageConstant.imgSearch11,
-                                            fit: BoxFit.contain,
-                                            color: Colors.white,
-                                          )
-                                        : SvgPicture.asset(
-                                            ImageConstant.imgSearch11,
-                                            fit: BoxFit.contain,
-                                          ),
-                                  ),
-                                ),
-                                prefixIconConstraints: BoxConstraints(
-                                  minWidth: getSize(
-                                    20.00,
-                                  ),
-                                  minHeight: getSize(
-                                    20.00,
-                                  ),
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  top: getVerticalSize(
-                                    17.75,
-                                  ),
-                                ),
+                          Text(
+                            "ยินดีต้อนรับ",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.teal600,
+                              fontSize: getFontSize(
+                                18,
                               ),
-                              style: TextStyle(
-                                color: ColorConstant.gray500,
-                                fontSize: getFontSize(
-                                  15.0,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                top: getVerticalSize(
+                                  2.00,
+                                ),
+                              ),
+                              child: Text(
+                                username,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: getFontSize(
+                                    18,
+                                  ),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )),
                         ],
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          24.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          24.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                ),
-                                child: Text(
-                                  "หมวดหมู่",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      18,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
+                  actions: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: getVerticalSize(
+                            12.00,
                           ),
+                          bottom: getVerticalSize(
+                            12.00,
+                          ),
+                          right: 20),
+                      child: Container(
+                        height: getSize(
+                          60.00,
+                        ),
+                        width: getSize(
+                          60.00,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 5,
+                            color: ColorConstant.red300,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: userimage != ""
+                            ? Image.network(
+                                userimage,
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: 150,
+                              )
+                            : Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Colors.teal,
+                              ),
+                        // child: SvgPicture.asset(
+                        //   ImageConstant.imgGoogle1,
+                        //   fit: BoxFit.fill,
+                        // ),
+                      ),
+                    ),
+                  ],
+                ),
+                body: SafeArea(
+                  child: Container(
+                    width: size.width,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: getVerticalSize(
+                          0.00,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
                           Align(
                             alignment: Alignment.center,
                             child: Padding(
@@ -375,126 +209,290 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                 left: getHorizontalSize(
                                   24.00,
                                 ),
+                                top: getVerticalSize(
+                                  10.00,
+                                ),
                                 right: getHorizontalSize(
                                   24.00,
                                 ),
                               ),
-                              child: GridView.count(
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                crossAxisCount: 2,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  CategorieBox("ประกาศงาน", Icons.post_add,
-                                      ProfileStyle1Screen.id,
-                                      context: context),
-                                  CategorieBox(
-                                      "ดูงานที่ประกาศ",
-                                      Icons.content_paste_search,
-                                      ShowJobPost.id,
-                                      context: context),
-                                  CategorieBox(
-                                      "ดูประกาศที่สิ้นสุด",
-                                      Icons.content_paste_off_rounded,
-                                      ShowOldJobPost.id,
-                                      context: context),
-                                  CategorieBox(
-                                      "ข้อมูลสถานประกอบการ",
-                                      Icons.maps_home_work_sharp,
-                                      ShowOldJobPost.id,
-                                      context: context),
+                                  Container(
+                                    height: getVerticalSize(
+                                      40.00,
+                                    ),
+                                    width: getHorizontalSize(
+                                      320.00,
+                                    ),
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      onTap: () {
+                                        // Navigator.pushNamed(context, SearchOption3Screen.id);
+                                        showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            )),
+                                            builder: (context) {
+                                              return SearchfilterbottomsheetPage();
+                                            });
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'ค้นหาคน หรือ ตำแหน่ง',
+                                        prefixIcon: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(10),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(10),
+                                          ),
+                                          child: Container(
+                                            height: getSize(
+                                              20.00,
+                                            ),
+                                            width: getSize(
+                                              20.00,
+                                            ),
+                                            child: isDark
+                                                ? SvgPicture.asset(
+                                                    ImageConstant.imgSearch11,
+                                                    fit: BoxFit.contain,
+                                                    color: Colors.white,
+                                                  )
+                                                : SvgPicture.asset(
+                                                    ImageConstant.imgSearch11,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                          ),
+                                        ),
+                                        prefixIconConstraints: BoxConstraints(
+                                          minWidth: getSize(
+                                            20.00,
+                                          ),
+                                          minHeight: getSize(
+                                            20.00,
+                                          ),
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.only(
+                                          top: getVerticalSize(
+                                            17.75,
+                                          ),
+                                        ),
+                                      ),
+                                      style: TextStyle(
+                                        color: ColorConstant.gray500,
+                                        fontSize: getFontSize(
+                                          15.0,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: getVerticalSize(
-                                20.00,
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: context.locale ==
+                                                  Constants.engLocal
+                                              ? getHorizontalSize(
+                                                  24.00,
+                                                )
+                                              : getHorizontalSize(0),
+                                          right: context.locale ==
+                                                  Constants.arLocal
+                                              ? getHorizontalSize(
+                                                  24.00,
+                                                )
+                                              : getHorizontalSize(0),
+                                        ),
+                                        child: Text(
+                                          "หมวดหมู่",
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: getFontSize(
+                                              18,
+                                            ),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: getHorizontalSize(
+                                          24.00,
+                                        ),
+                                        right: getHorizontalSize(
+                                          24.00,
+                                        ),
+                                      ),
+                                      child: GridView.count(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        crossAxisCount: 2,
+                                        children: [
+                                          CategorieBox(
+                                              "ประกาศงาน",
+                                              Icons.post_add,
+                                              ProfileStyle1Screen.id,
+                                              context: context),
+                                          CategorieBox(
+                                              "ดูงานที่ประกาศ",
+                                              Icons.content_paste_search,
+                                              ShowJobPost.id,
+                                              context: context),
+                                          CategorieBox(
+                                              "ดูประกาศที่สิ้นสุด",
+                                              Icons.content_paste_off_rounded,
+                                              ShowOldJobPost.id,
+                                              context: context),
+                                          CategorieBox(
+                                              "คู่มือการใช้งาน",
+                                              Icons.menu_book,
+                                              ShowOldJobPost.id,
+                                              context: context),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: getVerticalSize(
+                                        20.00,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            bottom: 10,
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    26.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    26.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                          ),
+                                          child: Text(
+                                            "ประวัติล่าสุด",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: db
+                                          .collectionGroup('resume')
+                                          .limit(4)
+                                          .orderBy('create_at',
+                                              descending: true)
+                                          .snapshots(),
+                                      builder:
+                                          (context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Text('ไม่พบข้อมูล');
+                                        }
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        var resumedata = snapshot.data!.docs;
+                                        int total = snapshot.data!.docs.length;
+                                        return Container(
+                                          padding: EdgeInsets.only(
+                                              top: getVerticalSize(20)),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: ListView.builder(
+                                              physics: BouncingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: total,
+                                              itemBuilder: (context, index) {
+                                                final resume =
+                                                    resumedata[index].data()!
+                                                        as Map<String, dynamic>;
+                                                return PersonCard(resume);
+                                                // return SavedItemWidget();
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ],
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 10,
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            26.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            26.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                  ),
-                                  child: Text(
-                                    "ประวัติล่าสุด",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: getFontSize(
-                                        18,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
-                          StreamBuilder<QuerySnapshot>(
-                              stream: db
-                                  .collectionGroup('resume')
-                                  .limit(4)
-                                  .orderBy('create_at', descending: true)
-                                  .snapshots(),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('ไม่พบข้อมูล');
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                }
-                                var resumedata = snapshot.data!.docs;
-                                int total = snapshot.data!.docs.length;
-                                return Container(
-                                  padding:
-                                      EdgeInsets.only(top: getVerticalSize(20)),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: ListView.builder(
-                                      physics: BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: total,
-                                      itemBuilder: (context, index) {
-                                        final resume = resumedata[index].data()!
-                                            as Map<String, dynamic>;
-                                        return PersonCard(resume);
-                                        // return SavedItemWidget();
-                                      },
-                                    ),
-                                  ),
-                                );
-                              }),
                         ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            );
+          } else {
+            return Text("Error");
+          }
+        });
   }
 
   Card CategorieBox(String title, IconData icon, String page,

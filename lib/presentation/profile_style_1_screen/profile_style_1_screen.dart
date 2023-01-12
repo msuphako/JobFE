@@ -1,9 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
+import 'dart:io';
 
 class ProfileStyle1Screen extends StatefulWidget {
   static String id = "RegisterScreen";
@@ -13,20 +17,180 @@ class ProfileStyle1Screen extends StatefulWidget {
 }
 
 class _ProfileStyle1Screen extends State<ProfileStyle1Screen> {
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = Path.basename(_photo!.path);
+    final destination = 'profiles/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      UploadTask _task = ref.putFile(_photo!);
+      _task.snapshotEvents.listen((TaskSnapshot event) {
+        var progress =
+            (event.bytesTransferred.toDouble() / event.totalBytes.toDouble()) *
+                100;
+        print('progress $progress');
+      });
+      String url = await (await _task).ref.getDownloadURL();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set({'imgurl': url}, SetOptions(merge: true));
+    } catch (e) {
+      print('error occured $e');
+    }
+  }
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      _photo = File(img!.path);
+      uploadFile();
+      image = img;
+    });
+  }
+
   String id = "ProfileStyle1Screen";
-  bool obscure1 = true;
-  bool obscure2 = true;
+  RangeValues sliderRange = RangeValues(20, 80);
+  List<String> genderList = ["ไม่ระบุ", "ชาย", "หญิง"];
+  List<String> jobTypesList = [
+    "งานประจำ",
+    "งานพาทไทม์",
+    "งานชั่วคราว",
+    "ทำงานที่บ้าน",
+  ];
+
+  List<String> payList = [
+    "ไม่ระบุ",
+    "ระบุ",
+    "ตามตกลง",
+  ];
+  var JobList = [
+    'พนักงานทั่วไป',
+    'พนักงานขาย',
+    'แม่บ้าน',
+    'ขับรถ',
+    'พนักงานรักษาความปลอดภัย(รปภ)',
+    'พนักงานประจำร้านสาขา',
+    'พนักงานฝ่ายผลิต',
+  ];
+  var provinceList = [
+    'กระบี่',
+    'กรุงเทพมหานคร',
+    'กาญจนบุรี',
+    'กาฬสินธุ์',
+    'กำแพงเพชร',
+    'ขอนแก่น',
+    'จันทบุรี',
+    'ฉะเชิงเทรา',
+    'ชลบุรี',
+    'ชัยนาท',
+    'ชัยภูมิ',
+    'ชุมพร',
+    'เชียงราย',
+    'เชียงใหม่',
+    'ตรัง',
+    'ตราด',
+    'ตาก',
+    'นครนายก',
+    'นครปฐม',
+    'นครพนม',
+    'นครราชสีมา',
+    'นครศรีธรรมราช',
+    'นครสวรรค์',
+    'นนทบุรี',
+    'นราธิวาส',
+    'น่าน',
+    'บึงกาฬ',
+    'บุรีรัมย์',
+    'ปทุมธานี',
+    'ประจวบคีรีขันธ์',
+    'ปราจีนบุรี',
+    'ปัตตานี',
+    'พระนครศรีอยุธยา',
+    'พะเยา',
+    'พังงา',
+    'พัทลุง',
+    'พิจิตร',
+    'พิษณุโลก',
+    'เพชรบุรี',
+    'เพชรบูรณ์',
+    'แพร่',
+    'ภูเก็ต',
+    'มหาสารคาม',
+    'มุกดาหาร',
+    'แม่ฮ่องสอน',
+    'ยโสธร',
+    'ยะลา',
+    'ร้อยเอ็ด',
+    'ระนอง',
+    'ระยอง',
+    'ราชบุรี',
+    'ลพบุรี',
+    'ลำปาง',
+    'ลำพูน',
+    'เลย',
+    'ศรีสะเกษ',
+    'สกลนคร',
+    'สงขลา',
+    'สตูล',
+    'สมุทรปราการ',
+    'สมุทรสงคราม',
+    'สมุทรสาคร',
+    'สระแก้ว',
+    'สระบุรี',
+    'สิงห์บุรี',
+    'สุโขทัย',
+    'สุพรรณบุรี',
+    'สุราษฎร์ธานี',
+    'สุรินทร์',
+    'หนองคาย',
+    'หนองบัวลำภู',
+    'อ่างทอง',
+    'อำนาจเจริญ',
+    'อุดรธานี',
+    'อุตรดิตถ์',
+    'อุทัยธานี',
+    'อุบลราชธานี'
+  ];
+  final user = FirebaseAuth.instance.currentUser!;
+  final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _detailController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _howtoappliedController = TextEditingController();
+  final _codeController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _websiteController = TextEditingController();
+  int jobTypeIndex = 0;
+  int GenderIndex = 0;
+  int payTypeIndex = 0;
+
+  String province = "";
+  String salary = "ไม่ระบุ";
+  bool checkBoxVal = false;
+  late List<String> dataaa;
+  XFile? image;
+  File? _photo;
+  final ImagePicker picker = ImagePicker();
+  bool Isshow = false;
+  DateTime startdate = DateTime.now().subtract(const Duration(days: 0));
+  DateTime enddate = DateTime.now().add(const Duration(days: 7));
+
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     final user = FirebaseAuth.instance.currentUser!;
-    Future<DocumentSnapshot> userData =
-        FirebaseFirestore.instance.collection("users").doc(user.uid).get();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Profile",
+          "",
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -68,707 +232,670 @@ class _ProfileStyle1Screen extends State<ProfileStyle1Screen> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Container(
-          width: size.width,
-          child: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Align(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: getVerticalSize(
-                            16.00,
-                          ),
-                          bottom: getVerticalSize(
-                            30.00,
-                          ),
-                        ),
+      body: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection("users")
+              .doc(user.uid)
+              .get(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            setinput(data);
+            // print(data);
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Align(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Card(
                         child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: getSize(
-                                  104.00,
+                          children: [
+                            Container(
+                              height: getSize(
+                                104.00,
+                              ),
+                              width: getSize(
+                                104.00,
+                              ),
+                              margin: EdgeInsets.only(
+                                left: getHorizontalSize(
+                                  24.00,
                                 ),
-                                width: getSize(
-                                  104.00,
+                                top: getVerticalSize(
+                                  8.00,
                                 ),
-                                margin: EdgeInsets.only(
-                                  left: getHorizontalSize(
-                                    24.00,
-                                  ),
-                                  top: getVerticalSize(
-                                    8.00,
-                                  ),
-                                  right: getHorizontalSize(
-                                    24.00,
-                                  ),
+                                bottom: getVerticalSize(
+                                  15.00,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: ColorConstant.indigo50,
-                                  borderRadius: BorderRadius.circular(
-                                    getHorizontalSize(
-                                      52.00,
-                                    ),
-                                  ),
+                                right: getHorizontalSize(
+                                  24.00,
                                 ),
-                                child: Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  elevation: 0,
-                                  margin: EdgeInsets.all(0),
-                                  color: ColorConstant.indigo50,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      getHorizontalSize(
-                                        52.00,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.centerLeft,
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            getSize(
-                                              52.00,
-                                            ),
-                                          ),
-                                          child: Image.asset(
-                                            ImageConstant.imgChristinawocin7,
-                                            height: getSize(
-                                              104.00,
-                                            ),
-                                            width: getSize(
-                                              104.00,
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                          height: getSize(
-                                            104.00,
-                                          ),
-                                          width: getSize(
-                                            104.00,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            ImageConstant.imgMaskgroup19,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: ColorConstant.teal600,
+                                borderRadius: BorderRadius.circular(
+                                  getHorizontalSize(
+                                    52.00,
                                   ),
                                 ),
                               ),
-                              gg(isDark, userData)
-                            ]),
+                              child: Stack(
+                                alignment: Alignment.centerLeft,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          getSize(
+                                            52.00,
+                                          ),
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            image != null
+                                                ? Image.file(
+                                                    //to show image, you type like this.
+                                                    File(image!.path),
+                                                    fit: BoxFit.cover,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 300,
+                                                  )
+                                                : data["imgurl"] != null
+                                                    ? Image.network(
+                                                        data["imgurl"],
+                                                        fit: BoxFit.cover,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: 300,
+                                                      )
+                                                    : Icon(
+                                                        Icons.person,
+                                                        size: 50,
+                                                        color: Colors.white,
+                                                      ),
+                                            Positioned.fill(
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: GestureDetector(
+                                                  //if user click this button, user can upload image from gallery
+                                                  onTap: () {
+                                                    // Navigator.pop(context);
+                                                    getImage(
+                                                        ImageSource.gallery);
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: getVerticalSize(
+                                                      30.00,
+                                                    ),
+                                                    width: getHorizontalSize(
+                                                      30.00,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        getHorizontalSize(
+                                                          52.00,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Icon(Icons.image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ข้อมูลบริษัท",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.teal600,
+                                    fontSize: getFontSize(
+                                      20,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ชื่อบริษัท",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _nameController,
+                                maxLength: 40,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ชื่อผู้ติดต่อ",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _usernameController,
+                                maxLength: 40,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    5.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "รายละเอียดเกี่ยวกับบริษัท",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _detailController,
+                                minLines: 5,
+                                maxLines: 7,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    5.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ขั้นตอนการสมัคร",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _howtoappliedController,
+                                minLines: 3,
+                                maxLines: 7,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    5.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ที่อยู่",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _addressController,
+                                minLines: 5,
+                                maxLines: 7,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "รหัสไปรษณีย์",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _codeController,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "ข้อมูลการติดต่อ",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.teal600,
+                                    fontSize: getFontSize(
+                                      20,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "เบอร์โทรศัพท์",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _phoneController,
+                                maxLength: 40,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "อีเมล",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: _emailController,
+                                maxLength: 40,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Text(
+                                  "website",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: ColorConstant.gray800,
+                                    fontSize: getFontSize(
+                                      18,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _websiteController,
+                                maxLength: 40,
+                                decoration: InputDecoration(
+                                  hintText: '',
+                                  counterText: '',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20, bottom: 20),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: ColorConstant.teal600,
+                                ),
+                                onPressed: () {
+                                  // CreateResume(30);
+                                  FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(user.uid)
+                                      .set({
+                                    'id': id,
+                                    'email': _emailController.text,
+                                    'username': _usernameController.text,
+                                    'companyname': _nameController.text,
+                                    'detail': _detailController.text,
+                                    'howtoapply': _howtoappliedController.text,
+                                    'address': _addressController.text,
+                                    'province': '',
+                                    'code': _codeController.text,
+                                    'phone': _phoneController.text,
+                                    'wepsite': _websiteController.text,
+                                    'usertype': "employer"
+                                  }, SetOptions(merge: true));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: ColorConstant.teal600,
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "saved",
+                                            style: TextStyle(fontSize: 16),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  "บันทึก",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              ),
+            );
+          }),
     );
   }
 
-  Widget gg(bool isDark, Future<DocumentSnapshot<Object?>> userData) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: getVerticalSize(
-          16.00,
-        ),
-        bottom: getVerticalSize(
-          20.00,
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: getHorizontalSize(
-                24.00,
-              ),
-              right: getHorizontalSize(
-                24.00,
-              ),
-            ),
-            child: Container(
-              height: getVerticalSize(
-                52.00,
-              ),
-              width: getHorizontalSize(
-                327.00,
-              ),
-              child: FutureBuilder<DocumentSnapshot>(
-                  future: userData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      Map userData = snapshot.data?.data() as Map;
-                      
-                      return TextField(
-                        // controller: emailcontroller,
-                        controller: TextEditingController(text: userData['username']),
-                        decoration: InputDecoration(
-                          labelText: "Username",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: TextStyle(
-                            color: ColorConstant.gray900,
-                            fontSize: getFontSize(
-                              24.0,
-                            ),
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            
-                          ),
-                          // hintText: 'Email',
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(
-                              left: getHorizontalSize(
-                                24.00,
-                              ),
-                              right: getHorizontalSize(
-                                10.00,
-                              ),
-                            ),
-                            child: Container(
-                              height: getSize(
-                                20.00,
-                              ),
-                              width: getSize(
-                                19.00,
-                              ),
-                              child: Icon(
-                                        Icons.person,
-                                        color: isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                      )
-
-                            ),
-                          ),
-                          prefixIconConstraints: BoxConstraints(
-                            minWidth: getSize(
-                              20.00,
-                            ),
-                            minHeight: getSize(
-                              20.00,
-                            ),
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              19.50,
-                            ),
-                            bottom: getVerticalSize(
-                              19.50,
-                            ),
-                          ),
-                        ),
-                        style: TextStyle(
-                          color: ColorConstant.gray900,
-                          fontSize: getFontSize(
-                            14.0,
-                          ),
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: getVerticalSize(
-                52.00,
-              ),
-              width: getHorizontalSize(
-                327.00,
-              ),
-              margin: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  31.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
-              child: Stack(
-                alignment: Alignment.centerLeft,
-                children: [
-                  Container(
-                    height: getVerticalSize(
-                      52.00,
-                    ),
-                    width: getHorizontalSize(
-                      327.00,
-                    ),
-                    child: FutureBuilder<DocumentSnapshot>(
-                        future: userData,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            Map userData = snapshot.data?.data() as Map;
-                            return TextField(
-                              controller: TextEditingController(
-                                  text: userData['email']),
-                              // controller: namecontroller,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: TextStyle(
-                                  color: ColorConstant.gray900,
-                                  fontSize: getFontSize(
-                                    24.0,
-                                  ),
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      24.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      10.00,
-                                    ),
-                                  ),
-                                  child: Container(
-                                      height: getSize(
-                                        20.00,
-                                      ),
-                                      width: getSize(
-                                        19.00,
-                                      ),
-                                  child: isDark
-                                  ? SvgPicture.asset(
-                                      ImageConstant.imgMailoutline11,
-                                      fit: BoxFit.contain,
-                                      color: Colors.white,
-                                    )
-                                  : SvgPicture.asset(
-                                      ImageConstant.imgMailoutline11,
-                                      fit: BoxFit.contain,
-                                    ),),
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  left: getHorizontalSize(
-                                    30.00,
-                                  ),
-                                  top: getVerticalSize(
-                                    19.50,
-                                  ),
-                                  right: getHorizontalSize(
-                                    30.00,
-                                  ),
-                                  bottom: getVerticalSize(
-                                    18.50,
-                                  ),
-                                ),
-                              ),
-                              style: TextStyle(
-                                color: ColorConstant.gray900,
-                                fontSize: getFontSize(
-                                  14.0,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  24.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
-              child: Container(
-                height: getVerticalSize(
-                  52.00,
-                ),
-                width: getHorizontalSize(
-                  327.00,
-                ),
-                child: TextField(
-                  // controller: passcontroller,
-                  obscureText: obscure1,
-                  decoration: InputDecoration(
-                    labelText: "New Password",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelStyle: TextStyle(
-                      color: ColorConstant.gray900,
-                      fontSize: getFontSize(
-                        24.0,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: getFontSize(
-                        14.0,
-                      ),
-                    ),
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(
-                        left: getHorizontalSize(
-                          24.00,
-                        ),
-                        right: getHorizontalSize(
-                          10.00,
-                        ),
-                      ),
-                      child: Container(
-                        height: getSize(
-                          20.00,
-                        ),
-                        width: getSize(
-                          19.00,
-                        ),
-                        child: isDark
-                            ? SvgPicture.asset(
-                                ImageConstant.imgPassword613,
-                                fit: BoxFit.contain,
-                                color: Colors.white,
-                              )
-                            : SvgPicture.asset(
-                                ImageConstant.imgPassword613,
-                                fit: BoxFit.contain,
-                              ),
-                      ),
-                    ),
-                    prefixIconConstraints: BoxConstraints(
-                      minWidth: getSize(
-                        20.00,
-                      ),
-                      minHeight: getSize(
-                        20.00,
-                      ),
-                    ),
-                    isDense: true,
-                    contentPadding: EdgeInsets.only(
-                      left: getHorizontalSize(
-                        30.00,
-                      ),
-                      top: getVerticalSize(
-                        19.50,
-                      ),
-                      right: getHorizontalSize(
-                        30.00,
-                      ),
-                      bottom: getVerticalSize(
-                        18.50,
-                      ),
-                    ),
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: getHorizontalSize(16)),
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              obscure1 = !obscure1;
-                            });
-                          },
-                          child: obscure1
-                              ? Icon(Icons.visibility_off_outlined,
-                                  color: isDark
-                                      ? Colors.white
-                                      : ColorConstant.black900)
-                              : Icon(
-                                  Icons.visibility_outlined,
-                                  color: isDark
-                                      ? Colors.white
-                                      : ColorConstant.black900,
-                                )),
-                    ),
-                  ),
-                  style: TextStyle(
-                    color: ColorConstant.gray900,
-                    fontSize: getFontSize(
-                      14.0,
-                    ),
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  24.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
-              child: Container(
-                height: getVerticalSize(
-                  52.00,
-                ),
-                width: getHorizontalSize(
-                  327.00,
-                ),
-                child: TextField(
-                  obscureText: obscure2,
-                  decoration: InputDecoration(
-                    // hintText: 'Confirm Password',
-                    labelText: "Confirm Password",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelStyle: TextStyle(
-                      color: ColorConstant.gray900,
-                      fontSize: getFontSize(
-                        24.0,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: getFontSize(
-                        14.0,
-                      ),
-                    ),
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(
-                        left: getHorizontalSize(
-                          24.00,
-                        ),
-                        right: getHorizontalSize(
-                          10.00,
-                        ),
-                      ),
-                      child: Container(
-                        height: getSize(
-                          20.00,
-                        ),
-                        width: getSize(
-                          19.00,
-                        ),
-                        child: isDark
-                            ? SvgPicture.asset(
-                                ImageConstant.imgPassword613,
-                                fit: BoxFit.contain,
-                                color: Colors.white,
-                              )
-                            : SvgPicture.asset(
-                                ImageConstant.imgPassword613,
-                                fit: BoxFit.contain,
-                              ),
-                      ),
-                    ),
-                    prefixIconConstraints: BoxConstraints(
-                      minWidth: getSize(
-                        20.00,
-                      ),
-                      minHeight: getSize(
-                        20.00,
-                      ),
-                    ),
-                    isDense: true,
-                    contentPadding: EdgeInsets.only(
-                      left: getHorizontalSize(
-                        30.00,
-                      ),
-                      top: getVerticalSize(
-                        19.50,
-                      ),
-                      right: getHorizontalSize(
-                        30.00,
-                      ),
-                      bottom: getVerticalSize(
-                        18.50,
-                      ),
-                    ),
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: getHorizontalSize(16)),
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              obscure2 = !obscure2;
-                            });
-                          },
-                          child: obscure2
-                              ? Icon(Icons.visibility_off_outlined,
-                                  color: isDark
-                                      ? Colors.white
-                                      : ColorConstant.black900)
-                              : Icon(
-                                  Icons.visibility_outlined,
-                                  color: isDark
-                                      ? Colors.white
-                                      : ColorConstant.black900,
-                                )),
-                    ),
-                  ),
-                  style: TextStyle(
-                    color: ColorConstant.gray900,
-                    fontSize: getFontSize(
-                      14.0,
-                    ),
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  32.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  // final name = namecontroller.text;
-                  // final email = emailcontroller.text;
-                  // final pass = passcontroller.text;
-                  // auth.signUp(email:email,password: pass,name: name);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: getVerticalSize(
-                    56.00,
-                  ),
-                  width: getHorizontalSize(
-                    327.00,
-                  ),
-                  decoration: BoxDecoration(
-                    color: ColorConstant.teal600,
-                    borderRadius: BorderRadius.circular(
-                      getHorizontalSize(
-                        16.00,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    "Save",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: ColorConstant.whiteA700,
-                      fontSize: getFontSize(
-                        16,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: getHorizontalSize(
-                  24.00,
-                ),
-                top: getVerticalSize(
-                  32.00,
-                ),
-                right: getHorizontalSize(
-                  24.00,
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  // final name = namecontroller.text;
-                  // final email = emailcontroller.text;
-                  // final pass = passcontroller.text;
-                  // auth.signUp(email:email,password: pass,name: name);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: getVerticalSize(
-                    56.00,
-                  ),
-                  width: getHorizontalSize(
-                    327.00,
-                  ),
-                  decoration: BoxDecoration(
-                    color: ColorConstant.red700,
-                    borderRadius: BorderRadius.circular(
-                      getHorizontalSize(
-                        16.00,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    "Delete account",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: ColorConstant.whiteA700,
-                      fontSize: getFontSize(
-                        16,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  void setinput(data) {
+    _usernameController.text = data['username'];
+    _detailController.text = data['detail'];
+    _addressController.text = data['address'];
+    _codeController.text = data['code'];
+    _emailController.text = data['email'];
+    _howtoappliedController.text = data['howtoapply'];
+    _nameController.text = data['companyname'];
+    _phoneController.text = data['phone'];
   }
 }

@@ -27,6 +27,8 @@ import 'package:hires/presentation/profile_style_1_screen/resume.dart';
 import 'package:hires/presentation/profile_style_2_screen/profile_style_2_screen.dart';
 
 import 'package:hires/presentation/register_screen/register_screen.dart';
+import 'package:hires/presentation/reset_password_confirmation_screen/reset_password_confirmation_screen.dart';
+import 'package:hires/presentation/reset_password_screen/reset_password_screen.dart';
 
 import 'package:hires/presentation/resume_portfolio_upload_screen/resume_portfolio_upload_screen.dart';
 import 'package:hires/presentation/resume_portfolio_uploading_screen/resume_portfolio_uploading_screen.dart';
@@ -42,6 +44,7 @@ import 'package:hires/presentation/set_b3_screen/set_b3_screen.dart';
 
 import 'package:hires/presentation/settings_screen/settings_screen.dart';
 import 'package:hires/presentation/solo_category_job_listing_screen/solo_category_job_listing_screen.dart';
+import 'package:hires/presentation/start1_screen/start1_screen.dart';
 
 import 'package:hires/translations/codegen_loader.g.dart';
 import 'core/theme/theme_constants.dart';
@@ -50,6 +53,7 @@ import 'core/theme/theme_manager.dart';
 import 'presentation/employer/showjobpost.dart';
 import 'presentation/profile_style_1_screen/profile_style_1_screen.dart';
 import 'presentation/register1_screen/register1_screen.dart';
+import 'presentation/reset_password1_screen/reset_password1_screen.dart';
 import 'presentation/resume_portfolio_uploaded_screen/resume_portfolio_uploaded_screen.dart';
 import 'presentation/search_result_2_screen/search_result_2_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -117,7 +121,8 @@ class _MyAppState extends State<MyApp> {
         darkTheme: darkTheme,
         themeMode: themeManager.themeMode,
         title: 'JobFE',
-        home: MainPage(),
+        // home: MainPage(),
+        initialRoute: Start1Screen.id,
         routes: {
           SearchOption3Screen.id: (context) => SearchOption3Screen(),
           Profile.id: (context) => Profile(),
@@ -146,7 +151,7 @@ class _MyAppState extends State<MyApp> {
           //       Popular.id:(context)=>Popular(),
           //       SelectLanguage.id:(context)=>SelectLanguage(),
           //       ApplicationsScreen.id:(context)=>ApplicationsScreen(),
-          //       Start1Screen.id:(context)=>Start1Screen(),
+          Start1Screen.id: (context) => Start1Screen(),
           // ApplyScreen.id:(context)=>ApplyScreen(),
           // ApplySuccess2Screen.id:(context)=>ApplySuccess2Screen(),
           // CompaniesScreen.id:(context)=>CompaniesScreen(),
@@ -169,10 +174,11 @@ class _MyAppState extends State<MyApp> {
           ProfileStyle2Screen.id: (context) => ProfileStyle2Screen(),
           //       RegisterScreen.id:(context)=>RegisterScreen(),
           //       Register1Screen.id:(context)=>RegisterScreen(),
-          //       ResetPasswordConfirmationScreen.id:(context)=>ResetPasswordConfirmationScreen(),
-          //       ResetPasswordScreen.id:(context)=>ResetPasswordScreen(),
+          ResetPasswordConfirmationScreen.id: (context) =>
+              ResetPasswordConfirmationScreen(),
+          ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
           //       PopularJobes.id:(context)=>PopularJobes(),
-          //       ResetPassword1Screen.id:(context)=>ResetPassword1Screen(),
+          ResetPassword1Screen.id: (context) => ResetPassword1Screen(),
           ResumePortfolioUploadScreen.id: (context) =>
               ResumePortfolioUploadScreen(),
           ResumePortfolioUploadedScreen.id: (context) =>

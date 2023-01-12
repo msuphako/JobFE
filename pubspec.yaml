@@ -47,7 +47,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo.jpg"
+  image_path: "assets/images/JobFE.png"
 
 flutter: 
   uses-material-design: true

@@ -86,26 +86,76 @@ class _SaveCardState extends State<SaveCard> {
                                   children: [
                                     Row(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: getHorizontalSize(
-                                              24.00,
-                                            ),
-                                            top: getVerticalSize(
-                                              30.00,
-                                            ),
-                                          ),
-                                          child: Image.asset(
-                                            ImageConstant.imgImage29,
-                                            height: getSize(
-                                              43.00,
-                                            ),
-                                            width: getSize(
-                                              43.00,
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
+                                        FutureBuilder<DocumentSnapshot>(
+                                            future: db
+                                                .collection('users')
+                                                .doc(data['eid'])
+                                                .get(),
+                                            builder: (context,
+                                                AsyncSnapshot snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Text(
+                                                    'Something went wrong');
+                                              }
+
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              Map<String, dynamic> userdata =
+                                                  snapshot.data!.data()
+                                                      as Map<String, dynamic>;
+                                              // print(userdata);
+                                              return Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    12.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    12.00,
+                                                  ),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    getSize(
+                                                      52.00,
+                                                    ),
+                                                  ),
+                                                  child: Container(
+                                                    height: getSize(
+                                                      75.00,
+                                                    ),
+                                                    width: getSize(
+                                                      75.00,
+                                                    ),
+                                                    color:
+                                                        ColorConstant.gray300,
+                                                    child: userdata["imgurl"] !=
+                                                            ""
+                                                        ? Image.network(
+                                                            userdata["imgurl"],
+                                                            fit: BoxFit.cover,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: 300,
+                                                          )
+                                                        : Icon(
+                                                            Icons
+                                                                .home_work_outlined,
+                                                            size: 40,
+                                                            color: Colors.teal,
+                                                          ),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                         Padding(
                                           padding: EdgeInsets.only(
                                             left: getHorizontalSize(

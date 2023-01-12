@@ -24,6 +24,16 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final user = FirebaseAuth.instance.currentUser!;
+  Future<void> read() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('messages')
+        .doc(widget.friendId)
+        .set({
+      'isread': true,
+    }, SetOptions(merge: true));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         reverse: true,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
+                          read();
                           String time = '';
                           bool isMe =
                               snapshot.data.docs[index]['senderId'] == user.uid;

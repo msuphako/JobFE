@@ -223,9 +223,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               CategorieBox("นัดสำภาษณ์", Icons.interpreter_mode,
                   InterviewEmployeeScreen.id,
                   context: context),
-              CategorieBox(
-                  "บัญชี", Icons.account_circle, ProfileStyle1Screen.id,
-                  context: context),
               CategorieBox("ตั้งค่า", Icons.settings, SettingsScreen.id,
                   context: context),
               // CategorieBox("Alphabet", Icons.alarm, "", context: context),

@@ -79,6 +79,54 @@ class Auth {
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
+  void changePassword(String email, String password, context) async {
+    //Create field for user to input old password
+
+    //pass the password here
+
+    try {
+      // await FirebaseAuth.instance.signInWithEmailAndPassword(
+      //   email: email,
+      //   password: password,
+      // );
+      user.updatePassword(password).then((_) {
+        Navigator.pop(context);
+      }).catchError((error) {
+        print("Password can't be changed" + error.toString());
+        if (error.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: ColorConstant.red700,
+              behavior: SnackBarBehavior.floating,
+              content: Row(
+                children: [
+                  Icon(
+                    Icons.warning_amber,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "รหัสผ่านสิ้นเกินไป",
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          );
+          print('รหัสผ่านสิ้นเกินไป');
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
   Future signUp(context,
       {required String email,
       required String password,
@@ -132,26 +180,80 @@ class Auth {
     }
   }
 
-  Future Emp_signUp(
+  Future Emp_signUp(context,
       {required String email,
       required String password,
-      required String name}) async {
+      required String name,
+      required String companyname}) async {
+    String errorMessage = "";
+    bool chk = false;
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      addEmpUser(user.uid, user.email, name);
+      addEmpUser(user.uid, user.email, name, companyname);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
       print(e);
+      switch (e.code) {
+        case "weak-password":
+          errorMessage = 'The password provided is too weak.';
+          break;
+        case 'email-already-in-use':
+          errorMessage = "The account already exists for that email.";
+          break;
+        case "wrong-password":
+          errorMessage = "รหัสผ่านไม่ถูกต้อง";
+          break;
+      }
+    }
+    if (errorMessage != "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: ColorConstant.red700,
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            children: [
+              Icon(
+                Icons.warning_amber,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                errorMessage,
+                style: TextStyle(fontSize: 16),
+              )
+            ],
+          ),
+        ),
+      );
+    } else {
+      Navigator.pop(context);
     }
   }
+
+  // Future Emp_signUp(context,
+  //     {required String email,
+  //     required String password,
+  //     required String name}) async {
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+  //     addEmpUser(user.uid, user.email, name);
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       print('The password provided is too weak.');
+  //     } else if (e.code == 'email-already-in-use') {
+  //       print('The account already exists for that email.');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future addUser(String id, String email, String name) {
     return users
@@ -160,19 +262,29 @@ class Auth {
           'id': id,
           'email': email,
           'username': name,
-          'usertype': "employee"
+          'usertype': "employee",
+          'imgurl': ""
         })
         .then((value) => print("added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future addEmpUser(String id, String email, String name) {
+  Future addEmpUser(String id, String email, String name, String companyname) {
     return users
         .doc(id)
         .set({
           'id': id,
           'email': email,
           'username': name,
+          'companyname': companyname,
+          'detail': '',
+          'howtoapply': '',
+          'address': '',
+          'province': '',
+          'code': '',
+          'phone': '',
+          'wepsite': '',
+          'imgurl': "",
           'usertype': "employer"
         })
         .then((value) => print("User Added"))

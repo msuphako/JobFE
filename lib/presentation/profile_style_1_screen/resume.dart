@@ -10,6 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/resume.dart';
 import '../profile_style_2_screen/widgets/group541_item_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
+import 'dart:io';
 
 class Profile extends StatefulWidget {
   static String id = "Profile";
@@ -156,8 +162,13 @@ class _ProfileState extends State<Profile> {
   String province = "";
   String province_work = "";
   String totalscore = "";
+  String userimage = "";
+  String resume_id = "";
   bool isEmpty = true;
   final user = FirebaseAuth.instance.currentUser!;
+  XFile? image;
+  File? _photo;
+  final ImagePicker picker = ImagePicker();
 
   void ShowSaveAlert() {
     showDialog(
@@ -199,14 +210,16 @@ class _ProfileState extends State<Profile> {
   void CreateResume(int score) {
     // print(jobwanteduserlist);
     int SS = score;
-    setState(() {
-      int s = int.parse(totalscore);
-      if (s < 100) {
-        totalscore = (s + score).toString();
-      } else {
-        SS = 0;
-      }
-    });
+    if (totalscore != "") {
+      setState(() {
+        int s = int.parse(totalscore);
+        if (s < 100) {
+          totalscore = (s + score).toString();
+        } else {
+          SS = 0;
+        }
+      });
+    }
     drivingname.clear();
 
     drivinglist.forEach(
@@ -257,7 +270,9 @@ class _ProfileState extends State<Profile> {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
           setState(() {
+            resume_id = doc.id;
             ison = doc["status"];
+            userimage = doc["imgurl"];
             totalscore = doc["score"].toString();
             _fullnameController.text = doc["fullname"];
             _addressController.text = doc["address"];
@@ -296,6 +311,51 @@ class _ProfileState extends State<Profile> {
           });
         });
       }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = Path.basename(_photo!.path);
+    final destination = 'profiles/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      UploadTask _task = ref.putFile(_photo!);
+      _task.snapshotEvents.listen((TaskSnapshot event) {
+        var progress =
+            (event.bytesTransferred.toDouble() / event.totalBytes.toDouble()) *
+                100;
+        print('progress $progress');
+      });
+      String url = await (await _task).ref.getDownloadURL();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('resume')
+          .doc(resume_id)
+          .set({'imgurl': url}, SetOptions(merge: true)).then(
+        (value) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({'imgurl': url}, SetOptions(merge: true));
+        },
+      );
+    } catch (e) {
+      print('error occured $e');
+    }
+  }
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      _photo = File(img!.path);
+      uploadFile();
+      image = img;
     });
   }
 
@@ -461,32 +521,74 @@ class _ProfileState extends State<Profile> {
                                   Align(
                                     alignment: Alignment.center,
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        getSize(
-                                          52.00,
+                                        borderRadius: BorderRadius.circular(
+                                          getSize(
+                                            52.00,
+                                          ),
                                         ),
-                                      ),
-                                      child: Icon(
-                                        Icons.person,
-                                        size: 50,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      height: getSize(
-                                        104.00,
-                                      ),
-                                      width: getSize(
-                                        104.00,
-                                      ),
-                                      child: SvgPicture.asset(
-                                        ImageConstant.imgMaskgroup19,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
+                                        child: Stack(
+                                          children: [
+                                            image != null
+                                                ? Image.file(
+                                                    //to show image, you type like this.
+                                                    File(image!.path),
+                                                    fit: BoxFit.cover,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 300,
+                                                  )
+                                                : userimage != ""
+                                                    ? Image.network(
+                                                        userimage,
+                                                        fit: BoxFit.cover,
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: 300,
+                                                      )
+                                                    : Icon(
+                                                        Icons.person,
+                                                        size: 50,
+                                                        color: Colors.white,
+                                                      ),
+                                            Positioned.fill(
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: GestureDetector(
+                                                  //if user click this button, user can upload image from gallery
+                                                  onTap: () {
+                                                    // Navigator.pop(context);
+                                                    getImage(
+                                                        ImageSource.gallery);
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: getVerticalSize(
+                                                      30.00,
+                                                    ),
+                                                    width: getHorizontalSize(
+                                                      30.00,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        getHorizontalSize(
+                                                          52.00,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Icon(Icons.image),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
                                   ),
                                 ],
                               ),

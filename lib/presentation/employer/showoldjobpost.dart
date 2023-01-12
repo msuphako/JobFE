@@ -109,7 +109,7 @@ class _ShowOldJobPostState extends State<ShowOldJobPost>
                           // Accessing single QueryDocumentSnapshot and then using .data() getting its map.
                           return Container(
                             padding: EdgeInsets.only(top: getVerticalSize(20)),
-                            height: MediaQuery.of(context).size.height * .740,
+                            height: MediaQuery.of(context).size.height * .850,
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: ListView.builder(

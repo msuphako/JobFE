@@ -77,586 +77,581 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
     Future<DocumentSnapshot> userData =
         FirebaseFirestore.instance.collection("users").doc(user.uid).get();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      body: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: Padding(
-            padding: EdgeInsets.only(
-              top: getVerticalSize(
-                12.00,
-              ),
-            ),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Welcome Back!",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      color: ColorConstant.gray500,
-                      fontSize: getFontSize(
-                        14,
-                      ),
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
+    return FutureBuilder<DocumentSnapshot>(
+        future: userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Map userData = snapshot.data?.data() as Map;
+            String username = userData['username'];
+            String userimage = userData['imgurl'];
+            return Scaffold(
+              body: Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: 100,
+                  title: Padding(
                     padding: EdgeInsets.only(
                       top: getVerticalSize(
-                        2.00,
+                        12.00,
                       ),
                     ),
-                    child: FutureBuilder<DocumentSnapshot>(
-                        future: userData,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            Map userData = snapshot.data?.data() as Map;
-                            String username = userData['username'];
-                            return Text(
-                              username,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                fontSize: getFontSize(
-                                  18,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w700,
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Welcome Back!",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.gray500,
+                              fontSize: getFontSize(
+                                14,
                               ),
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            Builder(builder: (context) {
-              return GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: getVerticalSize(20),
-                      horizontal: getHorizontalSize(16)),
-                  child: Container(
-                    height: getVerticalSize(
-                      50.00,
-                    ),
-                    width: getHorizontalSize(
-                      52.00,
-                    ),
-                    margin: EdgeInsets.only(
-                      top: getVerticalSize(
-                        1.00,
-                      ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: getHorizontalSize(
-                                2.00,
-                              ),
-                            ),
-                            child: Container(
-                              height: getSize(
-                                50.00,
-                              ),
-                              width: getSize(
-                                50.00,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: isDark
-                                      ? ColorConstant.yellow
-                                      : ColorConstant.red300,
-                                  borderRadius: BorderRadius.circular(
-                                    getHorizontalSize(8),
-                                  )),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(
+                          Padding(
+                              padding: EdgeInsets.only(
                                 top: getVerticalSize(
-                                  12.00,
-                                ),
-                                right: getHorizontalSize(
                                   2.00,
                                 ),
-                                bottom: getVerticalSize(5)),
-                            child: Image.network(
-                                "https:firebasestorage.googleapis.com/v0/b/jobfe-a636f.appspot.com/o/istockphoto-612716462-612x612.jpg?alt=media&token=09dbb46b-5f8f-47e2-8c29-c43"),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getHorizontalSize(4),
-                                vertical: getVerticalSize(4)),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: isDark
-                                    ? ColorConstant.darkBg
-                                    : ColorConstant.whiteA700),
-                            child: Container(
-                              height: getSize(
-                                8.00,
                               ),
-                              width: getSize(
-                                8.00,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: ColorConstant.redA701,
-                                  shape: BoxShape.circle),
-                            ),
-                          ),
-                        ),
-                      ],
+                              child: Text(
+                                username,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: getFontSize(
+                                    18,
+                                  ),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )),
+                        ],
+                      ),
                     ),
                   ),
+                  actions: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: getVerticalSize(
+                            12.00,
+                          ),
+                          bottom: getVerticalSize(
+                            12.00,
+                          ),
+                          right: 20),
+                      child: Container(
+                        height: getSize(
+                          60.00,
+                        ),
+                        width: getSize(
+                          60.00,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 5,
+                            color: ColorConstant.red300,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        child: userimage != ""
+                            ? Image.network(
+                                userimage,
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: 150,
+                              )
+                            : Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Colors.teal,
+                              ),
+                        // child: SvgPicture.asset(
+                        //   ImageConstant.imgGoogle1,
+                        //   fit: BoxFit.fill,
+                        // ),
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            }),
-          ],
-        ),
-        body: SafeArea(
-          child: Container(
-            width: size.width,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: getVerticalSize(
-                  0.00,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
+                body: SafeArea(
+                  child: Container(
+                    width: size.width,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: getHorizontalSize(
-                          24.00,
-                        ),
                         top: getVerticalSize(
                           0.00,
                         ),
-                        right: getHorizontalSize(
-                          24.00,
-                        ),
                       ),
-                      child: Row(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
                         children: [
-                          Container(
-                            height: getVerticalSize(
-                              40.00,
-                            ),
-                            width: getHorizontalSize(
-                              263.00,
-                            ),
-                            child: TextFormField(
-                              readOnly: true,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, SearchOption3Screen.id);
-                              },
-                              decoration: InputDecoration(
-                                hintText: 'ค้นหางาน ',
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(10),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(10),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: getHorizontalSize(
+                                  24.00,
+                                ),
+                                top: getVerticalSize(
+                                  0.00,
+                                ),
+                                right: getHorizontalSize(
+                                  24.00,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    height: getVerticalSize(
+                                      40.00,
+                                    ),
+                                    width: getHorizontalSize(
+                                      263.00,
+                                    ),
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, SearchOption3Screen.id);
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'ค้นหางาน ',
+                                        prefixIcon: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(10),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(10),
+                                          ),
+                                          child: Container(
+                                            height: getSize(
+                                              20.00,
+                                            ),
+                                            width: getSize(
+                                              20.00,
+                                            ),
+                                            child: isDark
+                                                ? SvgPicture.asset(
+                                                    ImageConstant.imgSearch11,
+                                                    fit: BoxFit.contain,
+                                                    color: Colors.white,
+                                                  )
+                                                : SvgPicture.asset(
+                                                    ImageConstant.imgSearch11,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                          ),
+                                        ),
+                                        prefixIconConstraints: BoxConstraints(
+                                          minWidth: getSize(
+                                            20.00,
+                                          ),
+                                          minHeight: getSize(
+                                            20.00,
+                                          ),
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.only(
+                                          top: getVerticalSize(
+                                            17.75,
+                                          ),
+                                        ),
+                                      ),
+                                      style: TextStyle(
+                                        color: ColorConstant.gray500,
+                                        fontSize: getFontSize(
+                                          15.0,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
                                   ),
-                                  child: Container(
+                                  Container(
                                     height: getSize(
-                                      20.00,
+                                      48.00,
                                     ),
                                     width: getSize(
-                                      20.00,
+                                      48.00,
                                     ),
-                                    child: isDark
-                                        ? SvgPicture.asset(
-                                            ImageConstant.imgSearch11,
-                                            fit: BoxFit.contain,
-                                            color: Colors.white,
-                                          )
-                                        : SvgPicture.asset(
-                                            ImageConstant.imgSearch11,
-                                            fit: BoxFit.contain,
+                                    margin: EdgeInsets.only(
+                                      left: context.locale == Constants.engLocal
+                                          ? getHorizontalSize(
+                                              16.00,
+                                            )
+                                          : getHorizontalSize(0),
+                                      right: context.locale == Constants.arLocal
+                                          ? getHorizontalSize(
+                                              16.00,
+                                            )
+                                          : getHorizontalSize(0),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isDark
+                                          ? ColorConstant.darkContainer
+                                          : ColorConstant.gray100,
+                                      borderRadius: BorderRadius.circular(
+                                        getHorizontalSize(
+                                          12.00,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                11.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                11.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                11.00,
+                                              ),
+                                              bottom: getVerticalSize(
+                                                11.00,
+                                              ),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .vertical(
+                                                      top: Radius.circular(20),
+                                                    )),
+                                                    builder: (context) {
+                                                      return SearchfilterbottomsheetPage();
+                                                    });
+                                              },
+                                              child: Container(
+                                                height: getSize(
+                                                  26.00,
+                                                ),
+                                                width: getSize(
+                                                  26.00,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  ImageConstant.imgFilter5,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                            ),
                                           ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                prefixIconConstraints: BoxConstraints(
-                                  minWidth: getSize(
-                                    20.00,
-                                  ),
-                                  minHeight: getSize(
-                                    20.00,
-                                  ),
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  top: getVerticalSize(
-                                    17.75,
-                                  ),
-                                ),
-                              ),
-                              style: TextStyle(
-                                color: ColorConstant.gray500,
-                                fontSize: getFontSize(
-                                  15.0,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
+                                ],
                               ),
                             ),
                           ),
-                          Container(
-                            height: getSize(
-                              48.00,
-                            ),
-                            width: getSize(
-                              48.00,
-                            ),
-                            margin: EdgeInsets.only(
-                              left: context.locale == Constants.engLocal
-                                  ? getHorizontalSize(
-                                      16.00,
-                                    )
-                                  : getHorizontalSize(0),
-                              right: context.locale == Constants.arLocal
-                                  ? getHorizontalSize(
-                                      16.00,
-                                    )
-                                  : getHorizontalSize(0),
-                            ),
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? ColorConstant.darkContainer
-                                  : ColorConstant.gray100,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  12.00,
-                                ),
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: getVerticalSize(
+                                        40.00,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                          ),
+                                          child: Text(
+                                            "งานที่แนะนำ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                            left: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    24.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: Text(
+                                              "",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.right,
+                                              style: TextStyle(
+                                                color: ColorConstant.gray500,
+                                                fontSize: getFontSize(
+                                                  13,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
                                     padding: EdgeInsets.only(
                                       left: getHorizontalSize(
-                                        11.00,
+                                        0.00,
                                       ),
                                       top: getVerticalSize(
-                                        11.00,
+                                        12.00,
                                       ),
                                       right: getHorizontalSize(
-                                        11.00,
-                                      ),
-                                      bottom: getVerticalSize(
-                                        11.00,
+                                        0.00,
                                       ),
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            )),
-                                            builder: (context) {
-                                              return SearchfilterbottomsheetPage();
-                                            });
+                                    child: CarouselSlider.builder(
+                                      options: CarouselOptions(
+                                        height: getVerticalSize(
+                                          200.00,
+                                        ),
+                                        initialPage: 0,
+                                        autoPlay: true,
+                                        viewportFraction: 1.0,
+                                        enableInfiniteScroll: false,
+                                        scrollDirection: Axis.horizontal,
+                                        onPageChanged: (index, reason) {},
+                                      ),
+                                      itemCount: datajobs.length,
+                                      itemBuilder: (context, index, realIndex) {
+                                        return FeaturedJobsWidget(
+                                            datajobs[index]);
                                       },
-                                      child: Container(
-                                        height: getSize(
-                                          26.00,
-                                        ),
-                                        width: getSize(
-                                          26.00,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          ImageConstant.imgFilter5,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: getVerticalSize(
-                                40.00,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                  ),
-                                  child: Text(
-                                    "งานที่แนะนำ",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: getFontSize(
-                                        18,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                    left: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            24.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Text(
-                                      "",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: ColorConstant.gray500,
-                                        fontSize: getFontSize(
-                                          13,
-                                        ),
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: getHorizontalSize(
-                                0.00,
-                              ),
-                              top: getVerticalSize(
-                                12.00,
-                              ),
-                              right: getHorizontalSize(
-                                0.00,
-                              ),
-                            ),
-                            child: CarouselSlider.builder(
-                              options: CarouselOptions(
-                                height: getVerticalSize(
-                                  200.00,
-                                ),
-                                initialPage: 0,
-                                autoPlay: true,
-                                viewportFraction: 1.0,
-                                enableInfiniteScroll: false,
-                                scrollDirection: Axis.horizontal,
-                                onPageChanged: (index, reason) {},
-                              ),
-                              itemCount: datajobs.length,
-                              itemBuilder: (context, index, realIndex) {
-                                return FeaturedJobsWidget(datajobs[index]);
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: getVerticalSize(
-                                20.00,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            26.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            26.00,
-                                          )
-                                        : getHorizontalSize(0),
-                                  ),
-                                  child: Text(
-                                    "งานล่าสุด",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontSize: getFontSize(
-                                        18,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: context.locale == Constants.engLocal
-                                        ? getHorizontalSize(
-                                            0.00,
-                                          )
-                                        : getHorizontalSize(24),
-                                    right: context.locale == Constants.arLocal
-                                        ? getHorizontalSize(
-                                            0.00,
-                                          )
-                                        : getHorizontalSize(24),
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, PopularJobes.id);
-                                    },
-                                    child: Text(
-                                      "ดูทั้งหมด",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: ColorConstant.gray500,
-                                        fontSize: getFontSize(
-                                          16,
-                                        ),
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          FutureBuilder<Object>(
-                              future: db
-                                  .collectionGroup('jobPost')
-                                  .limit(4)
-                                  .orderBy("created_at", descending: true)
-                                  .get(),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Something went wrong');
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                }
-
-                                var jobdata = snapshot.data!.docs;
-                                int total = snapshot.data!.docs.length;
-                                return Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
+                                  Padding(
                                     padding: EdgeInsets.only(
-                                      left: getHorizontalSize(
-                                        24.00,
-                                      ),
                                       top: getVerticalSize(
                                         20.00,
                                       ),
-                                      right: getHorizontalSize(
-                                        24.00,
-                                      ),
                                     ),
-                                    child: ListView.builder(
-                                      physics: BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: total,
-                                      itemBuilder: (context, index) {
-                                        final job = jobdata[index].data()!
-                                            as Map<String, dynamic>;
-                                        return JobCardSearch(job);
-                                      },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    26.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    26.00,
+                                                  )
+                                                : getHorizontalSize(0),
+                                          ),
+                                          child: Text(
+                                            "งานล่าสุด",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: context.locale ==
+                                                    Constants.engLocal
+                                                ? getHorizontalSize(
+                                                    0.00,
+                                                  )
+                                                : getHorizontalSize(24),
+                                            right: context.locale ==
+                                                    Constants.arLocal
+                                                ? getHorizontalSize(
+                                                    0.00,
+                                                  )
+                                                : getHorizontalSize(24),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, PopularJobes.id);
+                                            },
+                                            child: Text(
+                                              "ดูทั้งหมด",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.right,
+                                              style: TextStyle(
+                                                color: ColorConstant.gray500,
+                                                fontSize: getFontSize(
+                                                  16,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              }),
+                                  FutureBuilder<Object>(
+                                      future: db
+                                          .collectionGroup('jobPost')
+                                          .limit(4)
+                                          .orderBy("created_at",
+                                              descending: true)
+                                          .get(),
+                                      builder:
+                                          (context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Text('Something went wrong');
+                                        }
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        }
+
+                                        var jobdata = snapshot.data!.docs;
+                                        int total = snapshot.data!.docs.length;
+                                        return Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                24.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                20.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                24.00,
+                                              ),
+                                            ),
+                                            child: ListView.builder(
+                                              physics: BouncingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: total,
+                                              itemBuilder: (context, index) {
+                                                final job =
+                                                    jobdata[index].data()!
+                                                        as Map<String, dynamic>;
+                                                return FutureBuilder<
+                                                        DocumentSnapshot>(
+                                                    future: db
+                                                        .collection('users')
+                                                        .doc(job['eid'])
+                                                        .get(),
+                                                    builder: (context,
+                                                        AsyncSnapshot
+                                                            snapshot) {
+                                                      if (snapshot.hasError) {
+                                                        return Text(
+                                                            'Something went wrong');
+                                                      }
+
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      }
+
+                                                      Map<String, dynamic>
+                                                          data =
+                                                          snapshot.data!.data()
+                                                              as Map<String,
+                                                                  dynamic>;
+                                                      return JobCardSearch(
+                                                          job, data);
+                                                    });
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            );
+          } else {
+            return Text("data");
+          }
+        });
   }
 }

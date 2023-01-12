@@ -125,7 +125,7 @@ class _AppScreenState extends State<AppScreen>
                             return Container(
                               padding:
                                   EdgeInsets.only(top: getVerticalSize(20)),
-                              height: MediaQuery.of(context).size.height * .740,
+                              height: MediaQuery.of(context).size.height * .850,
                               child: Align(
                                 alignment: Alignment.topCenter,
                                 child: ListView.builder(

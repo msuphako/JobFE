@@ -38,13 +38,14 @@ class _MessagewidgetState extends State<Messagewidget> {
 
   @override
   Widget build(BuildContext context) {
+    String userimage = "";
     bool isread = widget.messages["isread"];
     return FutureBuilder(
         future: getEmail().get(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             final data = snapshot.data;
-            // print(data["username"]);
+
             Timestamp date = widget.messages["last_date"];
             DateTime dtime = date.toDate();
             String time = DateFormat.jm().format(dtime);
@@ -95,11 +96,26 @@ class _MessagewidgetState extends State<Messagewidget> {
                         width: getSize(
                           40.00,
                         ),
-                        child: Card(
-                            child: Icon(
-                          Icons.person,
-                          color: ColorConstant.black900,
-                        )),
+
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            getSize(
+                              52.00,
+                            ),
+                          ),
+                          child: data["imgurl"] != ""
+                              ? Image.network(
+                                  data["imgurl"],
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 300,
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 40,
+                                  color: Colors.teal,
+                                ),
+                        ),
                         // child: SvgPicture.asset(
                         //   ImageConstant.imgGoogle1,
                         //   fit: BoxFit.fill,

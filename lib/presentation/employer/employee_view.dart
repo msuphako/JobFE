@@ -110,270 +110,222 @@ class _Emp_view_resume extends State<Emp_view_resume>
               body: SafeArea(
                   child: Container(
                 width: size.width,
-                child: Container(
-                  margin: EdgeInsets.only(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: size.width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Container(
+                          height: getVerticalSize(
+                            200.92,
+                          ),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              ColorConstant.teal600,
+                              ColorConstant.teal600,
+                            ],
+                          )),
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  18.00,
-                                ),
-                                right: getHorizontalSize(
-                                  24.00,
-                                ),
-                                top: getVerticalSize(16)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
+                              left: getHorizontalSize(
+                                18.00,
+                              ),
+                              top: getVerticalSize(
+                                15.92,
+                              ),
+                              right: getHorizontalSize(
+                                18.00,
+                              ),
+                              bottom: getVerticalSize(
+                                15.92,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                      child: Icon(Icons.arrow_back_ios,
-                                          size: getSize(20),
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black)),
+                                Container(
+                                  width: size.width,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: getVerticalSize(
+                                            56.00,
+                                          ),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                              height: getSize(
+                                                24.00,
+                                              ),
+                                              width: getSize(
+                                                24.00,
+                                              ),
+                                              child: Icon(Icons.arrow_back_ios,
+                                                  size: getSize(20),
+                                                  color: Colors.white)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: getVerticalSize(
+                                            30.50,
+                                          ),
+                                        ),
+                                        child: Container(
+                                          height: getSize(
+                                            90.00,
+                                          ),
+                                          width: getSize(
+                                            90.00,
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              getSize(
+                                                52.00,
+                                              ),
+                                            ),
+                                            child: _data["imgurl"] != null
+                                                ? Image.network(
+                                                    _data["imgurl"],
+                                                    fit: BoxFit.cover,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 300,
+                                                  )
+                                                : Icon(
+                                                    Icons.person,
+                                                    size: 50,
+                                                    color: Colors.white,
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: getVerticalSize(
+                                            0.50,
+                                          ),
+                                          bottom: getVerticalSize(
+                                            56.50,
+                                          ),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () async {},
+                                          child: Container(
+                                            height: getSize(
+                                              23.00,
+                                            ),
+                                            width: getSize(
+                                              23.00,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: size.width,
-                        child: Stack(
-                          alignment: Alignment.topCenter,
+                      ],
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: getHorizontalSize(
-                                    18.00,
-                                  ),
-                                  right: getHorizontalSize(
-                                    18.00,
-                                  ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: getVerticalSize(
+                                  5.00,
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: size.width,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Container(
-                                                  height: getSize(
-                                                    24.00,
-                                                  ),
-                                                  width: getSize(
-                                                    24.00,
-                                                  ),
-                                                  child: Icon(
-                                                      Icons.arrow_back_ios,
-                                                      size: getSize(20),
-                                                      color: Colors.white)),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(),
-                                            child: Container(
-                                              height: getSize(
-                                                80.00,
-                                              ),
-                                              width: getSize(
-                                                80.00,
-                                              ),
-                                              child: Icon(
-                                                Icons.person_pin,
-                                                color: ColorConstant.teal600,
-                                                size: 60,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              top: getVerticalSize(
-                                                0.50,
-                                              ),
-                                              bottom: getVerticalSize(
-                                                56.50,
-                                              ),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () async {},
-                                              child: Container(
-                                                height: getSize(
-                                                  23.00,
-                                                ),
-                                                width: getSize(
-                                                  23.00,
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  ImageConstant
-                                                      .imgFluentbookmark8,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                              ),
+                              child: Container(
+                                height: getVerticalSize(50),
+                                child: TabBar(
+                                  indicatorColor: ColorConstant.teal600,
+                                  controller: tabController,
+                                  isScrollable: true,
+                                  labelColor: isDark
+                                      ? Colors.white
+                                      : ColorConstant.teal600,
+                                  unselectedLabelColor: ColorConstant.gray800,
+                                  unselectedLabelStyle: TextStyle(
+                                    fontSize: getFontSize(
+                                      18,
                                     ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  labelStyle: TextStyle(
+                                    fontSize: getFontSize(
+                                      20,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  tabs: [
+                                    Tab(text: 'ข้อมูลส่วนตัว'),
+                                    Tab(text: 'ความสามารถ'),
+                                    Tab(text: 'ประวัติการทำงาน'),
                                   ],
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: getVerticalSize(
-                                    5.00,
-                                  ),
-                                ),
-                                child: Container(
-                                  height: getVerticalSize(50),
-                                  child: TabBar(
-                                    indicatorColor: ColorConstant.teal600,
-                                    controller: tabController,
-                                    isScrollable: true,
-                                    labelColor: isDark
-                                        ? Colors.white
-                                        : ColorConstant.teal600,
-                                    unselectedLabelColor: ColorConstant.gray800,
-                                    unselectedLabelStyle: TextStyle(
-                                      fontSize: getFontSize(
-                                        18,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
+                            Container(
+                              height: size.height,
+                              child: TabBarView(
+                                controller: tabController,
+                                children: [
+                                  Container(
+                                    width: getHorizontalSize(
+                                      327.00,
                                     ),
-                                    labelStyle: TextStyle(
-                                      fontSize: getFontSize(
-                                        20,
+                                    margin: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        24.00,
                                       ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
+                                      top: getVerticalSize(
+                                        16.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        24.00,
+                                      ),
                                     ),
-                                    tabs: [
-                                      Tab(text: 'ข้อมูลส่วนตัว'),
-                                      Tab(text: 'ความสามารถ'),
-                                      Tab(text: 'ประวัติการทำงาน'),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: size.height,
-                                child: TabBarView(
-                                  controller: tabController,
-                                  children: [
-                                    Container(
-                                      width: getHorizontalSize(
-                                        327.00,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: ColorConstant.teal600)),
                                       ),
-                                      margin: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          24.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          16.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          24.00,
-                                        ),
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  width: 1,
-                                                  color:
-                                                      ColorConstant.teal600)),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    alignment: Alignment.center,
-                                                    width: 75,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .teal600)),
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.person_pin,
-                                                      color:
-                                                          ColorConstant.teal600,
-                                                    )),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data["fullname"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
                                                   alignment: Alignment.center,
                                                   width: 75,
                                                   height: 35,
@@ -384,205 +336,285 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                             color: ColorConstant
                                                                 .teal600)),
                                                   ),
-                                                  child:
-                                                      getIcon(_data["gender"]),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
+                                                  child: Icon(
+                                                    Icons.person_pin,
+                                                    color:
+                                                        ColorConstant.teal600,
+                                                  )),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
                                                   ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["fullname"],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.center,
+                                                width: 75,
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          width: 1,
+                                                          color: ColorConstant
+                                                              .teal600)),
+                                                ),
+                                                child: getIcon(_data["gender"]),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["gender"],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  width: 75,
+                                                  height: 35,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1,
+                                                            color: ColorConstant
+                                                                .teal600)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.cake,
+                                                    color:
+                                                        ColorConstant.teal600,
+                                                  )),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["dateofbirth"]["date"] +
+                                                      "/" +
+                                                      _data["dateofbirth"]
+                                                          ["month"] +
+                                                      "/" +
+                                                      _data["dateofbirth"]
+                                                          ["year"] +
+                                                      " (${_data["age"]} ปี)",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  width: 75,
+                                                  height: 35,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1,
+                                                            color: ColorConstant
+                                                                .teal600)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.phone_android,
+                                                    color:
+                                                        ColorConstant.teal600,
+                                                  )),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["phone"],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  width: 75,
+                                                  height: 35,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1,
+                                                            color: ColorConstant
+                                                                .teal600)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.email,
+                                                    color:
+                                                        ColorConstant.teal600,
+                                                  )),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["email"],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  width: 75,
+                                                  height: 35,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            width: 1,
+                                                            color: ColorConstant
+                                                                .teal600)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.location_pin,
+                                                    color:
+                                                        ColorConstant.teal600,
+                                                  )),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data["location"],
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: 50),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: Text(
-                                                    _data["gender"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
+                                                    "งานที่ต้องการ",
                                                     style: TextStyle(
                                                       color:
-                                                          ColorConstant.gray800,
+                                                          ColorConstant.teal600,
                                                       fontSize: getFontSize(
-                                                        18,
+                                                        19,
                                                       ),
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    alignment: Alignment.center,
-                                                    width: 75,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .teal600)),
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.cake,
-                                                      color:
-                                                          ColorConstant.teal600,
-                                                    )),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data["dateofbirth"]
-                                                            ["date"] +
-                                                        "/" +
-                                                        _data["dateofbirth"]
-                                                            ["month"] +
-                                                        "/" +
-                                                        _data["dateofbirth"]
-                                                            ["year"] +
-                                                        " (${_data["age"]} ปี)",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    alignment: Alignment.center,
-                                                    width: 75,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .teal600)),
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.phone_android,
-                                                      color:
-                                                          ColorConstant.teal600,
-                                                    )),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data["phone"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    alignment: Alignment.center,
-                                                    width: 75,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .teal600)),
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.email,
-                                                      color:
-                                                          ColorConstant.teal600,
-                                                    )),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data["email"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    alignment: Alignment.center,
-                                                    width: 75,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .teal600)),
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.location_pin,
-                                                      color:
-                                                          ColorConstant.teal600,
-                                                    )),
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     left: getHorizontalSize(
@@ -608,219 +640,39 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                 ),
                                               ],
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 50),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      "งานที่ต้องการ",
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .teal600,
-                                                        fontSize: getFontSize(
-                                                          19,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                      right: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      _data["location"],
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .gray800,
-                                                        fontSize: getFontSize(
-                                                          18,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      "รูปแบบงาน",
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .teal600,
-                                                        fontSize: getFontSize(
-                                                          19,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                      right: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      _data["jobtype"],
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .gray800,
-                                                        fontSize: getFontSize(
-                                                          18,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      "จังหวัดที่ต้องการทำงาน",
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .teal600,
-                                                        fontSize: getFontSize(
-                                                          18,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                      right: getHorizontalSize(
-                                                        20.00,
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      _data["province_work"],
-                                                      style: TextStyle(
-                                                        color: ColorConstant
-                                                            .gray800,
-                                                        fontSize: getFontSize(
-                                                          18,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: getHorizontalSize(
-                                        327.00,
-                                      ),
-                                      margin: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          24.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          16.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          24.00,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "ทักษะความสามารถ",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            child: Row(
                                               children: [
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    "รูปแบบงาน",
+                                                    style: TextStyle(
+                                                      color:
+                                                          ColorConstant.teal600,
+                                                      fontSize: getFontSize(
+                                                        19,
+                                                      ),
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
+                                                      20.00,
                                                     ),
                                                     right: getHorizontalSize(
                                                       20.00,
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    _data['skills'],
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
+                                                    _data["jobtype"],
                                                     style: TextStyle(
                                                       color:
                                                           ColorConstant.gray800,
@@ -829,64 +681,45 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                       ),
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "ความสามารถไนการขับขี่",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            child: Row(
                                               children: [
+                                                Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    "จังหวัดที่ต้องการทำงาน",
+                                                    style: TextStyle(
+                                                      color:
+                                                          ColorConstant.teal600,
+                                                      fontSize: getFontSize(
+                                                        18,
+                                                      ),
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
+                                                      20.00,
                                                     ),
                                                     right: getHorizontalSize(
                                                       20.00,
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    driveskill,
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
+                                                    _data["province_work"],
                                                     style: TextStyle(
                                                       color:
                                                           ColorConstant.gray800,
@@ -895,7 +728,7 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                       ),
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
@@ -905,299 +738,445 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      width: getHorizontalSize(
-                                        327.00,
+                                  ),
+                                  Container(
+                                    width: getHorizontalSize(
+                                      327.00,
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        24.00,
                                       ),
-                                      margin: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          24.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          16.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          24.00,
-                                        ),
+                                      top: getVerticalSize(
+                                        16.00,
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "ชื่อบริษัท",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data['companyname'],
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "เป็นระยะเวลา",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data['duration'],
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "ทำงานตำแหน่ง",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data['position'],
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  6.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Text(
-                                                "รายละเอียดงานที่ทำ",
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: ColorConstant.teal600,
-                                                  fontSize: getFontSize(
-                                                    18,
-                                                  ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      40.00,
-                                                    ),
-                                                    top: getVerticalSize(
-                                                      10.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      20.00,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    _data['jobdetail'],
-                                                    maxLines: 10,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      right: getHorizontalSize(
+                                        24.00,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "ทักษะความสามารถ",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data['skills'],
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "ความสามารถไนการขับขี่",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  driveskill,
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    width: getHorizontalSize(
+                                      327.00,
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        24.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        16.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        24.00,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "ชื่อบริษัท",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data['companyname'],
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "เป็นระยะเวลา",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data['duration'],
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "ทำงานตำแหน่ง",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data['position'],
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              left: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              top: getVerticalSize(
+                                                6.00,
+                                              ),
+                                              right: getHorizontalSize(
+                                                20.00,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "รายละเอียดงานที่ทำ",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: ColorConstant.teal600,
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  left: getHorizontalSize(
+                                                    40.00,
+                                                  ),
+                                                  top: getVerticalSize(
+                                                    10.00,
+                                                  ),
+                                                  right: getHorizontalSize(
+                                                    20.00,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  _data['jobdetail'],
+                                                  maxLines: 10,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.gray800,
+                                                    fontSize: getFontSize(
+                                                      18,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )),
             );

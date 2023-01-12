@@ -84,24 +84,45 @@ class _AppCardState extends State<AppCard> {
                                         Padding(
                                           padding: EdgeInsets.only(
                                             left: getHorizontalSize(
-                                              24.00,
-                                            ),
-                                            right: getHorizontalSize(
-                                              24.00,
+                                              12.00,
                                             ),
                                             top: getVerticalSize(
                                               10.00,
                                             ),
+                                            right: getHorizontalSize(
+                                              12.00,
+                                            ),
                                           ),
-                                          child: Image.asset(
-                                            ImageConstant.imgImage29,
-                                            height: getSize(
-                                              43.00,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              getSize(
+                                                52.00,
+                                              ),
                                             ),
-                                            width: getSize(
-                                              43.00,
+                                            child: Container(
+                                              height: getSize(
+                                                75.00,
+                                              ),
+                                              width: getSize(
+                                                75.00,
+                                              ),
+                                              color: ColorConstant.gray300,
+                                              child: _data["imgurl"] != ""
+                                                  ? Image.network(
+                                                      _data["imgurl"],
+                                                      fit: BoxFit.cover,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      height: 300,
+                                                    )
+                                                  : Icon(
+                                                      Icons.person,
+                                                      size: 40,
+                                                      color: Colors.teal,
+                                                    ),
                                             ),
-                                            fit: BoxFit.fill,
                                           ),
                                         ),
                                         Column(
@@ -114,7 +135,7 @@ class _AppCardState extends State<AppCard> {
                                             Padding(
                                               padding: EdgeInsets.only(
                                                 top: getVerticalSize(
-                                                  0.00,
+                                                  10.00,
                                                 ),
                                                 bottom: getVerticalSize(
                                                   5.00,

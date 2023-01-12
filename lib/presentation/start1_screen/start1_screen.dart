@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
+import 'package:hires/main.dart';
 import 'package:hires/presentation/set_b1_screen/set_b1_screen.dart';
 
 class Start1Screen extends StatefulWidget {
-  static String id="Start1Screen";
+  static String id = "Start1Screen";
 
   @override
   State<Start1Screen> createState() => _Start1ScreenState();
@@ -13,15 +14,14 @@ class Start1Screen extends StatefulWidget {
 class _Start1ScreenState extends State<Start1Screen> {
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), (){
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_)=>SetB1Screen()));
-    }
-    );
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => MainPage()));
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       backgroundColor: ColorConstant.teal600,
       body: Container(
@@ -32,7 +32,7 @@ class _Start1ScreenState extends State<Start1Screen> {
           ),
           child: Center(
             child: Text(
-            "${Constants.appName }",
+              "${Constants.appName}",
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: TextStyle(
