@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
+import 'package:hires/presentation/employer/sendmessage.dart';
 
 final db = FirebaseFirestore.instance;
 
@@ -97,6 +98,7 @@ class Job {
         "interview_date": "ยังไม่ได้กำหนดวัน",
         "date": DateTime.now(),
       });
+      SendMessage('ส่งคำขอการสมัครงาน ${title} แล้ว', uid, eid!);
       return false;
     }
   }
@@ -139,25 +141,33 @@ class Job {
     });
   }
 
+  Future<String> GetProvince(uid) async {
+    final DocumentSnapshot<Map<String, dynamic>> result =
+        await db.collection('users').doc(uid).get();
+    final Map<String, dynamic>? documents = result.data();
+    return documents!['province'];
+    // print(documents!['province']);
+  }
+
   Future<void> CreateJob({
     required String id,
     required String title,
     required String detail,
     required String jobtype,
-    required String province,
     required String salary,
     required DateTime startdate,
     required DateTime enddate,
     required List<String> description,
     required Map Requirements,
   }) async {
+    String province = await GetProvince(id);
+
     await db.collection('users').doc(id).collection('jobPost').add({
       "eid": id,
       "Title": title,
       "Detail": detail,
       "Description": description,
       "Jobtype": jobtype,
-      "Location": province,
       "Requirements": Requirements,
       "total": 0,
       "salary": salary,
@@ -166,12 +176,17 @@ class Job {
       "status": "กำลังเปิดรับสมัคร",
       "created_at": DateTime.now(),
     }).then((value) {
+      List<String> gg = [];
+      gg.add(jobtype);
+      gg.add(province);
+      gg.addAll(description);
       FirebaseFirestore.instance
           .collection('users')
           .doc(id)
           .collection('jobPost')
           .doc(value.id)
           .set({
+        "search": gg,
         "JobId": value.id,
       }, SetOptions(merge: true));
     });

@@ -3,7 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/main.dart';
+import 'package:hires/presentation/employer/employer_home.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'presentation/home_screen/home_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
+FirebaseMessaging messaging = FirebaseMessaging.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -176,7 +182,8 @@ class Auth {
         ),
       );
     } else {
-      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -230,43 +237,76 @@ class Auth {
         ),
       );
     } else {
-      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EmpHomeScreen()));
     }
   }
 
-  // Future Emp_signUp(context,
-  //     {required String email,
-  //     required String password,
-  //     required String name}) async {
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     addEmpUser(user.uid, user.email, name);
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'weak-password') {
-  //       print('The password provided is too weak.');
-  //     } else if (e.code == 'email-already-in-use') {
-  //       print('The account already exists for that email.');
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  Future<void> test() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
 
   Future addUser(String id, String email, String name) {
-    return users
-        .doc(id)
-        .set({
-          'id': id,
-          'email': email,
-          'username': name,
-          'usertype': "employee",
-          'imgurl': ""
-        })
-        .then((value) => print("added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    return users.doc(id).set({
+      'id': id,
+      'email': email,
+      'username': name,
+      'usertype': "employee",
+      'imgurl': ""
+    }).then((value) {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(id)
+          .collection('resume')
+          .add({
+        "uid": id,
+        "title": "",
+        "dateofbirth": {
+          "date": '',
+          "month": '',
+          "year": '',
+        },
+        "fullname": '',
+        "gender": '',
+        "age": '',
+        "location": '',
+        "address": '',
+        "email": email,
+        "phone": '',
+        "skills": '',
+        "drivingskill": [],
+        "companyname": '',
+        "duration": '',
+        "position": '',
+        "jobdetail": '',
+        "jobwanted": [],
+        "jobtype": '',
+        "province_work": '',
+        "imgurl": "",
+        "score": {'userdata': 0, 'skill': 0, 'exp': 0, 'jobwanted': 0},
+        "status": false,
+        "create_at": DateTime.now(),
+      }).then((value) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(id)
+            .collection('resume')
+          ..doc(value.id).set({
+            "resume_id": value.id,
+          }, SetOptions(merge: true));
+      });
+    }).catchError((error) => print("Failed to add user: $error"));
   }
 
   Future addEmpUser(String id, String email, String name, String companyname) {

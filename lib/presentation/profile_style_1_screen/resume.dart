@@ -161,7 +161,7 @@ class _ProfileState extends State<Profile> {
   int payTypeIndex = 0;
   String province = "";
   String province_work = "";
-  String totalscore = "";
+  int totalscore = 0;
   String userimage = "";
   String resume_id = "";
   bool isEmpty = true;
@@ -207,19 +207,10 @@ class _ProfileState extends State<Profile> {
         });
   }
 
-  void CreateResume(int score) {
+  void CreateResume(var score) {
     // print(jobwanteduserlist);
-    int SS = score;
-    if (totalscore != "") {
-      setState(() {
-        int s = int.parse(totalscore);
-        if (s < 100) {
-          totalscore = (s + score).toString();
-        } else {
-          SS = 0;
-        }
-      });
-    }
+    totalscore = 0;
+
     drivingname.clear();
 
     drivinglist.forEach(
@@ -248,7 +239,7 @@ class _ProfileState extends State<Profile> {
       jobwanteduserlist,
       jobTypesList[jobTypeIndex],
       province_work,
-      SS,
+      score,
     );
     // print(_companynameController.text);
     // print(_durationController.text);
@@ -273,7 +264,7 @@ class _ProfileState extends State<Profile> {
             resume_id = doc.id;
             ison = doc["status"];
             userimage = doc["imgurl"];
-            totalscore = doc["score"].toString();
+
             _fullnameController.text = doc["fullname"];
             _addressController.text = doc["address"];
             _ageController.text = doc["age"];
@@ -361,11 +352,13 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    super.initState();
     SetInput();
+
+    super.initState();
   }
 
   bool isExpand = false;
+  TextEditingController _textFieldController = TextEditingController();
 
   bool checkBoxVal = false;
   @override
@@ -473,213 +466,263 @@ class _ProfileState extends State<Profile> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              totalscore + "%",
-                              style: TextStyle(
-                                color: totalscore == '100'
-                                    ? ColorConstant.teal600
-                                    : ColorConstant.black900,
-                                fontSize: getFontSize(
-                                  18,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Container(
-                              height: getSize(
-                                104.00,
-                              ),
-                              width: getSize(
-                                104.00,
-                              ),
-                              margin: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  24.00,
-                                ),
-                                top: getVerticalSize(
-                                  8.00,
-                                ),
-                                bottom: getVerticalSize(
-                                  15.00,
-                                ),
-                                right: getHorizontalSize(
-                                  24.00,
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                color: ColorConstant.teal600,
-                                borderRadius: BorderRadius.circular(
-                                  getHorizontalSize(
-                                    52.00,
-                                  ),
-                                ),
-                              ),
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          getSize(
-                                            52.00,
+                            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                                stream: FirebaseFirestore.instance
+                                    .collectionGroup('resume')
+                                    .where("uid", isEqualTo: user.uid)
+                                    .snapshots(),
+                                builder: (context, AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  var _data = snapshot.data?.docs[0];
+
+                                  totalscore +=
+                                      _data['score']['userdata'] as int;
+                                  totalscore += _data['score']['skill'] as int;
+                                  totalscore +=
+                                      _data['score']['jobwanted'] as int;
+                                  totalscore += _data['score']['exp'] as int;
+                                  // print(totalscore);
+                                  if (totalscore > 100) totalscore = 100;
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        totalscore.toString() + "%",
+                                        style: TextStyle(
+                                          color: totalscore == '100'
+                                              ? ColorConstant.teal600
+                                              : ColorConstant.black900,
+                                          fontSize: getFontSize(
+                                            18,
+                                          ),
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: getSize(
+                                          104.00,
+                                        ),
+                                        width: getSize(
+                                          104.00,
+                                        ),
+                                        margin: EdgeInsets.only(
+                                          left: getHorizontalSize(
+                                            24.00,
+                                          ),
+                                          top: getVerticalSize(
+                                            8.00,
+                                          ),
+                                          bottom: getVerticalSize(
+                                            15.00,
+                                          ),
+                                          right: getHorizontalSize(
+                                            24.00,
+                                          ),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: ColorConstant.teal600,
+                                          borderRadius: BorderRadius.circular(
+                                            getHorizontalSize(
+                                              52.00,
+                                            ),
                                           ),
                                         ),
                                         child: Stack(
+                                          alignment: Alignment.centerLeft,
                                           children: [
-                                            image != null
-                                                ? Image.file(
-                                                    //to show image, you type like this.
-                                                    File(image!.path),
-                                                    fit: BoxFit.cover,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    height: 300,
-                                                  )
-                                                : userimage != ""
-                                                    ? Image.network(
-                                                        userimage,
-                                                        fit: BoxFit.cover,
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        height: 300,
-                                                      )
-                                                    : Icon(
-                                                        Icons.person,
-                                                        size: 50,
-                                                        color: Colors.white,
-                                                      ),
-                                            Positioned.fill(
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: GestureDetector(
-                                                  //if user click this button, user can upload image from gallery
-                                                  onTap: () {
-                                                    // Navigator.pop(context);
-                                                    getImage(
-                                                        ImageSource.gallery);
-                                                  },
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    height: getVerticalSize(
-                                                      30.00,
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    getSize(
+                                                      52.00,
                                                     ),
-                                                    width: getHorizontalSize(
-                                                      30.00,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        getHorizontalSize(
-                                                          52.00,
+                                                  ),
+                                                  child: Stack(
+                                                    children: [
+                                                      image != null
+                                                          ? Image.file(
+                                                              //to show image, you type like this.
+                                                              File(image!.path),
+                                                              fit: BoxFit.cover,
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              height: 300,
+                                                            )
+                                                          : userimage != ""
+                                                              ? Image.network(
+                                                                  userimage,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                                  height: 300,
+                                                                )
+                                                              : Icon(
+                                                                  Icons.person,
+                                                                  size: 50,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                      Positioned.fill(
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .bottomCenter,
+                                                          child:
+                                                              GestureDetector(
+                                                            //if user click this button, user can upload image from gallery
+                                                            onTap: () {
+                                                              // Navigator.pop(context);
+                                                              getImage(
+                                                                  ImageSource
+                                                                      .gallery);
+                                                            },
+                                                            child: Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              height:
+                                                                  getVerticalSize(
+                                                                30.00,
+                                                              ),
+                                                              width:
+                                                                  getHorizontalSize(
+                                                                30.00,
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  getHorizontalSize(
+                                                                    52.00,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                  Icons.image),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    child: Icon(Icons.image),
-                                                  ),
+                                                    ],
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text: 'สถานะเรซูเม่ : ',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black)),
+                                            TextSpan(
+                                              text: totalscore == 100
+                                                  ? 'สมบูรณ์!'
+                                                  : ' ยังไม่สมบูรณ์!',
+                                              style: TextStyle(
+                                                color: totalscore == 100
+                                                    ? ColorConstant.teal600
+                                                    : ColorConstant.red700,
+                                                fontSize: getFontSize(
+                                                  18,
                                                 ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ],
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: 'สถานะเรซูเม่ : ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black)),
-                                  TextSpan(
-                                    text: totalscore == '100'
-                                        ? 'สมบูรณ์!'
-                                        : ' ยังไม่สมบูรณ์!',
-                                    style: TextStyle(
-                                      color: totalscore == '100'
-                                          ? ColorConstant.teal600
-                                          : ColorConstant.red700,
-                                      fontSize: getFontSize(
-                                        18,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, //Center Column contents vertically,
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .center, //Center Column contents horizontally,
-                              children: [
-                                Text(
-                                  "เปิดการมองเห็น",
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      18,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Switch(
-                                  value: ison,
-                                  onChanged: (value) async {
-                                    if (totalscore != '100') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          backgroundColor: ColorConstant.red700,
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.warning_amber,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                "weak",
-                                                style: TextStyle(fontSize: 16),
-                                              )
-                                            ],
-                                          ),
                                         ),
-                                      );
-                                    } else {
-                                      resume.SetOnOFf(user.uid, value);
-                                      setState(() {
-                                        ison = value;
-                                      });
-                                    }
-                                    // print(value);
-                                  },
-                                  inactiveThumbColor: Colors.red,
-                                  inactiveTrackColor: Colors.grey.shade400,
-                                  activeTrackColor: Colors.lightGreenAccent,
-                                  activeColor: Colors.green,
-                                ),
-                              ],
-                            ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center, //Center Column contents vertically,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center, //Center Column contents horizontally,
+                                        children: [
+                                          Text(
+                                            "เปิดการมองเห็น",
+                                            style: TextStyle(
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Switch(
+                                            value: ison,
+                                            onChanged: (value) async {
+                                              if (totalscore != 100) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        ColorConstant.red700,
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.warning_amber,
+                                                          color: Colors.white,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "เรซูเม่ยังไม่สมบูรณ์ กรุณากรอกข้อมูลให้ครบถ้วนก่อนจึงจะเปิดการมองเห็นได้",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                resume.SetOnOFf(
+                                                    user.uid, value);
+                                                setState(() {
+                                                  ison = value;
+                                                });
+                                              }
+                                              // print(value);
+                                            },
+                                            inactiveThumbColor: Colors.red,
+                                            inactiveTrackColor:
+                                                Colors.grey.shade400,
+                                            activeTrackColor:
+                                                Colors.lightGreenAccent,
+                                            activeColor: Colors.green,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }),
                             Card(
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -913,9 +956,7 @@ class _ProfileState extends State<Profile> {
                                                   inputFormatters: <
                                                       TextInputFormatter>[
                                                     // for below version 2 use this
-                                                    FilteringTextInputFormatter
-                                                        .allow(RegExp(
-                                                            r'[1-9]|1[0-2]')),
+
                                                     // for version 2 and greater youcan also use this
                                                     FilteringTextInputFormatter
                                                         .digitsOnly
@@ -945,9 +986,7 @@ class _ProfileState extends State<Profile> {
                                               inputFormatters: <
                                                   TextInputFormatter>[
                                                 // for below version 2 use this
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp(
-                                                        r'[1-9]|1[0-2]')),
+
                                                 // for version 2 and greater youcan also use this
                                                 FilteringTextInputFormatter
                                                     .digitsOnly
@@ -974,8 +1013,7 @@ class _ProfileState extends State<Profile> {
                                               inputFormatters: <
                                                   TextInputFormatter>[
                                                 // for below version 2 use this
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp(r'[0-9]|')),
+
                                                 // for version 2 and greater youcan also use this
                                                 FilteringTextInputFormatter
                                                     .digitsOnly
@@ -1031,12 +1069,11 @@ class _ProfileState extends State<Profile> {
                                           child: TextFormField(
                                             controller: _ageController,
                                             keyboardType: TextInputType.number,
-                                            maxLength: 3,
+                                            maxLength: 2,
                                             inputFormatters: <
                                                 TextInputFormatter>[
                                               // for below version 2 use this
-                                              FilteringTextInputFormatter.allow(
-                                                  RegExp(r'[1-9]|')),
+
                                               // for version 2 and greater youcan also use this
                                               FilteringTextInputFormatter
                                                   .digitsOnly
@@ -1385,7 +1422,8 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume(30);
+                                          var userdata = {'userdata': 30};
+                                          CreateResume(userdata);
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1568,7 +1606,7 @@ class _ProfileState extends State<Profile> {
                                         ),
                                         onPressed: () {
                                           // resume.test(context);
-                                          CreateResume(30);
+                                          CreateResume({'skill': 30});
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1790,7 +1828,7 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume(20);
+                                          CreateResume({'exp': 20});
                                         },
                                         child: Text(
                                           "บันทึก",
@@ -1816,31 +1854,170 @@ class _ProfileState extends State<Profile> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600)),
                                   children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:
-                                          DropdownSearch<String>.multiSelection(
-                                        popupProps:
-                                            PopupPropsMultiSelection.menu(
-                                          showSelectedItems: true,
-                                          disabledItemFn: (String s) =>
-                                              s.startsWith('I'),
+                                    StreamBuilder<QuerySnapshot>(
+                                        stream: db
+                                            .collection('joblist')
+                                            .snapshots(),
+                                        builder:
+                                            (context, AsyncSnapshot snapshot) {
+                                          if (snapshot.hasError) {
+                                            return Text('ไม่พบข้อมูล');
+                                          }
+
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center();
+                                          }
+                                          var resumedata = snapshot.data!.docs;
+                                          var data = resumedata[0].data()
+                                              as Map<String, dynamic>;
+                                          List<String> jobdata =
+                                              List<String>.from(
+                                                  data['name'] as List);
+                                          // print(jobdata);
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: DropdownSearch<
+                                                String>.multiSelection(
+                                              popupProps:
+                                                  PopupPropsMultiSelection.menu(
+                                                showSelectedItems: true,
+                                                disabledItemFn: (String s) =>
+                                                    s.startsWith('I'),
+                                              ),
+                                              items: jobdata,
+                                              dropdownDecoratorProps:
+                                                  DropDownDecoratorProps(
+                                                dropdownSearchDecoration:
+                                                    InputDecoration(
+                                                  // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
+                                                  // labelText: "เลือกงาน",
+                                                  hintText: "เลือกงาน",
+                                                ),
+                                              ),
+                                              onChanged: (value) {
+                                                jobwanteduserlist = value;
+                                              },
+                                              selectedItems: jobwanteduserlist,
+
+                                              // selectedItem: "Brazil",
+                                            ),
+                                          );
+                                        }),
+                                    const SizedBox(width: 50),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('เพิ่มหมวดหมู่งาน'),
+                                                actions: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      // // changenewpass();
+                                                      FirebaseFirestore.instance
+                                                          .collection("joblist")
+                                                          .doc('jobid')
+                                                          .set(
+                                                              {
+                                                            "name": FieldValue
+                                                                .arrayUnion([
+                                                              _textFieldController
+                                                                  .text
+                                                            ])
+                                                          },
+                                                              SetOptions(
+                                                                  merge: true));
+                                                      _textFieldController
+                                                          .clear();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          left:
+                                                              getHorizontalSize(
+                                                            18.00,
+                                                          ),
+                                                          bottom:
+                                                              getVerticalSize(
+                                                            10.00,
+                                                          ),
+                                                          right:
+                                                              getHorizontalSize(
+                                                            18.00,
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          height:
+                                                              getVerticalSize(
+                                                            56.00,
+                                                          ),
+                                                          width:
+                                                              getHorizontalSize(
+                                                            327.00,
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: ColorConstant
+                                                                .blueA200,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              getHorizontalSize(
+                                                                16.00,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            "เพิ่ม",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  ColorConstant
+                                                                      .whiteA700,
+                                                              fontSize:
+                                                                  getFontSize(
+                                                                16,
+                                                              ),
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                                content: TextField(
+                                                  controller:
+                                                      _textFieldController,
+                                                  decoration: InputDecoration(
+                                                      hintText: "กรอกข้อมูล"),
+                                                ),
+                                              );
+                                            });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration:
+                                            BoxDecoration(color: Colors.blue),
+                                        child: Text(
+                                          'เพิ่มหมวดหมู่งาน',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
                                         ),
-                                        items: JobList,
-                                        dropdownDecoratorProps:
-                                            DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
-                                            // labelText: "เลือกงาน",
-                                            hintText: "เลือกงาน",
-                                          ),
-                                        ),
-                                        onChanged: (value) {
-                                          jobwanteduserlist = value;
-                                        },
-                                        selectedItems: jobwanteduserlist,
-                                        // selectedItem: "Brazil",
                                       ),
                                     ),
                                     Align(
@@ -2142,7 +2319,7 @@ class _ProfileState extends State<Profile> {
                                               ColorConstant.teal600,
                                         ),
                                         onPressed: () {
-                                          CreateResume(20);
+                                          CreateResume({'jobwanted': 20});
                                         },
                                         child: Text(
                                           "บันทึก",

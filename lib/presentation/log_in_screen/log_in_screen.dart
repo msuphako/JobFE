@@ -181,92 +181,103 @@ class _LogInScreenState extends State<LogInScreen> {
                             //   ),
                             // ),
                             Padding(
-                            padding: EdgeInsets.only(
-                              top: getVerticalSize(
-                                20.00,
-                              ),
-                              bottom: getVerticalSize(
-                                10.00,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                padding: EdgeInsets.only(
-                                  left: getHorizontalSize(25),
+                              padding: EdgeInsets.only(
+                                top: getVerticalSize(
+                                  20.00,
                                 ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isEmployee = true;
-                                      emailController.clear();
-                                      passwordController.clear();
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: isEmployee?Border(
-                                        bottom: BorderSide(
-                                            width: 1.5,
-                                            color: ColorConstant.teal600),
-                                      ):Border(),
+                                bottom: getVerticalSize(
+                                  10.00,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(25),
                                     ),
-                                    child: Text(
-                                      "สำหรับหางาน",
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: isEmployee? ColorConstant.teal600:ColorConstant.gray700,
-                                        fontSize: getFontSize(
-                                          20,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isEmployee = true;
+                                          emailController.clear();
+                                          passwordController.clear();
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: isEmployee
+                                              ? Border(
+                                                  bottom: BorderSide(
+                                                      width: 1.5,
+                                                      color: ColorConstant
+                                                          .teal600),
+                                                )
+                                              : Border(),
                                         ),
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
+                                        child: Text(
+                                          "สำหรับหางาน",
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                            color: isEmployee
+                                                ? ColorConstant.teal600
+                                                : ColorConstant.gray700,
+                                            fontSize: getFontSize(
+                                              20,
+                                            ),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                                Padding(
-                                padding: EdgeInsets.only(
-                                  right: getHorizontalSize(25),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isEmployee = false;
-                                      emailController.clear();
-                                      passwordController.clear();
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: isEmployee?Border( ):Border(
-                                        bottom: BorderSide(
-                                            width: 1.5,
-                                            color: ColorConstant.teal600),
-                                     ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: getHorizontalSize(25),
                                     ),
-                                    child: Text(
-                                      "สำหรับหาคน",
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        color: isEmployee? ColorConstant.gray700:ColorConstant.teal600,
-                                        fontSize: getFontSize(
-                                          20,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isEmployee = false;
+                                          emailController.clear();
+                                          passwordController.clear();
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: isEmployee
+                                              ? Border()
+                                              : Border(
+                                                  bottom: BorderSide(
+                                                      width: 1.5,
+                                                      color: ColorConstant
+                                                          .teal600),
+                                                ),
                                         ),
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
+                                        child: Text(
+                                          "สำหรับหาคน",
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                            color: isEmployee
+                                                ? ColorConstant.gray700
+                                                : ColorConstant.teal600,
+                                            fontSize: getFontSize(
+                                              20,
+                                            ),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                              ],
                             ),
-                          ),
                             // Container(
                             //   alignment: Alignment.center,
                             //   child: Padding(
@@ -806,15 +817,20 @@ class _LogInScreenState extends State<LogInScreen> {
                                                   EdgeInsets.all(getSize(8)),
                                               child: SvgPicture.asset(
                                                   ImageConstant.appleLogo)),
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:
-                                                      ColorConstant.whiteA700),
-                                              padding:
-                                                  EdgeInsets.all(getSize(8)),
-                                              child: SvgPicture.asset(
-                                                  ImageConstant.googleLogo)),
+                                          GestureDetector(
+                                            onTap: () {
+                                              // auth.test();
+                                            },
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: ColorConstant
+                                                        .whiteA700),
+                                                padding:
+                                                    EdgeInsets.all(getSize(8)),
+                                                child: SvgPicture.asset(
+                                                    ImageConstant.googleLogo)),
+                                          ),
                                           Container(
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,

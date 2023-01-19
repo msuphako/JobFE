@@ -2,20 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/utils/color_constant.dart';
 import 'package:hires/core/utils/math_utils.dart';
+import 'package:hires/presentation/employer/widget/person_card.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
 
 import '../search_result_2_screen/widgets/JobCard.dart';
 
-class SearchJobScreen extends StatefulWidget {
-  static String id = "SearchJobScreen";
+class SearchPerScreen extends StatefulWidget {
+  static String id = "SearchPerScreen";
   var uid;
-  // SearchJobScreen(this.uid);
+  // SearchPerScreen(this.uid);
 
   @override
-  _SearchJobScreenState createState() => _SearchJobScreenState();
+  _SearchPerScreenState createState() => _SearchPerScreenState();
 }
 
-class _SearchJobScreenState extends State<SearchJobScreen> {
+class _SearchPerScreenState extends State<SearchPerScreen> {
   TextEditingController searchController = TextEditingController();
   List<Map> searchResult = [];
   bool isLoading = true;
@@ -29,9 +30,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
       searchResult = [];
     });
     await FirebaseFirestore.instance
-        .collectionGroup('jobPost')
-        .where('status', isEqualTo: 'กำลังเปิดรับสมัคร')
-        .where('Title',
+        .collectionGroup('resume')
+        .where('fullname',
             isGreaterThanOrEqualTo: search,
             isLessThan: search.substring(0, search.length - 1) +
                 String.fromCharCode(search.codeUnitAt(search.length - 1) + 1))
@@ -44,9 +44,9 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
         return;
       }
       value.docs.forEach((job) {
-        if (job.data()['status'] == "กำลังเปิดรับสมัคร") {
-          searchResult.add(job.data());
-        }
+        // if (job.data()['status'] == "กำลังเปิดรับสมัคร") {
+        searchResult.add(job.data());
+        // }
       });
       setState(() {
         isLoading = false;
@@ -58,7 +58,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ค้นหางาน"),
+        title: Text("ค้นหาประวัติ"),
       ),
       body: Column(
         children: [
@@ -74,7 +74,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                       if (searchController.text == "") isLoading = true;
                     },
                     decoration: InputDecoration(
-                      hintText: 'ระบุชื่องาน',
+                      hintText: 'ระบุชื่อ',
                       hintStyle: TextStyle(
                         fontSize: getFontSize(
                           15.0,
@@ -117,30 +117,46 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                 shrinkWrap: true,
                 itemCount: searchResult.length,
                 itemBuilder: (context, index) {
-                  return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(searchResult[index]['eid'])
-                          .get(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Something went wrong');
-                        }
-
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        final job =
-                            Map<String, dynamic>.from(searchResult[index]);
-                        return JobCardSearch(job, data);
-                      });
+                  final resume = Map<String, dynamic>.from(searchResult[index]);
+                  return PersonCard(resume);
                 },
               ),
             )
+          else if (isLoading == false)
+            Center(
+              child: Text(
+                "ไม่พบข้อมูล",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
+          else
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collectionGroup('resume')
+                    .snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  var resumedata = snapshot.data!.docs;
+                  int total = snapshot.data!.docs.length;
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(top: getVerticalSize(10)),
+                      shrinkWrap: true,
+                      itemCount: total,
+                      itemBuilder: (context, index) {
+                        final resume =
+                            resumedata[index].data()! as Map<String, dynamic>;
+                        return PersonCard(resume);
+                      },
+                    ),
+                  );
+                }),
           // Expanded(
           //     child: ListView.builder(
           //         itemCount: searchResult.length,
@@ -176,13 +192,6 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
           //             ),
           //           );
           //         }))
-          else if (isLoading == false)
-            Center(
-              child: Text(
-                "ไม่พบข้อมูล",
-                style: TextStyle(fontSize: 16),
-              ),
-            )
         ],
       ),
     );

@@ -88,7 +88,7 @@ class Resume {
     List<String> jobwanted,
     String jobtype,
     String province_work,
-    int score,
+    var score,
   ) async {
     final QuerySnapshot<Map<String, Object?>> result = await db
         .collection("users")
@@ -135,46 +135,9 @@ class Resume {
         "jobwanted": jobwanted,
         "jobtype": jobtype,
         "province_work": province_work,
-        "score": FieldValue.increment(score),
+        "score": score,
         "last_edit": DateTime.now(),
       }, SetOptions(merge: true));
-    } else {
-      await db.collection("users").doc(uid).collection('resume').add({
-        "uid": uid,
-        "title": "null",
-        "dateofbirth": {
-          "date": date,
-          "month": month,
-          "year": year,
-        },
-        "fullname": fullname,
-        "gender": gender,
-        "age": age,
-        "location": province,
-        "address": address,
-        "email": email,
-        "phone": phone,
-        "skills": skills,
-        "drivingskill": drivingskill,
-        "companyname": companyname,
-        "duration": duration,
-        "position": position,
-        "jobdetail": jobdetail,
-        "jobwanted": jobwanted,
-        "jobtype": jobtype,
-        "province_work": province_work,
-        "score": 0,
-        "status": false,
-        "create_at": DateTime.now(),
-      }).then((value) {
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(uid)
-            .collection('resume')
-          ..doc(value.id).set({
-            "resume_id": value.id,
-          }, SetOptions(merge: true));
-      });
     }
   }
 }

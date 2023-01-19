@@ -248,7 +248,8 @@ class JobCardSearchState extends State<JobCardSearch> {
                                                       const EdgeInsets.only(
                                                           top: 8.0, bottom: 8),
                                                   child: Text(
-                                                    data["status"],
+                                                    widget.userdata[
+                                                        'companyname'],
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     textAlign: TextAlign.right,
@@ -370,7 +371,8 @@ class JobCardSearchState extends State<JobCardSearch> {
                                                               .teal600,
                                                         )),
                                                     Text(
-                                                      data["Location"],
+                                                      widget
+                                                          .userdata["province"],
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       textAlign:

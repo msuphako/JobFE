@@ -281,7 +281,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     child: Icon(
                       icon,
                       size: 40.0,
-                      color: Colors.grey,
+                      color: Colors.teal,
                     ),
                   ),
                 ),

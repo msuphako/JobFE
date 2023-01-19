@@ -9,121 +9,119 @@ import 'package:hires/presentation/search_result_2_screen/widgets/JobCard.dart';
 
 class SearchResult2Screen extends StatefulWidget {
   static String id = "SearchResult2Screen";
+  String jobTypesList;
+  List<String> dataaa;
+  String province;
+  SearchResult2Screen(this.jobTypesList, this.dataaa, this.province);
 
   @override
   State<SearchResult2Screen> createState() => _SearchResult2ScreenState();
 }
 
 class _SearchResult2ScreenState extends State<SearchResult2Screen> {
-  List<Object> _datajobs = [];
-
-  Future fetchjobsdata() async {
-    var data = await db
-        .collectionGroup("jobPost")
-        .orderBy('created_at', descending: true)
-        .get();
-    setState(() {
-      _datajobs = List.from(data.docs.map((doc) => Job.fromSnapshot(doc)));
-    });
-  }
-
   @override
   void initState() {
-    fetchjobsdata();
+    // print(widget.jobTypesList);
+    // print(widget.dataaa);
+    // print(widget.province);
+
     super.initState();
   }
 
+  GetSearch() {
+    var jobtype;
+
+    widget.jobTypesList == 'ทั้งหมด'
+        ? jobtype = [
+            "ทั้งหมด",
+            "งานประจำ",
+            "งานพาทไทม์",
+            "งานชั่วคราว",
+            "ทำงานที่บ้าน",
+          ]
+        : jobtype = [widget.jobTypesList];
+
+    List<String> gg = [];
+    gg.addAll(jobtype);
+    final Stream<QuerySnapshot> jobpost = db
+        .collectionGroup('jobPost')
+        .where("search", arrayContainsAny: gg + widget.dataaa)
+        .where("status", isEqualTo: 'กำลังเปิดรับสมัคร')
+        .orderBy('created_at', descending: true)
+        .snapshots();
+
+    return jobpost;
+  }
+
   int total = 0;
+  List<String> jobdes = [];
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> jobpost = db
-        .collectionGroup('jobPost')
-        .orderBy('created_at', descending: true)
-        .snapshots();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            "Solfware Engineer",
+            "ผลการค้นหา",
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: getFontSize(
-                16,
+                20,
               ),
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,
             ),
           ),
-          centerTitle: false,
-          elevation: 0,
-          leading: Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: getHorizontalSize(
-                  18.00,
-                ),
-                right: getHorizontalSize(
-                  18.00,
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                    height: getSize(
-                      24.00,
-                    ),
-                    width: getSize(
-                      24.00,
-                    ),
-                    child: Icon(Icons.arrow_back_ios,
-                        size: getSize(20),
-                        color: isDark ? Colors.white : Colors.black)),
-              ),
-            ),
-          ),
           actions: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getHorizontalSize(16),
-                  vertical: getVerticalSize(18)),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  height: getSize(
-                    18.00,
-                  ),
-                  width: getSize(
-                    18.00,
-                  ),
-                  child: SvgPicture.asset(
-                    ImageConstant.imgAkariconscros4,
-                    fit: BoxFit.fill,
-                  ),
+              padding: EdgeInsets.only(
+                top: getVerticalSize(
+                  4.00,
+                ),
+                left: context.locale == Constants.engLocal
+                    ? getHorizontalSize(
+                        0.00,
+                      )
+                    : getHorizontalSize(24),
+                right: context.locale == Constants.arLocal
+                    ? getHorizontalSize(
+                        0.00,
+                      )
+                    : getHorizontalSize(24),
+                bottom: getVerticalSize(
+                  3.00,
+                ),
+              ),
+              child: Container(
+                height: getVerticalSize(
+                  20.00,
+                ),
+                width: getHorizontalSize(
+                  18.60,
+                ),
+                child: SvgPicture.asset(
+                  ImageConstant.imgIconlylightfi,
                 ),
               ),
             ),
           ],
           backgroundColor: isDark ? ColorConstant.darkContainer : Colors.white),
       body: StreamBuilder<QuerySnapshot>(
-          stream: jobpost,
+          stream: GetSearch(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              return Text('Something went wrong');
+              print(snapshot.error);
+              return Text('No data ');
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
 
             var jobdata = snapshot.data!.docs;
             int total = snapshot.data!.docs.length;
+
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -136,104 +134,6 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: getVerticalSize(
-                      1.00,
-                    ),
-                    width: getHorizontalSize(
-                      327.00,
-                    ),
-                    margin: EdgeInsets.only(
-                      left: getHorizontalSize(
-                        24.00,
-                      ),
-                      top: getVerticalSize(
-                        10.00,
-                      ),
-                      right: getHorizontalSize(
-                        24.00,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: ColorConstant.gray402,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: getVerticalSize(
-                        24.00,
-                      ),
-                      bottom: getVerticalSize(
-                        16.00,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: context.locale == Constants.engLocal
-                                ? getHorizontalSize(
-                                    24.00,
-                                  )
-                                : getHorizontalSize(0),
-                            right: context.locale == Constants.arLocal
-                                ? getHorizontalSize(
-                                    24.00,
-                                  )
-                                : getHorizontalSize(0),
-                          ),
-                          child: Text(
-                            "$total Jobs Found",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: ColorConstant.teal600,
-                              fontSize: getFontSize(
-                                14,
-                              ),
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              4.00,
-                            ),
-                            left: context.locale == Constants.engLocal
-                                ? getHorizontalSize(
-                                    0.00,
-                                  )
-                                : getHorizontalSize(24),
-                            right: context.locale == Constants.arLocal
-                                ? getHorizontalSize(
-                                    0.00,
-                                  )
-                                : getHorizontalSize(24),
-                            bottom: getVerticalSize(
-                              3.00,
-                            ),
-                          ),
-                          child: Container(
-                            height: getVerticalSize(
-                              14.00,
-                            ),
-                            width: getHorizontalSize(
-                              12.60,
-                            ),
-                            child: SvgPicture.asset(
-                              ImageConstant.imgIconlylightfi,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.only(top: getVerticalSize(10)),
@@ -254,11 +154,18 @@ class _SearchResult2ScreenState extends State<SearchResult2Screen> {
 
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return CircularProgressIndicator();
+                                return Center(
+                                    child: CircularProgressIndicator());
                               }
 
                               Map<String, dynamic> data =
                                   snapshot.data!.data() as Map<String, dynamic>;
+                              if (!widget.province.contains('ทั้งหมด')) {
+                                if (widget.province != data['province']) {
+                                  return Text('');
+                                }
+                                ;
+                              }
                               return JobCardSearch(job, data);
                             });
                       },

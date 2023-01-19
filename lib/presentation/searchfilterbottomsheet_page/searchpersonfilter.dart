@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:hires/presentation/employer/search_person.dart';
+import 'package:hires/presentation/search_option_3_screen/searchperson.dart';
 import 'package:hires/presentation/search_result_2_screen/search_result_2_screen%20copy.dart';
 import 'package:hires/presentation/search_result_2_screen/search_result_2_screen.dart';
 import 'package:hires/presentation/searchfilterbottomsheet_page/widgets/dialog1.dart';
@@ -12,17 +13,20 @@ import 'package:hires/core/app_export.dart';
 import '../search_option_3_screen/search_option_3_screen.dart';
 
 // ignore_for_file: must_be_immutable
-class SearchfilterbottomsheetPage extends StatefulWidget {
-  static String id = "SearchfilterbottomsheetPage";
+class SearchPerfilterbottomsheetPage extends StatefulWidget {
+  static String id = "SearchPerfilterbottomsheetPage";
 
   @override
-  State<SearchfilterbottomsheetPage> createState() =>
-      _SearchfilterbottomsheetPageState();
+  State<SearchPerfilterbottomsheetPage> createState() =>
+      _SearchPerfilterbottomsheetPageState();
 }
 
-class _SearchfilterbottomsheetPageState
-    extends State<SearchfilterbottomsheetPage> {
+class _SearchPerfilterbottomsheetPageState
+    extends State<SearchPerfilterbottomsheetPage> {
   RangeValues sliderRange = RangeValues(20, 80);
+  List<String> genderList = ["ทั้งหมด", "ชาย", "หญิง"];
+  int GenderIndex = 0;
+
   List<String> jobTypesList = [
     "ทั้งหมด",
     "งานประจำ",
@@ -31,14 +35,6 @@ class _SearchfilterbottomsheetPageState
     "ทำงานที่บ้าน",
   ];
 
-  List<String> companyList = [
-    "Google",
-    "Meta",
-    "Amazon",
-    "Netflix",
-    "Microsoft",
-    "Apple"
-  ];
   var provinceList = [
     'ทั้งหมด',
     'กระบี่',
@@ -121,6 +117,7 @@ class _SearchfilterbottomsheetPageState
   ];
   String province = "ทั้งหมด";
   late List<String> dataaa = ["ทั้งหมด"];
+  RangeValues _currentRangeValues = const RangeValues(60, 80);
 
   int jobTypeIndex = 0;
 
@@ -129,11 +126,11 @@ class _SearchfilterbottomsheetPageState
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: getVerticalSize(750),
+      height: getVerticalSize(720),
       child: Align(
         alignment: Alignment.center,
         child: Padding(
-          padding: EdgeInsets.only(bottom: 100),
+          padding: EdgeInsets.only(bottom: 50),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +176,7 @@ class _SearchfilterbottomsheetPageState
                           ),
                         ),
                         child: Text(
-                          "ค้นหางานโดยละเอียด",
+                          "ค้นหาประวัติ",
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -233,7 +230,7 @@ class _SearchfilterbottomsheetPageState
                               19.00,
                             ),
                             top: getVerticalSize(
-                              60.00,
+                              30.00,
                             ),
                             right: getHorizontalSize(
                               19.00,
@@ -248,10 +245,10 @@ class _SearchfilterbottomsheetPageState
                           child: TextFormField(
                             onTap: () {
                               // Navigator.pop(context);
-                              Navigator.pushNamed(context, SearchJobScreen.id);
+                              Navigator.pushNamed(context, SearchPerScreen.id);
                             },
                             decoration: InputDecoration(
-                              hintText: 'ค้นหางานที่ต้องการ ',
+                              hintText: 'ค้นหาจากชื่อ ',
                               hintStyle: TextStyle(fontSize: 18),
                               prefixIcon: Padding(
                                 padding: EdgeInsets.only(
@@ -313,7 +310,7 @@ class _SearchfilterbottomsheetPageState
                               20.00,
                             ),
                             top: getVerticalSize(
-                              30.00,
+                              10.00,
                             ),
                           ),
                           child: Text(
@@ -401,7 +398,7 @@ class _SearchfilterbottomsheetPageState
                               20.00,
                             ),
                             top: getVerticalSize(
-                              25.00,
+                              10.00,
                             ),
                             right: getHorizontalSize(
                               20.00,
@@ -646,6 +643,149 @@ class _SearchfilterbottomsheetPageState
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: getHorizontalSize(
+                              20.00,
+                            ),
+                            top: getVerticalSize(
+                              10.00,
+                            ),
+                            right: getHorizontalSize(
+                              20.00,
+                            ),
+                          ),
+                          child: Text(
+                            "ระบุช่วงอายุ : ${_currentRangeValues.start.round()} - ${_currentRangeValues.end.round()}",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.gray800,
+                              fontSize: getFontSize(
+                                20,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: getVerticalSize(
+                              10.00,
+                            ),
+                            left: 20,
+                            right: 20),
+                        child: RangeSlider(
+                          values: _currentRangeValues,
+                          max: 80,
+                          min: 60,
+                          divisions: 4,
+                          labels: RangeLabels(
+                            _currentRangeValues.start.round().toString(),
+                            _currentRangeValues.end.round().toString(),
+                          ),
+                          onChanged: (RangeValues values) {
+                            setState(() {
+                              _currentRangeValues = values;
+                            });
+                            // print(_currentRangeValues.start.toString());
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: getHorizontalSize(
+                              20.00,
+                            ),
+                            top: getVerticalSize(
+                              10.00,
+                            ),
+                            right: getHorizontalSize(
+                              20.00,
+                            ),
+                          ),
+                          child: Text(
+                            "ระบุเพศ",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.gray800,
+                              fontSize: getFontSize(
+                                20,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(
+                            top: getVerticalSize(
+                              16.00,
+                            ),
+                            bottom: getVerticalSize(
+                              10.00,
+                            ),
+                          ),
+                          child: Container(
+                            height: getVerticalSize(40),
+                            child: ListView.builder(
+                                itemCount: genderList.length,
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            GenderIndex = index;
+                                          });
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: getVerticalSize(
+                                            37.00,
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  getHorizontalSize(16)),
+                                          decoration: BoxDecoration(
+                                            color: GenderIndex == index
+                                                ? ColorConstant.blueA200
+                                                : isDark
+                                                    ? ColorConstant.darkbutton
+                                                    : ColorConstant.gray300,
+                                          ),
+                                          child: Text(
+                                            genderList[index],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: GenderIndex == index
+                                                  ? Colors.white
+                                                  : isDark
+                                                      ? ColorConstant.gray100
+                                                      : ColorConstant.gray700,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          )),
                       Padding(
                         padding: EdgeInsets.only(top: 40, bottom: 20),
                         child: Container(
@@ -657,11 +797,20 @@ class _SearchfilterbottomsheetPageState
                               backgroundColor: ColorConstant.teal600,
                             ),
                             onPressed: () {
+                              if (dataaa.isEmpty) dataaa = ["ทั้งหมด"];
+                              var searchdata = {
+                                'jobtype': jobTypesList[jobTypeIndex],
+                                'jobdetail': dataaa,
+                                'province': province,
+                                "agestart": num.parse(
+                                    _currentRangeValues.start.toString()),
+                                "ageend": num.parse(
+                                    _currentRangeValues.end.toString()),
+                                "Gender": genderList[GenderIndex],
+                              };
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SearchResult2Screen(
-                                      jobTypesList[jobTypeIndex],
-                                      dataaa,
-                                      province)));
+                                  builder: (context) =>
+                                      SearchResultPerson(searchdata)));
                             },
                             child: Text(
                               "ค้นหา",

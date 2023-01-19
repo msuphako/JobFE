@@ -144,6 +144,7 @@ class _JobPostFormState extends State<JobPostForm> {
   bool Isshow = false;
   DateTime startdate = DateTime.now().subtract(const Duration(days: 0));
   DateTime enddate = DateTime.now().add(const Duration(days: 7));
+  TextEditingController _textFieldController = TextEditingController();
 
   /// The method for [DateRangePickerSelectionChanged] callback, which will be
   /// called whenever a selection changed on the date picker widget.
@@ -184,7 +185,6 @@ class _JobPostFormState extends State<JobPostForm> {
               onPressed: () {
                 // print(jobTypesList[jobTypeIndex]);
                 // print(enddate.millisecondsSinceEpoch);
-
                 // print(salary);
                 job.CreateJob(
                     id: user.uid,
@@ -192,13 +192,12 @@ class _JobPostFormState extends State<JobPostForm> {
                     detail: _descriptController.text,
                     description: dataaa,
                     jobtype: jobTypesList[jobTypeIndex],
-                    province: province,
                     salary: salary,
                     startdate: startdate,
                     enddate: enddate,
                     Requirements: {
                       "Age":
-                          "${_currentRangeValues.start.toString()}-${_currentRangeValues.end.toString()}",
+                          "${num.parse(_currentRangeValues.start.toString()).toString()}-${num.parse(_currentRangeValues.end.toString()).toString()}",
                       "Gender": genderList[GenderIndex],
                     });
                 Navigator.pop(context);
@@ -514,193 +513,308 @@ class _JobPostFormState extends State<JobPostForm> {
                               //   ),
                               // ),
 
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: DropdownSearch<String>.multiSelection(
-                                  popupProps: PopupPropsMultiSelection.menu(
-                                    showSelectedItems: true,
-                                    disabledItemFn: (String s) =>
-                                        s.startsWith('I'),
-                                  ),
-                                  items: provinceList,
-                                  dropdownDecoratorProps:
-                                      DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
-                                      // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
-                                      // labelText: "เลือกงาน",
-                                      hintText: "เลือกงาน",
-                                    ),
-                                  ),
-                                  onChanged: (value) {
-                                    dataaa = value;
-                                  },
-                                  // selectedItem: "Brazil",
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      10.00,
-                                    ),
-                                    bottom: getVerticalSize(
-                                      10.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: getVerticalSize(
-                                        0.50,
-                                      ),
-                                      bottom: getVerticalSize(
-                                        0.50,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "เลือกจังหวัด",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              20,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
+                              StreamBuilder<QuerySnapshot>(
+                                  stream: db.collection('joblist').snapshots(),
+                                  builder: (context, AsyncSnapshot snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('ไม่พบข้อมูล');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center();
+                                    }
+                                    var resumedata = snapshot.data!.docs;
+                                    var data = resumedata[0].data()
+                                        as Map<String, dynamic>;
+                                    List<String> jobdata =
+                                        List<String>.from(data['name'] as List);
+                                    // print(jobdata);
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:
+                                          DropdownSearch<String>.multiSelection(
+                                        popupProps:
+                                            PopupPropsMultiSelection.menu(
+                                          showSelectedItems: true,
+                                          disabledItemFn: (String s) =>
+                                              s.startsWith('I'),
+                                        ),
+                                        items: jobdata,
+                                        dropdownDecoratorProps:
+                                            DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
+                                            // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
+                                            // labelText: "เลือกงาน",
+                                            hintText: "เลือกงาน",
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: getHorizontalSize(
-                                              24.00,
-                                            ),
-                                            top: getVerticalSize(
-                                              2.00,
-                                            ),
-                                          ),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: 200,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: ColorConstant
-                                                        .blueA200)),
-                                            child: GestureDetector(
+                                        onChanged: (value) {
+                                          dataaa = value;
+                                        },
+                                        // selectedItem: "Brazil",
+                                      ),
+                                    );
+                                  }),
+                              const SizedBox(width: 50),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('เพิ่มหมวดหมู่งาน'),
+                                          actions: [
+                                            GestureDetector(
                                               onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return Dialog(
-                                                        child: Container(
-                                                            height:
-                                                                getVerticalSize(
-                                                                    size
-                                                                        .height),
-                                                            width:
-                                                                getHorizontalSize(
-                                                                    40),
-                                                            padding: EdgeInsets.symmetric(
-                                                                horizontal:
-                                                                    getHorizontalSize(
-                                                                        16),
-                                                                vertical:
-                                                                    getVerticalSize(
-                                                                        30)),
-                                                            child: Center(
-                                                              child: ListView
-                                                                  .builder(
-                                                                itemCount:
-                                                                    provinceList
-                                                                        .length,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  // return ProvinceDialog(
-                                                                  //     provinceList[
-                                                                  //         index]);
-                                                                  return Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            getVerticalSize(
-                                                                                14),
-                                                                        horizontal:
-                                                                            getHorizontalSize(4)),
-                                                                    child:
-                                                                        GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        setState(
-                                                                            () {
-                                                                          province =
-                                                                              provinceList[index];
-                                                                        });
-                                                                        Navigator.of(context,
-                                                                                rootNavigator: true)
-                                                                            .pop();
-                                                                      },
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                            provinceList[index],
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: getFontSize(
-                                                                                16,
-                                                                              ),
-                                                                              fontFamily: 'Poppins',
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                            )),
-                                                      );
-                                                    });
+                                                // // changenewpass();
+                                                FirebaseFirestore.instance
+                                                    .collection("joblist")
+                                                    .doc('jobid')
+                                                    .set({
+                                                  "name":
+                                                      FieldValue.arrayUnion([
+                                                    _textFieldController.text
+                                                  ])
+                                                }, SetOptions(merge: true));
+
+                                                Navigator.pop(context);
                                               },
-                                              child: Text(
-                                                province == ""
-                                                    ? "กรุณาเลือกจังหวัด"
-                                                    : province,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  fontSize: getFontSize(
-                                                    18,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                    left: getHorizontalSize(
+                                                      18.00,
+                                                    ),
+                                                    bottom: getVerticalSize(
+                                                      10.00,
+                                                    ),
+                                                    right: getHorizontalSize(
+                                                      18.00,
+                                                    ),
                                                   ),
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w500,
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: getVerticalSize(
+                                                      56.00,
+                                                    ),
+                                                    width: getHorizontalSize(
+                                                      327.00,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: ColorConstant
+                                                          .blueA200,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        getHorizontalSize(
+                                                          16.00,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "เพิ่ม",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: ColorConstant
+                                                            .whiteA700,
+                                                        fontSize: getFontSize(
+                                                          16,
+                                                        ),
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                          ],
+                                          content: TextField(
+                                            controller: _textFieldController,
+                                            decoration: InputDecoration(
+                                                hintText: "กรอกข้อมูล"),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(color: Colors.blue),
+                                  child: Text(
+                                    'เพิ่มหมวดหมู่งาน',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.white),
                                   ),
                                 ),
                               ),
+                              // Align(
+                              //   alignment: Alignment.center,
+                              //   child: Padding(
+                              //     padding: EdgeInsets.only(
+                              //       left: getHorizontalSize(
+                              //         20.00,
+                              //       ),
+                              //       top: getVerticalSize(
+                              //         10.00,
+                              //       ),
+                              //       bottom: getVerticalSize(
+                              //         10.00,
+                              //       ),
+                              //       right: getHorizontalSize(
+                              //         20.00,
+                              //       ),
+                              //     ),
+                              //     child: Padding(
+                              //       padding: EdgeInsets.only(
+                              //         top: getVerticalSize(
+                              //           0.50,
+                              //         ),
+                              //         bottom: getVerticalSize(
+                              //           0.50,
+                              //         ),
+                              //       ),
+                              //       child: Row(
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.center,
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         children: [
+                              //           Text(
+                              //             "เลือกจังหวัด",
+                              //             overflow: TextOverflow.ellipsis,
+                              //             textAlign: TextAlign.start,
+                              //             style: TextStyle(
+                              //               color: ColorConstant.gray800,
+                              //               fontSize: getFontSize(
+                              //                 20,
+                              //               ),
+                              //               fontFamily: 'Poppins',
+                              //               fontWeight: FontWeight.w500,
+                              //             ),
+                              //           ),
+                              //           Padding(
+                              //             padding: EdgeInsets.only(
+                              //               left: getHorizontalSize(
+                              //                 24.00,
+                              //               ),
+                              //               top: getVerticalSize(
+                              //                 2.00,
+                              //               ),
+                              //             ),
+                              //             child: Container(
+                              //               alignment: Alignment.center,
+                              //               width: 200,
+                              //               decoration: BoxDecoration(
+                              //                   border: Border.all(
+                              //                       color: ColorConstant
+                              //                           .blueA200)),
+                              //               child: GestureDetector(
+                              //                 onTap: () {
+                              //                   showDialog(
+                              //                       context: context,
+                              //                       builder:
+                              //                           (BuildContext context) {
+                              //                         return Dialog(
+                              //                           child: Container(
+                              //                               height:
+                              //                                   getVerticalSize(
+                              //                                       size
+                              //                                           .height),
+                              //                               width:
+                              //                                   getHorizontalSize(
+                              //                                       40),
+                              //                               padding: EdgeInsets.symmetric(
+                              //                                   horizontal:
+                              //                                       getHorizontalSize(
+                              //                                           16),
+                              //                                   vertical:
+                              //                                       getVerticalSize(
+                              //                                           30)),
+                              //                               child: Center(
+                              //                                 child: ListView
+                              //                                     .builder(
+                              //                                   itemCount:
+                              //                                       provinceList
+                              //                                           .length,
+                              //                                   shrinkWrap:
+                              //                                       true,
+                              //                                   itemBuilder:
+                              //                                       (context,
+                              //                                           index) {
+                              //                                     // return ProvinceDialog(
+                              //                                     //     provinceList[
+                              //                                     //         index]);
+                              //                                     return Padding(
+                              //                                       padding: EdgeInsets.symmetric(
+                              //                                           vertical:
+                              //                                               getVerticalSize(
+                              //                                                   14),
+                              //                                           horizontal:
+                              //                                               getHorizontalSize(4)),
+                              //                                       child:
+                              //                                           GestureDetector(
+                              //                                         onTap:
+                              //                                             () {
+                              //                                           setState(
+                              //                                               () {
+                              //                                             province =
+                              //                                                 provinceList[index];
+                              //                                           });
+                              //                                           Navigator.of(context,
+                              //                                                   rootNavigator: true)
+                              //                                               .pop();
+                              //                                         },
+                              //                                         child:
+                              //                                             Row(
+                              //                                           mainAxisAlignment:
+                              //                                               MainAxisAlignment.spaceBetween,
+                              //                                           children: [
+                              //                                             Text(
+                              //                                               provinceList[index],
+                              //                                               style:
+                              //                                                   TextStyle(
+                              //                                                 fontSize: getFontSize(
+                              //                                                   16,
+                              //                                                 ),
+                              //                                                 fontFamily: 'Poppins',
+                              //                                                 fontWeight: FontWeight.w500,
+                              //                                               ),
+                              //                                             ),
+                              //                                           ],
+                              //                                         ),
+                              //                                       ),
+                              //                                     );
+                              //                                   },
+                              //                                 ),
+                              //                               )),
+                              //                         );
+                              //                       });
+                              //                 },
+                              //                 child: Text(
+                              //                   province == ""
+                              //                       ? "กรุณาเลือกจังหวัด"
+                              //                       : province,
+                              //                   overflow: TextOverflow.ellipsis,
+                              //                   textAlign: TextAlign.start,
+                              //                   style: TextStyle(
+                              //                     fontSize: getFontSize(
+                              //                       18,
+                              //                     ),
+                              //                     fontFamily: 'Poppins',
+                              //                     fontWeight: FontWeight.w500,
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               Align(
                                 alignment: Alignment.center,
                                 child: Padding(
@@ -1099,4 +1213,16 @@ class _JobPostFormState extends State<JobPostForm> {
       ),
     );
   }
+}
+
+getprovince() {
+  return [
+    'หนองบัวลำภู',
+    'อ่างทอง',
+    'อำนาจเจริญ',
+    'อุดรธานี',
+    'อุตรดิตถ์',
+    'อุทัยธานี',
+    'อุบลราชธานี'
+  ];
 }

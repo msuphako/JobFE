@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hires/notification.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
 import 'package:hires/presentation/messages_screen/search_screen.dart';
 
@@ -20,7 +21,7 @@ class MessagesScreen extends StatefulWidget {
 
 class _MessagesScreenState extends State<MessagesScreen> {
   final user = FirebaseAuth.instance.currentUser!;
-
+  var noti = NotificationController();
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -208,6 +209,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        // const SizedBox(width: 20),
+                        // FloatingActionButton(
+                        //   heroTag: '1',
+                        //   onPressed: () =>
+                        //       NotificationController.createNewNotification(
+                        //           context),
+                        //   tooltip: 'Create New notification',
+                        //   child: const Icon(Icons.outgoing_mail),
+                        // ),
                         StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('users')
@@ -225,7 +235,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               }
                               if (snapshot.hasData) {
                                 if (snapshot.data.docs.length == 0)
-                                  return Center(child: Text("ไม่มีข้อความ"));
+                                  return Container(
+                                    height: 400,
+                                    child: Center(
+                                        child: Text(
+                                      "ไม่มีข้อความ",
+                                      style: TextStyle(fontSize: 18),
+                                    )),
+                                  );
                                 snapshot.data.docs.length.toString();
                                 return Container(
                                   // decoration: new BoxDecoration(

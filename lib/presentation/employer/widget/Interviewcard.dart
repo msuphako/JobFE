@@ -5,6 +5,7 @@ import 'package:hires/core/theme/theme_constants.dart';
 import 'package:hires/job.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/employer/employee_view.dart';
+import 'package:hires/presentation/employer/sendmessage.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
 
 class InterviewCard extends StatefulWidget {
@@ -77,6 +78,11 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
               '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}',
           "status": "รอการสำภาษณ์"
         }, SetOptions(merge: true));
+        SendMessage(
+          "วันนัดสัมภาษณ์ของคุณคือวันที่ ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}",
+          user.uid,
+          widget.appliedata["uid"],
+        );
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
@@ -196,7 +202,7 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
                                               Padding(
                                                 padding: EdgeInsets.only(),
                                                 child: Text(
-                                                  "วันที่นัดสำภาษณ์ : ",
+                                                  "วันสำภาษณ์ : ",
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   textAlign: TextAlign.left,
@@ -520,9 +526,44 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
                                             ],
                                           ),
                                         ),
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //       top: 10, bottom: 5),
+                                        //   child: Row(
+                                        //     children: [
+                                        //       Padding(
+                                        //         padding: const EdgeInsets.only(
+                                        //             left: 5.0),
+                                        //         child: TextButton(
+                                        //           style: TextButton.styleFrom(
+                                        //             foregroundColor:
+                                        //                 Colors.white,
+                                        //             backgroundColor:
+                                        //                 ColorConstant.yellow,
+                                        //           ),
+                                        //           onPressed: () async {
+                                        //             Navigator.push(
+                                        //                 context,
+                                        //                 MaterialPageRoute(
+                                        //                     builder:
+                                        //                         (context) =>
+                                        //                             ChatScreen(
+                                        //                               friendId:
+                                        //                                   widget
+                                        //                                       .appliedata["uid"],
+                                        //                               name: _data[
+                                        //                                   'fullname'],
+                                        //                             )));
+                                        //           },
+                                        //           child: Icon(Icons.chat),
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              top: 10, bottom: 5),
+                                              top: 10, bottom: 10),
                                           child: Row(
                                             children: [
                                               OutlinedButton(
@@ -531,49 +572,12 @@ class _InterviewCardState extends State<InterviewCard> with RestorationMixin {
                                                       .present();
                                                 },
                                                 child: const Text(
-                                                    'เลือกวันสำภาษณ์'),
-                                              ),
-                                              SizedBox(
-                                                width: 90,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0),
-                                                child: TextButton(
-                                                  style: TextButton.styleFrom(
-                                                    foregroundColor:
-                                                        Colors.white,
-                                                    backgroundColor:
-                                                        ColorConstant.yellow,
-                                                  ),
-                                                  onPressed: () async {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    ChatScreen(
-                                                                      friendId:
-                                                                          widget
-                                                                              .appliedata["uid"],
-                                                                      name: _data[
-                                                                          'fullname'],
-                                                                    )));
-                                                  },
-                                                  child: Icon(Icons.chat),
+                                                  'เลือกวันสำภาษณ์',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 5, bottom: 10),
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 150,
-                                              ),
+                                              SizedBox(),
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(2.0),

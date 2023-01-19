@@ -15,6 +15,7 @@ import 'package:hires/presentation/job_proposal_screen/job_proposal_screen.dart'
 import 'package:hires/presentation/profile_style_1_screen/profile_style_1_screen.dart';
 import 'package:hires/presentation/search_option_3_screen/search_option_3_screen.dart';
 import 'package:hires/presentation/searchfilterbottomsheet_page/searchfilterbottomsheet_page.dart';
+import 'package:hires/presentation/searchfilterbottomsheet_page/searchpersonfilter.dart';
 import 'package:hires/presentation/settings_screen/settings_screen.dart';
 import '../homepage_3_screen/widgets/group568_item_widget.dart';
 import '../homepage_3_screen/widgets/job_widget.dart';
@@ -44,35 +45,10 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
   bool status = false;
   var datajobs = [];
   var url;
-  img() async {
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('istockphoto-612716462-612x612.jpg');
-    url = await ref.getDownloadURL();
-    print(url);
-  }
-
-  fetchjobsdata() async {
-    QuerySnapshot data = await db.collection("jobs").limit(4).get();
-    setState(() {
-      for (int i = 0; i < data.docs.length; i++) {
-        datajobs.add([
-          data.docs[i].id,
-          data.docs[i]["Title"],
-          data.docs[i]["Jobtype"],
-          data.docs[i]["Location"],
-        ]);
-        // print(data.docs[i]["Title"]);
-      }
-    });
-    return data.docs;
-  }
 
   @override
   void initState() {
     // jobs.createJob('Software Engineer', 'Develop high-quality software solutions.');
-    fetchjobsdata();
-    img();
     super.initState();
   }
 
@@ -241,7 +217,7 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                               top: Radius.circular(20),
                                             )),
                                             builder: (context) {
-                                              return SearchfilterbottomsheetPage();
+                                              return SearchPerfilterbottomsheetPage();
                                             });
                                       },
                                       decoration: InputDecoration(
@@ -441,13 +417,15 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                       stream: db
                                           .collectionGroup('resume')
                                           .limit(4)
+                                          .where('status', isEqualTo: true)
                                           .orderBy('create_at',
                                               descending: true)
                                           .snapshots(),
                                       builder:
                                           (context, AsyncSnapshot snapshot) {
                                         if (snapshot.hasError) {
-                                          return Text('ไม่พบข้อมูล');
+                                          print(snapshot.error);
+                                          return Text('error');
                                         }
 
                                         if (snapshot.connectionState ==

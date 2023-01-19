@@ -11,6 +11,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/resume.dart';
 import '../profile_style_2_screen/widgets/group541_item_widget.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+
+SendEmail(useremail) async {
+  final Email email = Email(
+    body: 'รายละเอียด',
+    subject: 'หัวเรื่อง',
+    recipients: [useremail],
+    // cc: ['cc@example.com'],
+    // bcc: ['bcc@example.com'],
+    // attachmentPaths: ['/path/to/attachment.zip'],
+    isHTML: false,
+  );
+
+  await FlutterEmailSender.send(email);
+}
 
 class Emp_view_resume extends StatefulWidget {
   static String id = "Profile";
@@ -46,6 +61,7 @@ class _Emp_view_resume extends State<Emp_view_resume>
     String driveskill = "";
     Query resumedata = FirebaseFirestore.instance
         .collectionGroup('resume')
+        .where('status', isEqualTo: true)
         .where("uid", isEqualTo: widget.uid);
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return FutureBuilder<QuerySnapshot>(
@@ -72,39 +88,67 @@ class _Emp_view_resume extends State<Emp_view_resume>
                 padding:
                     EdgeInsets.symmetric(horizontal: getHorizontalSize(16)),
                 child: Container(
-                  width: getHorizontalSize(330),
-                  height: getVerticalSize(50),
-                  child: FloatingActionButton.extended(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(getHorizontalSize(12))),
-                      backgroundColor: ColorConstant.teal600,
-                      foregroundColor: ColorConstant.whiteA700,
-                      extendedTextStyle: TextStyle(
-                        color: ColorConstant.gray50,
-                        fontSize: getFontSize(
-                          14,
-                        ),
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.07,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 290,
+                        child: FloatingActionButton.extended(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    getHorizontalSize(12))),
+                            backgroundColor: ColorConstant.teal600,
+                            foregroundColor: ColorConstant.whiteA700,
+                            extendedTextStyle: TextStyle(
+                              color: ColorConstant.gray50,
+                              fontSize: getFontSize(
+                                14,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.07,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ChatScreen(
+                                            friendId: _data["uid"],
+                                            name: _data["fullname"],
+                                          )));
+                            },
+                            // onPressed: () {
+                            //   Navigator.pushNamed(context, ApplyScreen.id);
+                            // },
+                            label: Text(
+                              'พูดคุย',
+                              style: TextStyle(fontSize: 18),
+                            )),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                      friendId: _data["uid"],
-                                      name: _data["fullname"],
-                                    )));
-                      },
-                      // onPressed: () {
-                      //   Navigator.pushNamed(context, ApplyScreen.id);
-                      // },
-                      label: Text(
-                        'พูดคุย',
-                        style: TextStyle(fontSize: 18),
-                      )),
+                      FloatingActionButton.extended(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(getHorizontalSize(50))),
+                          backgroundColor: ColorConstant.yellow,
+                          foregroundColor: ColorConstant.whiteA700,
+                          extendedTextStyle: TextStyle(
+                            color: ColorConstant.gray50,
+                            fontSize: getFontSize(
+                              14,
+                            ),
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.07,
+                          ),
+                          onPressed: () {
+                            SendEmail(_data['email']);
+                          },
+                          // onPressed: () {
+                          //   Navigator.pushNamed(context, ApplyScreen.id);
+                          // },
+                          label: Icon(Icons.email)),
+                    ],
+                  ),
                 ),
               ),
               body: SafeArea(
@@ -188,15 +232,15 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                       Padding(
                                         padding: EdgeInsets.only(
                                           top: getVerticalSize(
-                                            30.50,
+                                            40.50,
                                           ),
                                         ),
                                         child: Container(
                                           height: getSize(
-                                            90.00,
+                                            100.00,
                                           ),
                                           width: getSize(
-                                            90.00,
+                                            100.00,
                                           ),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(
@@ -204,7 +248,7 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                 52.00,
                                               ),
                                             ),
-                                            child: _data["imgurl"] != null
+                                            child: _data["imgurl"] != ''
                                                 ? Image.network(
                                                     _data["imgurl"],
                                                     fit: BoxFit.cover,
@@ -215,8 +259,8 @@ class _Emp_view_resume extends State<Emp_view_resume>
                                                     height: 300,
                                                   )
                                                 : Icon(
-                                                    Icons.person,
-                                                    size: 50,
+                                                    Icons.person_pin_rounded,
+                                                    size: 75,
                                                     color: Colors.white,
                                                   ),
                                           ),

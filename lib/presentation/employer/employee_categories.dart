@@ -212,8 +212,8 @@ class _EmpCategoriesState extends State<EmpCategories> {
               CategorieBox(
                   "นัดสำภาษณ์", Icons.interpreter_mode, InterviewScreen.id,
                   context: context),
-              CategorieBox("ข้อมูลสถานประกอบการ", Icons.maps_home_work,
-                  ProfileStyle1Screen.id,
+              CategorieBox(
+                  "ข้อมูลบริษัท", Icons.maps_home_work, ProfileStyle1Screen.id,
                   context: context),
               CategorieBox("ตั้งค่า", Icons.settings, SettingsScreen.id,
                   context: context),

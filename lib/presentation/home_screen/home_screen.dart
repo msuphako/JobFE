@@ -78,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icon(Icons.home_filled, color: ColorConstant.gray402),
                     activeIcon:
                         Icon(Icons.home_filled, color: ColorConstant.teal600),
-                    label: ".",
+                    label: '',
                   ),
                   BottomNavigationBarItem(
                       icon: SvgPicture.asset(ImageConstant.inActiveMsg),
                       activeIcon: SvgPicture.asset(ImageConstant.inActiveMsg,
                           color: ColorConstant.teal600),
-                      label: "."),
+                      label: ""),
                   // BottomNavigationBarItem(
                   //     icon: SvgPicture.asset(ImageConstant.inActiveBookmark),
                   //     activeIcon: SvgPicture.asset(
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeIcon: SvgPicture.asset(
                           ImageConstant.inActiveCategory,
                           color: ColorConstant.teal600),
-                      label: "."),
+                      label: ""),
                 ],
               ),
               body: data['usertype'] == "employee"

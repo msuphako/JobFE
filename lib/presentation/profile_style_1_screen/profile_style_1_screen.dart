@@ -586,6 +586,226 @@ class _ProfileStyle1Screen extends State<ProfileStyle1Screen> {
                                     20.00,
                                   ),
                                 ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "จังหวัด : ",
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: ColorConstant.gray800,
+                                          fontSize: getFontSize(
+                                            18,
+                                          ),
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        data['province'],
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: ColorConstant.gray800,
+                                          fontSize: getFontSize(
+                                            18,
+                                          ),
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    10.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  bottom: getVerticalSize(
+                                    10.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: getVerticalSize(
+                                      0.50,
+                                    ),
+                                    bottom: getVerticalSize(
+                                      0.50,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "เลือกจังหวัด",
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: ColorConstant.gray800,
+                                          fontSize: getFontSize(
+                                            20,
+                                          ),
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: getHorizontalSize(
+                                            24.00,
+                                          ),
+                                          top: getVerticalSize(
+                                            2.00,
+                                          ),
+                                        ),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 200,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      ColorConstant.blueA200)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Dialog(
+                                                      child: Container(
+                                                          height:
+                                                              getVerticalSize(
+                                                                  size.height),
+                                                          width:
+                                                              getHorizontalSize(
+                                                                  40),
+                                                          padding: EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  getHorizontalSize(
+                                                                      16),
+                                                              vertical:
+                                                                  getVerticalSize(
+                                                                      30)),
+                                                          child: Center(
+                                                            child: ListView
+                                                                .builder(
+                                                              itemCount:
+                                                                  provinceList
+                                                                      .length,
+                                                              shrinkWrap: true,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                // return ProvinceDialog(
+                                                                //     provinceList[
+                                                                //         index]);
+                                                                return Padding(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          getVerticalSize(
+                                                                              14),
+                                                                      horizontal:
+                                                                          getHorizontalSize(
+                                                                              4)),
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        province =
+                                                                            provinceList[index];
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context,
+                                                                              rootNavigator: true)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          provinceList[
+                                                                              index],
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                getFontSize(
+                                                                              16,
+                                                                            ),
+                                                                            fontFamily:
+                                                                                'Poppins',
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          )),
+                                                    );
+                                                  });
+                                            },
+                                            child: Text(
+                                              province == ""
+                                                  ? "กรุณาเลือกจังหวัด"
+                                                  : province,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontSize: getFontSize(
+                                                  18,
+                                                ),
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                  top: getVerticalSize(
+                                    5.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    20.00,
+                                  ),
+                                ),
                                 child: Text(
                                   "ที่อยู่",
                                   overflow: TextOverflow.ellipsis,
@@ -834,14 +1054,13 @@ class _ProfileStyle1Screen extends State<ProfileStyle1Screen> {
                                       .collection('users')
                                       .doc(user.uid)
                                       .set({
-                                    'id': id,
                                     'email': _emailController.text,
                                     'username': _usernameController.text,
                                     'companyname': _nameController.text,
                                     'detail': _detailController.text,
                                     'howtoapply': _howtoappliedController.text,
                                     'address': _addressController.text,
-                                    'province': '',
+                                    'province': province,
                                     'code': _codeController.text,
                                     'phone': _phoneController.text,
                                     'wepsite': _websiteController.text,

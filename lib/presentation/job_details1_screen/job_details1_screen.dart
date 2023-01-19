@@ -181,7 +181,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                     }
 
                     if (snapshot2.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     }
                     Map<String, dynamic> userdata =
                         snapshot2.data!.data() as Map<String, dynamic>;
@@ -279,10 +279,10 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                    top: getVerticalSize(
-                                                      30.50,
-                                                    ),
-                                                  ),
+                                                      top: getVerticalSize(
+                                                        30.50,
+                                                      ),
+                                                      left: 10),
                                                   child: Container(
                                                     height: getSize(
                                                       90.00,
@@ -340,10 +340,10 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                     },
                                                     child: Container(
                                                       height: getSize(
-                                                        23.00,
+                                                        33.00,
                                                       ),
                                                       width: getSize(
-                                                        23.00,
+                                                        33.00,
                                                       ),
                                                       child: SvgPicture.asset(
                                                         ImageConstant
@@ -378,7 +378,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                   color:
                                                       ColorConstant.whiteA700,
                                                   fontSize: getFontSize(
-                                                    20,
+                                                    24,
                                                   ),
                                                   fontFamily: 'Circular Std',
                                                   fontWeight: FontWeight.w700,
@@ -401,14 +401,13 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 ),
                                               ),
                                               child: Text(
-                                                "company",
+                                                userdata['companyname'],
                                                 overflow: TextOverflow.ellipsis,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                  color:
-                                                      ColorConstant.whiteA7009e,
+                                                  color: Colors.white70,
                                                   fontSize: getFontSize(
-                                                    18,
+                                                    20,
                                                   ),
                                                   fontFamily: 'Circular Std',
                                                   fontWeight: FontWeight.w500,
@@ -452,7 +451,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                           color: ColorConstant
                                                               .whiteA700,
                                                           fontSize: getFontSize(
-                                                            16,
+                                                            18,
                                                           ),
                                                           fontFamily: 'Poppins',
                                                           fontWeight:
@@ -475,7 +474,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                         color: Colors.white,
                                                       ),
                                                       Text(
-                                                        data["Location"],
+                                                        userdata['province'],
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         textAlign:
@@ -484,7 +483,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                           color: ColorConstant
                                                               .whiteA700,
                                                           fontSize: getFontSize(
-                                                            16,
+                                                            18,
                                                           ),
                                                           fontFamily: 'Poppins',
                                                           fontWeight:
@@ -516,9 +515,6 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                         left: getHorizontalSize(
                                           24.00,
                                         ),
-                                        top: getVerticalSize(
-                                          16.00,
-                                        ),
                                         right: getHorizontalSize(
                                           24.00,
                                         ),
@@ -532,14 +528,13 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 left: getHorizontalSize(
                                                   10.00,
                                                 ),
-                                                top: getVerticalSize(
-                                                  10.00,
-                                                ),
                                                 right: getHorizontalSize(
                                                   20.00,
                                                 ),
                                               ),
                                               child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons.access_time_filled,
@@ -553,7 +548,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                       color:
-                                                          ColorConstant.teal600,
+                                                          ColorConstant.gray800,
                                                       fontSize: getFontSize(
                                                         18,
                                                       ),
@@ -572,11 +567,16 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 top: getVerticalSize(
                                                   10.00,
                                                 ),
+                                                bottom: getVerticalSize(
+                                                  10.00,
+                                                ),
                                                 right: getHorizontalSize(
                                                   20.00,
                                                 ),
                                               ),
                                               child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons
@@ -600,7 +600,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                         color: isDark
                                                             ? Colors.white
                                                             : ColorConstant
-                                                                .teal600,
+                                                                .gray800,
                                                         fontSize: getFontSize(
                                                           18,
                                                         ),
@@ -658,7 +658,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    "Description",
+                                                    data['Detail'],
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -819,22 +819,36 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                     20.00,
                                                   ),
                                                 ),
-                                                child: Text(
-                                                  "เพศ : " +
-                                                      data["Requirements"]
-                                                          ["Gender"],
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    color:
-                                                        ColorConstant.gray800,
-                                                    fontSize: getFontSize(
-                                                      18,
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      child: Icon(
+                                                        Icons.phone,
+                                                        color: ColorConstant
+                                                            .teal600,
+                                                      ),
                                                     ),
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
+                                                    Text(
+                                                      userdata['phone'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                        color: ColorConstant
+                                                            .gray800,
+                                                        fontSize: getFontSize(
+                                                          18,
+                                                        ),
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               Padding(
@@ -849,20 +863,36 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                     20.00,
                                                   ),
                                                 ),
-                                                child: Text(
-                                                  "เบอร์โทรศัพท์ : " + "1231",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    color:
-                                                        ColorConstant.gray800,
-                                                    fontSize: getFontSize(
-                                                      18,
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      child: Icon(
+                                                        Icons.email,
+                                                        color: ColorConstant
+                                                            .teal600,
+                                                      ),
                                                     ),
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
+                                                    Text(
+                                                      userdata['email'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                        color: ColorConstant
+                                                            .gray800,
+                                                        fontSize: getFontSize(
+                                                          18,
+                                                        ),
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],

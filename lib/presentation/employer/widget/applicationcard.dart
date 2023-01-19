@@ -6,6 +6,7 @@ import 'package:hires/job.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/employer/employee_view.dart';
+import 'package:hires/presentation/employer/sendmessage.dart';
 import 'package:hires/presentation/job_details1_screen/job_details1_screen.dart';
 import 'package:hires/presentation/messages_screen/chat_screen.dart';
 import 'package:hires/presentation/messages_screen/message_textfield.dart';
@@ -582,6 +583,11 @@ class _AppCardState extends State<AppCard> {
                                                       "status":
                                                           "รอวันนัดสำภาษณ์"
                                                     }, SetOptions(merge: true));
+                                                    SendMessage(
+                                                      "คำขอของคุณได้รับการตอบรับแล้ว กรุณารอวันนัดสัมภาษณ์",
+                                                      user.uid,
+                                                      widget.appliedata["uid"],
+                                                    );
                                                   },
                                                   child: Text(
                                                     "ตกลง",
@@ -612,6 +618,11 @@ class _AppCardState extends State<AppCard> {
                                                         .set({
                                                       "status": "ถูกยกเลิก"
                                                     }, SetOptions(merge: true));
+                                                    SendMessage(
+                                                      "คำขอของคุณถูกยกเลิก",
+                                                      user.uid,
+                                                      widget.appliedata["uid"],
+                                                    );
                                                   },
                                                   child: Text(
                                                     "ยกเลิก",

@@ -36,6 +36,7 @@ import 'package:hires/presentation/saved_screen/SavedScreen.dart';
 import 'package:hires/presentation/saved_screen/applyscreen.dart';
 import 'package:hires/presentation/saved_screen/interview.dart';
 import 'package:hires/presentation/search_option_3_screen/search_option_3_screen.dart';
+import 'package:hires/presentation/search_option_3_screen/searchperson.dart';
 import 'package:hires/presentation/set_b1_screen/set_b1_screen.dart';
 import 'package:hires/presentation/set_b2_screen/set_b2_screen.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,8 @@ class _MyAppState extends State<MyApp> {
         // home: MainPage(),
         initialRoute: Start1Screen.id,
         routes: {
-          SearchOption3Screen.id: (context) => SearchOption3Screen(),
+          SearchJobScreen.id: (context) => SearchJobScreen(),
+          SearchPerScreen.id: (context) => SearchPerScreen(),
           Profile.id: (context) => Profile(),
           ChatScreen.id: (context) => ChatScreen(
                 friendId: '',
@@ -198,8 +200,8 @@ class _MyAppState extends State<MyApp> {
           //       VerifyScreen.id:(context)=>VerifyScreen(),
           //       Verify1Screen.id:(context)=>Verify1Screen(),
           // Homepage3Screen.id:(context)=>Homepage3Screen(),
-          SearchResultPerson.id: (context) => SearchResultPerson(),
-          SearchResult2Screen.id: (context) => SearchResult2Screen(),
+          SearchResultPerson.id: (context) => SearchResultPerson({}),
+          SearchResult2Screen.id: (context) => SearchResult2Screen("", [], ""),
 
           //       SearchfilterbottomsheetPage.id:(context)=>SearchfilterbottomsheetPage(),
           SoloCategoryJobListingScreen.id: (context) =>

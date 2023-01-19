@@ -31,31 +31,42 @@ class Homepage3Screen extends StatefulWidget {
 
 class _Homepage3ScreenState extends State<Homepage3Screen> {
   var auth = new Auth();
-  Stream<QuerySnapshot> jobdata = db.collectionGroup('jobPost').snapshots();
+  Stream<QuerySnapshot> jobdata = db
+      .collectionGroup('jobPost')
+      .where('status', isEqualTo: 'กำลังเปิดรับสมัคร')
+      .snapshots();
+  final user = FirebaseAuth.instance.currentUser!;
 
   bool status = false;
+  bool resume = false;
   var datajobs = [];
   var url;
-  img() async {
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('istockphoto-612716462-612x612.jpg');
-    url = await ref.getDownloadURL();
-    print(url);
+
+  CheckResume() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collectionGroup('resume')
+        .where('uid', isEqualTo: user.uid)
+        .get();
+    if (snapshot.size == 0) {
+      print('it does not exist');
+    } else {
+      print('it exist');
+      setState(() {
+        resume = true;
+      });
+    }
   }
 
   fetchjobsdata() async {
-    QuerySnapshot data = await db.collectionGroup("jobPost").limit(4).get();
+    QuerySnapshot data = await db
+        .collectionGroup("resume")
+        .where('uid', isEqualTo: user.uid)
+        .get();
     setState(() {
-      for (int i = 0; i < data.docs.length; i++) {
-        datajobs.add([
-          data.docs[i].id,
-          data.docs[i]["Title"],
-          data.docs[i]["Jobtype"],
-          data.docs[i]["Location"],
-        ]);
-        // print(data.docs[i]["Title"]);
-      }
+      datajobs.addAll(
+        data.docs[0]['jobwanted'],
+      );
+      // print(data.docs[i]["Title"]);
     });
     return data.docs;
   }
@@ -63,16 +74,15 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
   @override
   void initState() {
     // jobs.createJob('Software Engineer', 'Develop high-quality software solutions.');
+    CheckResume();
     fetchjobsdata();
-    img();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     int silderIndex = 1;
-
-    final user = FirebaseAuth.instance.currentUser!;
+    // print(datajobs);
 
     Future<DocumentSnapshot> userData =
         FirebaseFirestore.instance.collection("users").doc(user.uid).get();
@@ -102,13 +112,13 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "Welcome Back!",
+                            "ยินดีต้อนรับ",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              color: ColorConstant.gray500,
+                              color: ColorConstant.gray700,
                               fontSize: getFontSize(
-                                14,
+                                18,
                               ),
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
@@ -121,11 +131,11 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                 ),
                               ),
                               child: Text(
-                                username,
+                                "คุณ " + username,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: getFontSize(
-                                    18,
+                                    20,
                                   ),
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w700,
@@ -217,16 +227,17 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                       40.00,
                                     ),
                                     width: getHorizontalSize(
-                                      263.00,
+                                      320.00,
                                     ),
                                     child: TextFormField(
                                       readOnly: true,
                                       onTap: () {
                                         Navigator.pushNamed(
-                                            context, SearchOption3Screen.id);
+                                            context, SearchJobScreen.id);
                                       },
                                       decoration: InputDecoration(
                                         hintText: 'ค้นหางาน ',
+                                        hintStyle: TextStyle(fontSize: 18),
                                         prefixIcon: Padding(
                                           padding: EdgeInsets.only(
                                             left: context.locale ==
@@ -250,14 +261,12 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                               20.00,
                                             ),
                                             child: isDark
-                                                ? SvgPicture.asset(
-                                                    ImageConstant.imgSearch11,
-                                                    fit: BoxFit.contain,
+                                                ? Icon(
+                                                    Icons.search,
                                                     color: Colors.white,
                                                   )
-                                                : SvgPicture.asset(
-                                                    ImageConstant.imgSearch11,
-                                                    fit: BoxFit.contain,
+                                                : Icon(
+                                                    Icons.search,
                                                   ),
                                           ),
                                         ),
@@ -286,90 +295,70 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: getSize(
-                                      48.00,
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: context.locale == Constants.engLocal
+                                  ? getHorizontalSize(
+                                      16.00,
+                                    )
+                                  : getHorizontalSize(0),
+                              right: context.locale == Constants.arLocal
+                                  ? getHorizontalSize(
+                                      16.00,
+                                    )
+                                  : getHorizontalSize(0),
+                            ),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        11.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        30.00,
+                                      ),
                                     ),
-                                    width: getSize(
-                                      48.00,
-                                    ),
-                                    margin: EdgeInsets.only(
-                                      left: context.locale == Constants.engLocal
-                                          ? getHorizontalSize(
-                                              16.00,
-                                            )
-                                          : getHorizontalSize(0),
-                                      right: context.locale == Constants.arLocal
-                                          ? getHorizontalSize(
-                                              16.00,
-                                            )
-                                          : getHorizontalSize(0),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isDark
-                                          ? ColorConstant.darkContainer
-                                          : ColorConstant.gray100,
-                                      borderRadius: BorderRadius.circular(
-                                        getHorizontalSize(
-                                          12.00,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            )),
+                                            builder: (context) {
+                                              return SearchfilterbottomsheetPage();
+                                            });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(top: 5),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                                width: 1.5,
+                                                color: ColorConstant.teal600),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'ค้นหาโดยละเอียด',
+                                          style: TextStyle(
+                                              color: ColorConstant.teal600,
+                                              fontSize: 18),
                                         ),
                                       ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                              left: getHorizontalSize(
-                                                11.00,
-                                              ),
-                                              top: getVerticalSize(
-                                                11.00,
-                                              ),
-                                              right: getHorizontalSize(
-                                                11.00,
-                                              ),
-                                              bottom: getVerticalSize(
-                                                11.00,
-                                              ),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showModalBottomSheet(
-                                                    context: context,
-                                                    isScrollControlled: true,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .vertical(
-                                                      top: Radius.circular(20),
-                                                    )),
-                                                    builder: (context) {
-                                                      return SearchfilterbottomsheetPage();
-                                                    });
-                                              },
-                                              child: Container(
-                                                height: getSize(
-                                                  26.00,
-                                                ),
-                                                width: getSize(
-                                                  26.00,
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  ImageConstant.imgFilter5,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           Expanded(
@@ -379,7 +368,7 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                   Padding(
                                     padding: EdgeInsets.only(
                                       top: getVerticalSize(
-                                        40.00,
+                                        10.00,
                                       ),
                                     ),
                                     child: Row(
@@ -433,7 +422,9 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                                 : getHorizontalSize(0),
                                           ),
                                           child: GestureDetector(
-                                            onTap: () {},
+                                            onTap: () {
+                                              // auth.SendEmail();
+                                            },
                                             child: Text(
                                               "",
                                               overflow: TextOverflow.ellipsis,
@@ -464,24 +455,51 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                         0.00,
                                       ),
                                     ),
-                                    child: CarouselSlider.builder(
-                                      options: CarouselOptions(
-                                        height: getVerticalSize(
-                                          200.00,
-                                        ),
-                                        initialPage: 0,
-                                        autoPlay: true,
-                                        viewportFraction: 1.0,
-                                        enableInfiniteScroll: false,
-                                        scrollDirection: Axis.horizontal,
-                                        onPageChanged: (index, reason) {},
-                                      ),
-                                      itemCount: datajobs.length,
-                                      itemBuilder: (context, index, realIndex) {
-                                        return FeaturedJobsWidget(
-                                            datajobs[index]);
-                                      },
-                                    ),
+                                    child: FutureBuilder<dynamic>(
+                                        future: resume == true
+                                            ? GetRasumeData(datajobs, user.uid)
+                                            : GetData(user.uid),
+                                        builder:
+                                            (context, AsyncSnapshot snapshot) {
+                                          if (snapshot.hasError) {
+                                            print(snapshot.error);
+                                            return Text(
+                                                'Something went wrong ${snapshot.error}');
+                                          }
+
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          }
+
+                                          var featjobdata = snapshot.data!.docs;
+                                          int feattotal =
+                                              snapshot.data!.docs.length;
+                                          return CarouselSlider.builder(
+                                            options: CarouselOptions(
+                                              height: getVerticalSize(
+                                                200.00,
+                                              ),
+                                              initialPage: 0,
+                                              autoPlay: true,
+                                              viewportFraction: 1.0,
+                                              enableInfiniteScroll: false,
+                                              scrollDirection: Axis.horizontal,
+                                              onPageChanged: (index, reason) {},
+                                            ),
+                                            itemCount: feattotal,
+                                            itemBuilder:
+                                                (context, index, realIndex) {
+                                              final featdata =
+                                                  featjobdata[index].data()!
+                                                      as Map<String, dynamic>;
+                                              return FeaturedJobsWidget(
+                                                  featdata);
+                                            },
+                                          );
+                                        }),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
@@ -566,18 +584,23 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                       future: db
                                           .collectionGroup('jobPost')
                                           .limit(4)
+                                          .where('status',
+                                              isEqualTo: 'กำลังเปิดรับสมัคร')
                                           .orderBy("created_at",
                                               descending: true)
                                           .get(),
                                       builder:
                                           (context, AsyncSnapshot snapshot) {
                                         if (snapshot.hasError) {
+                                          print(snapshot.error);
                                           return Text('Something went wrong');
                                         }
 
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return CircularProgressIndicator();
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
                                         }
 
                                         var jobdata = snapshot.data!.docs;
@@ -585,17 +608,7 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                         return Align(
                                           alignment: Alignment.center,
                                           child: Padding(
-                                            padding: EdgeInsets.only(
-                                              left: getHorizontalSize(
-                                                24.00,
-                                              ),
-                                              top: getVerticalSize(
-                                                20.00,
-                                              ),
-                                              right: getHorizontalSize(
-                                                24.00,
-                                              ),
-                                            ),
+                                            padding: EdgeInsets.only(),
                                             child: ListView.builder(
                                               physics: BouncingScrollPhysics(),
                                               shrinkWrap: true,
@@ -622,7 +635,9 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                                               .connectionState ==
                                                           ConnectionState
                                                               .waiting) {
-                                                        return CircularProgressIndicator();
+                                                        return Center(
+                                                            child:
+                                                                CircularProgressIndicator());
                                                       }
 
                                                       Map<String, dynamic>
@@ -653,5 +668,30 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
             return Text("data");
           }
         });
+  }
+}
+
+GetData(uid) {
+  var data = db
+      .collectionGroup('jobPost')
+      .limit(4)
+      .where('status', isEqualTo: 'กำลังเปิดรับสมัคร')
+      .orderBy("created_at", descending: true)
+      .get();
+  return data;
+}
+
+GetRasumeData(datajobs, uid) async {
+  var data = await db
+      .collectionGroup('jobPost')
+      .where('Description', arrayContainsAny: datajobs)
+      .where('status', isEqualTo: 'กำลังเปิดรับสมัคร')
+      .limit(4)
+      .get();
+
+  if (data.size == 0) {
+    return GetData(uid);
+  } else {
+    return data;
   }
 }
