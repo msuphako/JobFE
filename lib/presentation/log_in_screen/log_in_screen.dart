@@ -806,20 +806,21 @@ class _LogInScreenState extends State<LogInScreen> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:
-                                                      ColorConstant.whiteA700),
-                                              padding:
-                                                  EdgeInsets.all(getSize(8)),
-                                              child: SvgPicture.asset(
-                                                  ImageConstant.appleLogo)),
+                                          // Container(
+                                          //     decoration: BoxDecoration(
+                                          //         shape: BoxShape.circle,
+                                          //         color:
+                                          //             ColorConstant.whiteA700),
+                                          //     padding:
+                                          //         EdgeInsets.all(getSize(8)),
+                                          //     child: SvgPicture.asset(
+                                          //         ImageConstant.appleLogo)),
                                           GestureDetector(
                                             onTap: () {
-                                              // auth.test();
+                                              auth.signInWithGoogle(
+                                                  context: context);
                                             },
                                             child: Container(
                                                 decoration: BoxDecoration(
@@ -831,15 +832,15 @@ class _LogInScreenState extends State<LogInScreen> {
                                                 child: SvgPicture.asset(
                                                     ImageConstant.googleLogo)),
                                           ),
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:
-                                                      ColorConstant.whiteA700),
-                                              padding:
-                                                  EdgeInsets.all(getSize(8)),
-                                              child: SvgPicture.asset(
-                                                  ImageConstant.facebookLogo)),
+                                          // Container(
+                                          //     decoration: BoxDecoration(
+                                          //         shape: BoxShape.circle,
+                                          //         color:
+                                          //             ColorConstant.whiteA700),
+                                          //     padding:
+                                          //         EdgeInsets.all(getSize(8)),
+                                          //     child: SvgPicture.asset(
+                                          //         ImageConstant.facebookLogo)),
                                         ],
                                       )),
                                 ),

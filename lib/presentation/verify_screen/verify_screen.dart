@@ -1,22 +1,63 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
+import 'package:hires/main.dart';
+import 'package:hires/presentation/home_screen/home_screen.dart';
 import 'package:hires/presentation/reset_password1_screen/reset_password1_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class VerifyScreen extends StatelessWidget {
-  static String id="VerifyScreen";
+class VerifyScreen extends StatefulWidget {
+  static String id = "VerifyScreen";
+
+  @override
+  State<VerifyScreen> createState() => _VerifyScreenState();
+}
+
+class _VerifyScreenState extends State<VerifyScreen> {
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      await FirebaseAuth.instance.currentUser?.reload();
+      final user = FirebaseAuth.instance.currentUser;
+      if (user?.emailVerified ?? false) {
+        timer.cancel();
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
+  Future sendVerification() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isDark =Theme.of(context).brightness==Brightness.dark;
     return Scaffold(
-     
       body: SafeArea(
         child: Container(
           width: size.width,
           child: SingleChildScrollView(
             child: Container(
-             
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,8 +79,9 @@ class VerifyScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Align(
-                            alignment:context.locale==Constants.engLocal? 
-                            Alignment.centerLeft:Alignment.centerRight,
+                            alignment: context.locale == Constants.engLocal
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
                             child: Padding(
                               padding: EdgeInsets.only(
                                 left: getHorizontalSize(
@@ -50,16 +92,44 @@ class VerifyScreen extends StatelessWidget {
                                 ),
                               ),
                               child: Container(
-                                height: getSize(
-                                  24.00,
+                                  height: getSize(
+                                    24.00,
+                                  ),
+                                  width: getSize(
+                                    24.00,
+                                  ),
+                                  child: Icon(Icons.arrow_back_ios,
+                                      color: Colors.black)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: getHorizontalSize(
+                                    124.00,
+                                  ),
+                                  right: getHorizontalSize(
+                                    124.00,
+                                  ),
+                                  bottom: getVerticalSize(
+                                    10.00,
+                                  ),
                                 ),
-                                width: getSize(
-                                  24.00,
+                                child: Text(
+                                  "JobFE",
+                                  overflow: TextOverflow.visible,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: ColorConstant.teal600,
+                                    fontSize: getFontSize(
+                                      25.55,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                child:Icon(Icons.arrow_back_ios,
-                                  color: 
-                                  isDark?Colors.white:Colors.black
-                                  )
                               ),
                             ),
                           ),
@@ -67,7 +137,7 @@ class VerifyScreen extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Container(
                               height: getVerticalSize(
-                                165.73,
+                                200.73,
                               ),
                               width: getHorizontalSize(
                                 311.00,
@@ -101,22 +171,17 @@ class VerifyScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                         
-                                         
                                           Padding(
                                             padding: EdgeInsets.only(
-                                             
                                               top: getVerticalSize(
                                                 27.00,
                                               ),
-                                             
                                             ),
                                             child: Text(
-                                              "Verify Code",
+                                              "กรุณายืนยันอีเมล",
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                               
                                                 fontSize: getFontSize(
                                                   24,
                                                 ),
@@ -137,14 +202,66 @@ class VerifyScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Enter your verification code from your email or phone number that we’ve sent",
+                                                "เราได้ส่งลิ้งค์สำหรับยืนยันอีเมล ไปที่อีเมลของท่านแล้ว",
                                                 maxLines: null,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                 
                                                   fontSize: getFontSize(
-                                                    14,
+                                                    18,
                                                   ),
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              sendVerification();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor:
+                                                      ColorConstant.teal600,
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.check,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        'ส่งแล้ว',
+                                                        style: TextStyle(
+                                                            fontSize: 18),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: getHorizontalSize(
+                                                311.00,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                top: getVerticalSize(
+                                                  17.00,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "ส่งอีกครั้ง",
+                                                maxLines: null,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: getFontSize(
+                                                    18,
+                                                  ),
+                                                  color: ColorConstant.blueA200,
                                                   fontFamily: 'Poppins',
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -155,140 +272,7 @@ class VerifyScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          124.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          124.00,
-                                        ),
-                                        bottom: getVerticalSize(
-                                          10.00,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Hires",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: ColorConstant.teal600,
-                                          fontSize: getFontSize(
-                                            21.55,
-                                          ),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                 ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: getHorizontalSize(
-                                18.00,
-                              ),
-                              top: getVerticalSize(
-                                120.00,
-                              ),
-                              right: getHorizontalSize(
-                                18.00,
-                              ),
-                            ),
-                            child: Container(
-                              width: getHorizontalSize(
-                                268.00,
-                              ),
-                              child: PinCodeTextField(
-                                cursorColor: ColorConstant.teal600,
-                                appContext: context,
-                                length: 4,
-                                obscureText: false,
-                                backgroundColor: isDark?ColorConstant.darkBg:ColorConstant.gray50,
-                                obscuringCharacter: '*',
-                                keyboardType: TextInputType.number,
-                                autoDismissKeyboard: true,
-                                enableActiveFill: true,
-                                onChanged: (value) {},
-                                pinTheme: PinTheme(
-                                  fieldHeight: getHorizontalSize(
-                                    52.00,
-                                  ),
-                                  fieldWidth: getHorizontalSize(
-                                    52.00,
-                                  ),
-                                  shape: PinCodeFieldShape.box,
-                                  borderRadius: BorderRadius.circular(
-                                    getHorizontalSize(
-                                      12.00,
-                                    ),
-                                    
-                                  ),
-                                  selectedFillColor:isDark?ColorConstant.darkBg:
-                                      ColorConstant.fromHex("#1212121D"),
-                                  activeFillColor:
-                                      isDark?ColorConstant.darkBg:ColorConstant.fromHex("#1212121D"),
-                                  inactiveFillColor:
-                                    isDark?ColorConstant.darkBg:  ColorConstant.fromHex("#1212121D"),
-                                  inactiveColor:isDark?ColorConstant.whiteA700: ColorConstant.gray400,
-                                  selectedColor:ColorConstant.teal600,
-                                  activeColor:isDark?ColorConstant.whiteA700: ColorConstant.gray400,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  18.00,
-                                ),
-                                top: getVerticalSize(
-                                  120.00,
-                                ),
-                                right: getHorizontalSize(
-                                  18.00,
-                                ),
-                              ),
-                              child: GestureDetector(
-                                onTap: (){
-                                  Navigator.pushNamed(context, ResetPassword1Screen.id);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: getVerticalSize(
-                                    56.00,
-                                  ),
-                                  width: getHorizontalSize(
-                                    327.00,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: ColorConstant.teal600,
-                                    borderRadius: BorderRadius.circular(
-                                      getHorizontalSize(
-                                        16.00,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Verify",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: ColorConstant.whiteA700,
-                                      fontSize: getFontSize(
-                                        16,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
                               ),
                             ),
                           ),

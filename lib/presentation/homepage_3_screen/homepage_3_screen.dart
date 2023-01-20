@@ -39,13 +39,14 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
 
   bool status = false;
   bool resume = false;
-  var datajobs = [];
+  var datajobs = [''];
   var url;
 
   CheckResume() async {
     final snapshot = await FirebaseFirestore.instance
         .collectionGroup('resume')
         .where('uid', isEqualTo: user.uid)
+        .where('status', isEqualTo: true)
         .get();
     if (snapshot.size == 0) {
       print('it does not exist');

@@ -8,6 +8,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'presentation/home_screen/home_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'presentation/verify_screen/verify_screen.dart';
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -133,6 +136,57 @@ class Auth {
     }
   }
 
+  Future<User?> signInWithGoogle({required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+      try {
+        final UserCredential userCredential =
+            await auth.signInWithPopup(authProvider);
+
+        user = userCredential.user;
+        addUser(user!.uid, '${user.email}', '${user.displayName}');
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        try {
+          final UserCredential userCredential =
+              await auth.signInWithCredential(credential);
+
+          user = userCredential.user;
+          addUser(user!.uid, '${user.email}', '${user.displayName}');
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'account-exists-with-different-credential') {
+            // ...
+          } else if (e.code == 'invalid-credential') {
+            // ...
+          }
+        } catch (e) {
+          // ...
+        }
+      }
+    }
+
+    return user;
+  }
+
   Future signUp(context,
       {required String email,
       required String password,
@@ -145,6 +199,7 @@ class Auth {
         password: password,
       );
       addUser(user.uid, user.email, name);
+      await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       print(e);
       switch (e.code) {
@@ -183,7 +238,7 @@ class Auth {
       );
     } else {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
 
@@ -332,6 +387,7 @@ class Auth {
   }
 
   Future<void> signOut() async {
+    // _googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
   }
 }

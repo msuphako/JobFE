@@ -62,6 +62,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'package:cron/cron.dart';
 
+import 'presentation/verify_screen/verify_screen.dart';
+
 void main() async {
   final cron = Cron();
   cron.schedule(Schedule.parse('0 * * * *'), () async {
@@ -286,7 +288,11 @@ class MainPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomeScreen();
+              if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                return HomeScreen();
+              } else {
+                return VerifyScreen();
+              }
             } else {
               return LogInScreen();
             }
