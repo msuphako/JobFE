@@ -15,6 +15,7 @@
     <application
         android:label="JobFE"
         android:icon="@mipmap/launcher_icon">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

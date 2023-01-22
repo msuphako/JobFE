@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hires/auth.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/main.dart';
 import 'package:hires/presentation/home_screen/home_screen.dart';
@@ -18,7 +19,7 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   late Timer _timer;
-
+  var auth = new Auth();
   @override
   void initState() {
     super.initState();
@@ -91,15 +92,21 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                   18.00,
                                 ),
                               ),
-                              child: Container(
-                                  height: getSize(
-                                    24.00,
-                                  ),
-                                  width: getSize(
-                                    24.00,
-                                  ),
-                                  child: Icon(Icons.arrow_back_ios,
-                                      color: Colors.black)),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  auth.signOut();
+                                },
+                                child: Container(
+                                    height: getSize(
+                                      24.00,
+                                    ),
+                                    width: getSize(
+                                      24.00,
+                                    ),
+                                    child: Icon(Icons.arrow_back_ios,
+                                        color: Colors.black)),
+                              ),
                             ),
                           ),
                           Align(

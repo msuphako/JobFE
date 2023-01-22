@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hires/presentation/application_tracking_screen/application_tracking_screen.dart';
 import 'package:hires/presentation/apply_screen/apply_screen.dart';
 

@@ -173,6 +173,7 @@ class Auth {
           user = userCredential.user;
           addUser(user!.uid, '${user.email}', '${user.displayName}');
         } on FirebaseAuthException catch (e) {
+          print(e);
           if (e.code == 'account-exists-with-different-credential') {
             // ...
           } else if (e.code == 'invalid-credential') {
@@ -304,64 +305,77 @@ class Auth {
     ],
   );
 
-  Future<void> test() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
+  test() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("token is $token");
   }
 
-  Future addUser(String id, String email, String name) {
-    return users.doc(id).set({
-      'id': id,
-      'email': email,
-      'username': name,
-      'usertype': "employee",
-      'imgurl': ""
-    }).then((value) {
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(id)
-          .collection('resume')
-          .add({
-        "uid": id,
-        "title": "",
-        "dateofbirth": {
-          "date": '',
-          "month": '',
-          "year": '',
-        },
-        "fullname": '',
-        "gender": '',
-        "age": '',
-        "location": '',
-        "address": '',
-        "email": email,
-        "phone": '',
-        "skills": '',
-        "drivingskill": [],
-        "companyname": '',
-        "duration": '',
-        "position": '',
-        "jobdetail": '',
-        "jobwanted": [],
-        "jobtype": '',
-        "province_work": '',
-        "imgurl": "",
-        "score": {'userdata': 0, 'skill': 0, 'exp': 0, 'jobwanted': 0},
-        "status": false,
-        "create_at": DateTime.now(),
-      }).then((value) {
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(id)
-            .collection('resume')
-          ..doc(value.id).set({
-            "resume_id": value.id,
-          }, SetOptions(merge: true));
-      });
-    }).catchError((error) => print("Failed to add user: $error"));
+  Future addUser(String id, String email, String name) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: id)
+        .get();
+    if (snapshot.size == 0) {
+      return users.doc(id).set({
+        'id': id,
+        'email': email,
+        'username': name,
+        'usertype': "employee",
+        'imgurl': ""
+      }).then((value) async {
+        final snapshot = await FirebaseFirestore.instance
+            .collectionGroup('resume')
+            .where('uid', isEqualTo: id)
+            .get();
+        if (snapshot.size == 0) {
+          print('it does not exist');
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(id)
+              .collection('resume')
+              .add({
+            "uid": id,
+            "title": "",
+            "dateofbirth": {
+              "date": '',
+              "month": '',
+              "year": '',
+            },
+            "fullname": '',
+            "gender": '',
+            "age": '',
+            "location": '',
+            "address": '',
+            "email": email,
+            "phone": '',
+            "skills": '',
+            "drivingskill": [],
+            "companyname": '',
+            "duration": '',
+            "position": '',
+            "jobdetail": '',
+            "jobwanted": [],
+            "jobtype": '',
+            "province_work": '',
+            "imgurl": "",
+            "score": {'userdata': 0, 'skill': 0, 'exp': 0, 'jobwanted': 0},
+            "status": false,
+            "create_at": DateTime.now(),
+          }).then((value) {
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(id)
+                .collection('resume')
+              ..doc(value.id).set({
+                "resume_id": value.id,
+              }, SetOptions(merge: true));
+          });
+        } else {
+          print('it exist');
+          return;
+        }
+      }).catchError((error) => print("Failed to add user: $error"));
+    }
   }
 
   Future addEmpUser(String id, String email, String name, String companyname) {

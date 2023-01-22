@@ -146,16 +146,16 @@ class _MessagewidgetState extends State<Messagewidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            width: getHorizontalSize(
-                              275.00,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Container(
+                                width: getHorizontalSize(
+                                  200.00,
+                                ),
+                                child: Text(
                                   data["username"],
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
@@ -169,30 +169,30 @@ class _MessagewidgetState extends State<Messagewidget> {
                                         : FontWeight.w700,
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getVerticalSize(
-                                      3.00,
-                                    ),
-                                    bottom: getVerticalSize(
-                                      1.00,
-                                    ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: getVerticalSize(
+                                    3.00,
                                   ),
-                                  child: Text(
-                                    time,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: getFontSize(
-                                        15,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  bottom: getVerticalSize(
+                                    1.00,
                                   ),
                                 ),
-                              ],
-                            ),
+                                child: Text(
+                                  time,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: getFontSize(
+                                      15,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -424,7 +424,7 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                           ),
                                           child: GestureDetector(
                                             onTap: () {
-                                              // auth.SendEmail();
+                                              // auth.test();
                                             },
                                             child: Text(
                                               "",

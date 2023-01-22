@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hires/presentation/categories_screen/categories_screen.dart';
@@ -11,6 +12,7 @@ import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';
 import '../../core/utils/math_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
@@ -21,6 +23,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final user = FirebaseAuth.instance.currentUser!;
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  @override
+  void initState() {
+    FirebaseMessaging.instance.getToken().then((token) {
+      updateTokenToFirestore(token!);
+    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   final notification = message.data;
+    //   print("onMessage: $notification");
+    // });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print("onMessageOpenedApp: $message");
+    // });
+
+    // onResume: (Map<String, dynamic> message) async {
+    //   print("onResume: $message");
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => ChatScreen()),
+    //   );
+    // },
+    super.initState();
+  }
+
+  Future<void> updateTokenToFirestore(String token) async {
+    // Update the token to the user's document in Firestore
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .update({'token': token});
+  }
+
   List<Widget> screens = [
         Homepage3Screen(),
         MessagesScreen(),
@@ -31,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedNavBarIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(user.uid).get(),

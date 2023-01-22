@@ -694,7 +694,7 @@ class _ProfileState extends State<Profile> {
                                                           width: 10,
                                                         ),
                                                         Text(
-                                                          "เรซูเม่ยังไม่สมบูรณ์ กรุณากรอกข้อมูลให้ครบถ้วนก่อนจึงจะเปิดการมองเห็นได้",
+                                                          "เรซูเม่ยังไม่สมบูรณ์ ",
                                                           style: TextStyle(
                                                               fontSize: 16),
                                                         )

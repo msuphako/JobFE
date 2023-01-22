@@ -223,6 +223,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 .collection('users')
                                 .doc(user.uid)
                                 .collection('messages')
+                                .orderBy('last_date', descending: true)
                                 .snapshots(),
                             builder: (context, AsyncSnapshot snapshot) {
                               if (snapshot.hasError) {

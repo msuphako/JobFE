@@ -116,6 +116,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
       "senderId": widget.currentId,
       "receiverId": widget.friendId,
       "message": message,
+      "sender": true,
       "type": type,
       "date": DateTime.now(),
     }).then((value) {
@@ -140,6 +141,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
         .add({
       "senderId": widget.currentId,
       "receiverId": widget.friendId,
+      "sender": false,
       "message": message,
       "type": type,
       "date": DateTime.now(),
