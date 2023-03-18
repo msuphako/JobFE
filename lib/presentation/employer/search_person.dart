@@ -78,6 +78,7 @@ class _SearchResultPersonState extends State<SearchResultPerson> {
           stream: getresume,
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
+              print(snapshot.error);
               return Text('Something went wrong');
             }
 
@@ -108,11 +109,11 @@ class _SearchResultPersonState extends State<SearchResultPerson> {
                         final resume =
                             resumedata[index].data()! as Map<String, dynamic>;
                         print(widget.searchdata);
-                        int agestart =
-                            int.parse('${widget.searchdata['agestart']}');
-                        int ageend =
-                            int.parse('${widget.searchdata['ageend']}');
-                        int age = int.parse('${resume['age']}');
+                        // int agestart =
+                        //     int.parse('${widget.searchdata['agestart']}');
+                        // int ageend =
+                        //     int.parse('${widget.searchdata['ageend']}');
+                        // int age = int.parse('${resume['age']}');
                         List<String> jobdetail =
                             widget.searchdata['jobdetail'] as List<String>;
 
@@ -120,9 +121,10 @@ class _SearchResultPersonState extends State<SearchResultPerson> {
                             List<String>.from(resume['jobwanted'] as List);
                         // print(jobdetail);
                         if (widget.searchdata['jobtype'] != 'ทั้งหมด') {
-                          // if(widget.searchdata['jobtype']){
-
-                          // }
+                          if (widget.searchdata['jobtype'] !=
+                              resume['jobtype']) {
+                            return Text('');
+                          }
                         }
 
                         if (!jobdetail.contains('ทั้งหมด')) {
@@ -145,9 +147,9 @@ class _SearchResultPersonState extends State<SearchResultPerson> {
                             return Text('');
                           }
                         }
-                        if (!(agestart < age && age < ageend)) {
-                          return Text('');
-                        }
+                        // if (!(agestart < age && age < ageend)) {
+                        //   return Text('');
+                        // }
                         return PersonCard(resume);
                       },
                     ),

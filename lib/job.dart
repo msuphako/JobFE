@@ -64,6 +64,22 @@ class Job {
     }
   }
 
+  Future<bool> IsResume(String uid) async {
+    final QuerySnapshot result = await db
+        .collectionGroup("resume")
+        .where('uid', isEqualTo: uid)
+        .where('status', isEqualTo: true)
+        .get();
+    final List<DocumentSnapshot> documents = result.docs;
+    if (documents.length > 0) {
+      print("t");
+      return true;
+    } else {
+      print("f");
+      return false;
+    }
+  }
+
   Future<bool> AppliedJob(String uid, String JobId, String title) async {
     var col = FirebaseFirestore.instance
         .collectionGroup('jobPost')

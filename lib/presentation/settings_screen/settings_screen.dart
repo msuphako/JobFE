@@ -8,7 +8,9 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/presentation/forgot_password_page/forgot_password_page.dart';
 import 'package:hires/presentation/reset_password_screen/reset_password_screen.dart';
+import 'package:hires/presentation/settings_screen/about_screen.dart';
 import 'package:hires/presentation/settings_screen/language.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import '../../main.dart';
 
@@ -24,6 +26,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final user = FirebaseAuth.instance.currentUser!;
 
   bool status = false;
+  SendEmail(useremail) async {
+    final Email email = Email(
+      body: 'รายละเอียด',
+      subject: 'หัวเรื่อง',
+      recipients: [useremail],
+      // cc: ['cc@example.com'],
+      // bcc: ['bcc@example.com'],
+      // attachmentPaths: ['/path/to/attachment.zip'],
+      isHTML: false,
+    );
+
+    await FlutterEmailSender.send(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<DocumentSnapshot> userData =
@@ -288,9 +304,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                       content: TextField(
                                                         controller:
                                                             _textFieldController,
-                                                        decoration: InputDecoration(
-                                                            hintText:
-                                                                "Text Field in Dialog"),
+                                                        decoration:
+                                                            InputDecoration(
+                                                                hintText:
+                                                                    "..."),
                                                       ),
                                                     );
                                                   } else {
@@ -369,7 +386,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             22.00,
                                           ),
                                           child: Icon(
-                                            Icons.key,
+                                            Icons.key_off,
                                             color: ColorConstant.gray500,
                                           )),
                                     ),
@@ -408,166 +425,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, ResetPasswordScreen.id);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getVerticalSize(
-                                      27.00,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: context.locale ==
-                                                  Constants.engLocal
-                                              ? getHorizontalSize(
-                                                  20.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          right: context.locale ==
-                                                  Constants.arLocal
-                                              ? getHorizontalSize(
-                                                  20.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                        ),
-                                        child: Container(
-                                          height: getSize(
-                                            24.00,
-                                          ),
-                                          width: getSize(
-                                            24.00,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            ImageConstant.imgMdiformtextbo,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: context.locale ==
-                                                  Constants.engLocal
-                                              ? getHorizontalSize(
-                                                  16.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          right: context.locale ==
-                                                  Constants.arLocal
-                                              ? getHorizontalSize(
-                                                  16.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          top: getVerticalSize(
-                                            1.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ตั้งค่าการแจ้งเตือน",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, SelectLanguage.id);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getVerticalSize(
-                                      28.00,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: context.locale ==
-                                                  Constants.engLocal
-                                              ? getHorizontalSize(
-                                                  20.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          right: context.locale ==
-                                                  Constants.arLocal
-                                              ? getHorizontalSize(
-                                                  20.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          bottom: getVerticalSize(
-                                            1.00,
-                                          ),
-                                        ),
-                                        child: Container(
-                                          height: getSize(
-                                            22.00,
-                                          ),
-                                          width: getSize(
-                                            22.00,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            ImageConstant.imgFluentlocalla,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: context.locale ==
-                                                  Constants.engLocal
-                                              ? getHorizontalSize(
-                                                  17.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                          right: context.locale ==
-                                                  Constants.arLocal
-                                              ? getHorizontalSize(
-                                                  17.00,
-                                                )
-                                              : getHorizontalSize(0),
-                                        ),
-                                        child: Text(
-                                          "เปลี่ยนภาษา",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ),
                               Padding(
@@ -646,74 +503,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: getVerticalSize(
-                                    27.00,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left:
-                                            context.locale == Constants.engLocal
-                                                ? getHorizontalSize(
-                                                    20.00,
-                                                  )
-                                                : getHorizontalSize(0),
-                                        right:
-                                            context.locale == Constants.arLocal
-                                                ? getHorizontalSize(
-                                                    20.00,
-                                                  )
-                                                : getHorizontalSize(0),
-                                      ),
-                                      child: Container(
-                                        height: getSize(
-                                          24.00,
-                                        ),
-                                        width: getSize(
-                                          24.00,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          ImageConstant.imgFluentdelete2,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          16.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          1.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          16.00,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "ลบบัญชี",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: ColorConstant.redA700,
-                                          fontSize: getFontSize(
-                                            18,
-                                          ),
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(
+                              //     top: getVerticalSize(
+                              //       27.00,
+                              //     ),
+                              //   ),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     crossAxisAlignment: CrossAxisAlignment.center,
+                              //     mainAxisSize: MainAxisSize.max,
+                              //     children: [
+                              //       Padding(
+                              //         padding: EdgeInsets.only(
+                              //           left:
+                              //               context.locale == Constants.engLocal
+                              //                   ? getHorizontalSize(
+                              //                       20.00,
+                              //                     )
+                              //                   : getHorizontalSize(0),
+                              //           right:
+                              //               context.locale == Constants.arLocal
+                              //                   ? getHorizontalSize(
+                              //                       20.00,
+                              //                     )
+                              //                   : getHorizontalSize(0),
+                              //         ),
+                              //         child: Container(
+                              //           height: getSize(
+                              //             24.00,
+                              //           ),
+                              //           width: getSize(
+                              //             24.00,
+                              //           ),
+                              //           child: SvgPicture.asset(
+                              //             ImageConstant.imgFluentdelete2,
+                              //             fit: BoxFit.fill,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       Padding(
+                              //         padding: EdgeInsets.only(
+                              //           left: getHorizontalSize(
+                              //             16.00,
+                              //           ),
+                              //           top: getVerticalSize(
+                              //             1.00,
+                              //           ),
+                              //           right: getHorizontalSize(
+                              //             16.00,
+                              //           ),
+                              //         ),
+                              //         child: Text(
+                              //           "ลบบัญชี",
+                              //           overflow: TextOverflow.ellipsis,
+                              //           textAlign: TextAlign.start,
+                              //           style: TextStyle(
+                              //             color: ColorConstant.redA700,
+                              //             fontSize: getFontSize(
+                              //               18,
+                              //             ),
+                              //             fontFamily: 'Poppins',
+                              //             fontWeight: FontWeight.w500,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -743,286 +600,296 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              20.00,
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     top: getVerticalSize(
+                        //       20.00,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //         ),
+                        //         child: Container(
+                        //           height: getSize(
+                        //             24.00,
+                        //           ),
+                        //           width: getSize(
+                        //             24.00,
+                        //           ),
+                        //           child: SvgPicture.asset(
+                        //             ImageConstant.imgIcoutlinepriv,
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           bottom: getVerticalSize(
+                        //             1.00,
+                        //           ),
+                        //         ),
+                        //         child: Text(
+                        //           "Privacy",
+                        //           overflow: TextOverflow.ellipsis,
+                        //           textAlign: TextAlign.start,
+                        //           style: TextStyle(
+                        //             fontSize: getFontSize(
+                        //               15,
+                        //             ),
+                        //             fontFamily: 'Poppins',
+                        //             fontWeight: FontWeight.w500,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     top: getVerticalSize(
+                        //       27.00,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //         ),
+                        //         child: Container(
+                        //           height: getSize(
+                        //             24.00,
+                        //           ),
+                        //           width: getSize(
+                        //             24.00,
+                        //           ),
+                        //           child: SvgPicture.asset(
+                        //             ImageConstant.imgCarbonconditio,
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           bottom: getVerticalSize(
+                        //             1.00,
+                        //           ),
+                        //         ),
+                        //         child: Text(
+                        //           "Terms and conditions",
+                        //           overflow: TextOverflow.ellipsis,
+                        //           textAlign: TextAlign.start,
+                        //           style: TextStyle(
+                        //             fontSize: getFontSize(
+                        //               15,
+                        //             ),
+                        //             fontFamily: 'Poppins',
+                        //             fontWeight: FontWeight.w500,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     top: getVerticalSize(
+                        //       27.00,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   20.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           top: getVerticalSize(
+                        //             1.00,
+                        //           ),
+                        //           bottom: getVerticalSize(
+                        //             1.00,
+                        //           ),
+                        //         ),
+                        //         child: Container(
+                        //           height: getSize(
+                        //             21.00,
+                        //           ),
+                        //           width: getSize(
+                        //             21.00,
+                        //           ),
+                        //           child: SvgPicture.asset(
+                        //             ImageConstant.imgArcticonsdevic,
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: EdgeInsets.only(
+                        //           left: context.locale == Constants.engLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //           right: context.locale == Constants.arLocal
+                        //               ? getHorizontalSize(
+                        //                   16.00,
+                        //                 )
+                        //               : getHorizontalSize(0),
+                        //         ),
+                        //         child: Text(
+                        //           "Help Center",
+                        //           overflow: TextOverflow.ellipsis,
+                        //           textAlign: TextAlign.start,
+                        //           style: TextStyle(
+                        //             fontSize: getFontSize(
+                        //               15,
+                        //             ),
+                        //             fontFamily: 'Poppins',
+                        //             fontWeight: FontWeight.w500,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        GestureDetector(
+                          onTap: () {
+                            SendEmail('suphachok019@gmail.com');
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: getVerticalSize(
+                                27.00,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                ),
-                                child: Container(
-                                  height: getSize(
-                                    24.00,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: context.locale == Constants.engLocal
+                                        ? getHorizontalSize(
+                                            20.00,
+                                          )
+                                        : getHorizontalSize(0),
+                                    right: context.locale == Constants.arLocal
+                                        ? getHorizontalSize(
+                                            20.00,
+                                          )
+                                        : getHorizontalSize(0),
                                   ),
-                                  width: getSize(
-                                    24.00,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ImageConstant.imgIcoutlinepriv,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  bottom: getVerticalSize(
-                                    1.00,
-                                  ),
-                                ),
-                                child: Text(
-                                  "Privacy",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      15,
+                                  child: Container(
+                                    height: getSize(
+                                      26.00,
                                     ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
+                                    width: getSize(
+                                      26.00,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      ImageConstant.imgFluentpersons,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              27.00,
+                                GestureDetector(
+                                  onTap: () {
+                                    SendEmail("suphachok019@gmail.com");
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: context.locale == Constants.engLocal
+                                          ? getHorizontalSize(
+                                              16.00,
+                                            )
+                                          : getHorizontalSize(0),
+                                      right: context.locale == Constants.arLocal
+                                          ? getHorizontalSize(
+                                              16.00,
+                                            )
+                                          : getHorizontalSize(0),
+                                      top: getVerticalSize(
+                                        1.00,
+                                      ),
+                                      bottom: getVerticalSize(
+                                        2.00,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "ติดต่อ",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: getFontSize(
+                                          18,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                ),
-                                child: Container(
-                                  height: getSize(
-                                    24.00,
-                                  ),
-                                  width: getSize(
-                                    24.00,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ImageConstant.imgCarbonconditio,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  bottom: getVerticalSize(
-                                    1.00,
-                                  ),
-                                ),
-                                child: Text(
-                                  "Terms and conditions",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      15,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              27.00,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  top: getVerticalSize(
-                                    1.00,
-                                  ),
-                                  bottom: getVerticalSize(
-                                    1.00,
-                                  ),
-                                ),
-                                child: Container(
-                                  height: getSize(
-                                    21.00,
-                                  ),
-                                  width: getSize(
-                                    21.00,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ImageConstant.imgArcticonsdevic,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                ),
-                                child: Text(
-                                  "Help Center",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      15,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: getVerticalSize(
-                              27.00,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          20.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                ),
-                                child: Container(
-                                  height: getSize(
-                                    26.00,
-                                  ),
-                                  width: getSize(
-                                    26.00,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    ImageConstant.imgFluentpersons,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  top: getVerticalSize(
-                                    1.00,
-                                  ),
-                                  bottom: getVerticalSize(
-                                    2.00,
-                                  ),
-                                ),
-                                child: Text(
-                                  "Support",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      15,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                         Padding(
@@ -1062,35 +929,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: context.locale == Constants.engLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  right: context.locale == Constants.arLocal
-                                      ? getHorizontalSize(
-                                          16.00,
-                                        )
-                                      : getHorizontalSize(0),
-                                  top: getVerticalSize(
-                                    1.00,
-                                  ),
-                                  bottom: getVerticalSize(
-                                    2.00,
-                                  ),
-                                ),
-                                child: Text(
-                                  "About",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    fontSize: getFontSize(
-                                      15,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, About_Screen.id);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: context.locale == Constants.engLocal
+                                        ? getHorizontalSize(
+                                            16.00,
+                                          )
+                                        : getHorizontalSize(0),
+                                    right: context.locale == Constants.arLocal
+                                        ? getHorizontalSize(
+                                            16.00,
+                                          )
+                                        : getHorizontalSize(0),
+                                    top: getVerticalSize(
+                                      1.00,
                                     ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
+                                    bottom: getVerticalSize(
+                                      2.00,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "เกี่ยวกับ",
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: getFontSize(
+                                        18,
+                                      ),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                               ),

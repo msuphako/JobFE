@@ -127,6 +127,8 @@ class _JobPostFormState extends State<JobPostForm> {
   ];
   final user = FirebaseAuth.instance.currentUser!;
   var job = Job();
+  final _formKey = GlobalKey<FormState>();
+
   final _titleController = TextEditingController();
   final _descriptController = TextEditingController();
   final _SalaryController = TextEditingController();
@@ -183,25 +185,27 @@ class _JobPostFormState extends State<JobPostForm> {
                 letterSpacing: 0.07,
               ),
               onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  job.CreateJob(
+                      id: user.uid,
+                      title: _titleController.text,
+                      detail: _descriptController.text,
+                      description: dataaa,
+                      jobtype: jobTypesList[jobTypeIndex],
+                      salary: salary,
+                      startdate: startdate,
+                      enddate: enddate,
+                      Requirements: {
+                        "Age":
+                            "${num.parse(_currentRangeValues.start.toString()).toString()}-${num.parse(_currentRangeValues.end.toString()).toString()}",
+                        "Gender": genderList[GenderIndex],
+                      });
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, ShowJobPost.id);
+                }
                 // print(jobTypesList[jobTypeIndex]);
                 // print(enddate.millisecondsSinceEpoch);
                 // print(salary);
-                job.CreateJob(
-                    id: user.uid,
-                    title: _titleController.text,
-                    detail: _descriptController.text,
-                    description: dataaa,
-                    jobtype: jobTypesList[jobTypeIndex],
-                    salary: salary,
-                    startdate: startdate,
-                    enddate: enddate,
-                    Requirements: {
-                      "Age":
-                          "${num.parse(_currentRangeValues.start.toString()).toString()}-${num.parse(_currentRangeValues.end.toString()).toString()}",
-                      "Gender": genderList[GenderIndex],
-                    });
-                Navigator.pop(context);
-                Navigator.pushNamed(context, ShowJobPost.id);
               },
               // onPressed: () {
               //   Navigator.pushNamed(context, ApplyScreen.id);
@@ -283,343 +287,196 @@ class _JobPostFormState extends State<JobPostForm> {
                     child: Column(
                       children: [
                         Card(
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      10.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "หัวเรื่อง",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      color: ColorConstant.gray800,
-                                      fontSize: getFontSize(
-                                        20,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        20.00,
                                       ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  controller: _titleController,
-                                  maxLength: 40,
-                                  decoration: InputDecoration(
-                                    hintText: '',
-                                    counterText: '',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      5.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "รายละเอียดงาน",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      color: ColorConstant.gray800,
-                                      fontSize: getFontSize(
-                                        20,
+                                      top: getVerticalSize(
+                                        10.00,
                                       ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  controller: _descriptController,
-                                  minLines: 5,
-                                  maxLines: 7,
-                                  decoration: InputDecoration(
-                                    hintText: '',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      10.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "ประเภทงาน",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      color: ColorConstant.gray800,
-                                      fontSize: getFontSize(
-                                        20,
+                                      right: getHorizontalSize(
+                                        20.00,
                                       ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getVerticalSize(
-                                      16.00,
-                                    ),
-                                    bottom: getVerticalSize(
-                                      10.00,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: getVerticalSize(40),
-                                    child: ListView.builder(
-                                        itemCount: jobTypesList.length,
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    jobTypeIndex = index;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  height: getVerticalSize(
-                                                    37.00,
-                                                  ),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          getHorizontalSize(
-                                                              16)),
-                                                  decoration: BoxDecoration(
-                                                    color: jobTypeIndex == index
-                                                        ? ColorConstant.blueA200
-                                                        : isDark
-                                                            ? ColorConstant
-                                                                .darkbutton
-                                                            : ColorConstant
-                                                                .gray300,
-                                                  ),
-                                                  child: Text(
-                                                    jobTypesList[index],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: jobTypeIndex ==
-                                                              index
-                                                          ? Colors.white
-                                                          : isDark
-                                                              ? ColorConstant
-                                                                  .gray100
-                                                              : ColorConstant
-                                                                  .gray700,
-                                                      fontSize: getFontSize(
-                                                        16,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        }),
-                                  )),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      5.00,
-                                    ),
-                                    right: getHorizontalSize(
-                                      20.00,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "เลือกหมวดหมู่งาน",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      color: ColorConstant.gray800,
-                                      fontSize: getFontSize(
-                                        20,
-                                      ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(8.0),
-                              //   child: DropdownSearch<String>.multiSelection(
-                              //     items: companyList,
-                              //     popupProps: PopupPropsMultiSelection.menu(
-                              //       showSelectedItems: true,
-                              //       disabledItemFn: (String s) => s.startsWith('I'),
-                              //     ),
-                              //     onChanged: ((value) {
-                              //       print(value);
-                              //     }),
-                              //   ),
-                              // ),
-
-                              StreamBuilder<QuerySnapshot>(
-                                  stream: db.collection('joblist').snapshots(),
-                                  builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Text('ไม่พบข้อมูล');
-                                    }
-
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center();
-                                    }
-                                    var resumedata = snapshot.data!.docs;
-                                    var data = resumedata[0].data()
-                                        as Map<String, dynamic>;
-                                    List<String> jobdata =
-                                        List<String>.from(data['name'] as List);
-                                    // print(jobdata);
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:
-                                          DropdownSearch<String>.multiSelection(
-                                        popupProps:
-                                            PopupPropsMultiSelection.menu(
-                                          showSelectedItems: true,
-                                          disabledItemFn: (String s) =>
-                                              s.startsWith('I'),
+                                    child: Text(
+                                      "หัวเรื่อง",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          20,
                                         ),
-                                        items: jobdata,
-                                        dropdownDecoratorProps:
-                                            DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                            // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
-                                            // labelText: "เลือกงาน",
-                                            hintText: "เลือกงาน",
-                                          ),
-                                        ),
-                                        onChanged: (value) {
-                                          dataaa = value;
-                                        },
-                                        // selectedItem: "Brazil",
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    );
-                                  }),
-                              const SizedBox(width: 50),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('เพิ่มหมวดหมู่งาน'),
-                                          actions: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // // changenewpass();
-                                                FirebaseFirestore.instance
-                                                    .collection("joblist")
-                                                    .doc('jobid')
-                                                    .set({
-                                                  "name":
-                                                      FieldValue.arrayUnion([
-                                                    _textFieldController.text
-                                                  ])
-                                                }, SetOptions(merge: true));
-
-                                                Navigator.pop(context);
-                                              },
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                    left: getHorizontalSize(
-                                                      18.00,
-                                                    ),
-                                                    bottom: getVerticalSize(
-                                                      10.00,
-                                                    ),
-                                                    right: getHorizontalSize(
-                                                      18.00,
-                                                    ),
-                                                  ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    controller: _titleController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกหัวข้อของงาน';
+                                      }
+                                      return null;
+                                    },
+                                    maxLength: 40,
+                                    decoration: InputDecoration(
+                                      hintText: '',
+                                      counterText: '',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        5.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "รายละเอียดงาน",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          20,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    controller: _descriptController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกหัวรายละเอียดของงาน';
+                                      }
+                                      return null;
+                                    },
+                                    minLines: 5,
+                                    maxLines: 7,
+                                    decoration: InputDecoration(
+                                      hintText: '',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        10.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "ประเภทงาน",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          20,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                      top: getVerticalSize(
+                                        16.00,
+                                      ),
+                                      bottom: getVerticalSize(
+                                        10.00,
+                                      ),
+                                    ),
+                                    child: Container(
+                                      height: getVerticalSize(40),
+                                      child: ListView.builder(
+                                          itemCount: jobTypesList.length,
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      jobTypeIndex = index;
+                                                    });
+                                                  },
                                                   child: Container(
                                                     alignment: Alignment.center,
                                                     height: getVerticalSize(
-                                                      56.00,
+                                                      37.00,
                                                     ),
-                                                    width: getHorizontalSize(
-                                                      327.00,
-                                                    ),
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            getHorizontalSize(
+                                                                16)),
                                                     decoration: BoxDecoration(
-                                                      color: ColorConstant
-                                                          .blueA200,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        getHorizontalSize(
-                                                          16.00,
-                                                        ),
-                                                      ),
+                                                      color: jobTypeIndex ==
+                                                              index
+                                                          ? ColorConstant
+                                                              .blueA200
+                                                          : isDark
+                                                              ? ColorConstant
+                                                                  .darkbutton
+                                                              : ColorConstant
+                                                                  .gray300,
                                                     ),
                                                     child: Text(
-                                                      "เพิ่ม",
+                                                      jobTypesList[index],
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                        color: ColorConstant
-                                                            .whiteA700,
+                                                        color: jobTypeIndex ==
+                                                                index
+                                                            ? Colors.white
+                                                            : isDark
+                                                                ? ColorConstant
+                                                                    .gray100
+                                                                : ColorConstant
+                                                                    .gray700,
                                                         fontSize: getFontSize(
                                                           16,
                                                         ),
@@ -630,194 +487,495 @@ class _JobPostFormState extends State<JobPostForm> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ],
-                                          content: TextField(
-                                            controller: _textFieldController,
-                                            decoration: InputDecoration(
-                                                hintText: "กรอกข้อมูล"),
-                                          ),
-                                        );
-                                      });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(color: Colors.blue),
-                                  child: Text(
-                                    'เพิ่มหมวดหมู่งาน',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.white),
+                                              ],
+                                            );
+                                          }),
+                                    )),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        5.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "เลือกหมวดหมู่งาน",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          20,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              // Align(
-                              //   alignment: Alignment.center,
-                              //   child: Padding(
-                              //     padding: EdgeInsets.only(
-                              //       left: getHorizontalSize(
-                              //         20.00,
-                              //       ),
-                              //       top: getVerticalSize(
-                              //         10.00,
-                              //       ),
-                              //       bottom: getVerticalSize(
-                              //         10.00,
-                              //       ),
-                              //       right: getHorizontalSize(
-                              //         20.00,
-                              //       ),
-                              //     ),
-                              //     child: Padding(
-                              //       padding: EdgeInsets.only(
-                              //         top: getVerticalSize(
-                              //           0.50,
-                              //         ),
-                              //         bottom: getVerticalSize(
-                              //           0.50,
-                              //         ),
-                              //       ),
-                              //       child: Row(
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.center,
-                              //         mainAxisSize: MainAxisSize.min,
-                              //         children: [
-                              //           Text(
-                              //             "เลือกจังหวัด",
-                              //             overflow: TextOverflow.ellipsis,
-                              //             textAlign: TextAlign.start,
-                              //             style: TextStyle(
-                              //               color: ColorConstant.gray800,
-                              //               fontSize: getFontSize(
-                              //                 20,
-                              //               ),
-                              //               fontFamily: 'Poppins',
-                              //               fontWeight: FontWeight.w500,
-                              //             ),
-                              //           ),
-                              //           Padding(
-                              //             padding: EdgeInsets.only(
-                              //               left: getHorizontalSize(
-                              //                 24.00,
-                              //               ),
-                              //               top: getVerticalSize(
-                              //                 2.00,
-                              //               ),
-                              //             ),
-                              //             child: Container(
-                              //               alignment: Alignment.center,
-                              //               width: 200,
-                              //               decoration: BoxDecoration(
-                              //                   border: Border.all(
-                              //                       color: ColorConstant
-                              //                           .blueA200)),
-                              //               child: GestureDetector(
-                              //                 onTap: () {
-                              //                   showDialog(
-                              //                       context: context,
-                              //                       builder:
-                              //                           (BuildContext context) {
-                              //                         return Dialog(
-                              //                           child: Container(
-                              //                               height:
-                              //                                   getVerticalSize(
-                              //                                       size
-                              //                                           .height),
-                              //                               width:
-                              //                                   getHorizontalSize(
-                              //                                       40),
-                              //                               padding: EdgeInsets.symmetric(
-                              //                                   horizontal:
-                              //                                       getHorizontalSize(
-                              //                                           16),
-                              //                                   vertical:
-                              //                                       getVerticalSize(
-                              //                                           30)),
-                              //                               child: Center(
-                              //                                 child: ListView
-                              //                                     .builder(
-                              //                                   itemCount:
-                              //                                       provinceList
-                              //                                           .length,
-                              //                                   shrinkWrap:
-                              //                                       true,
-                              //                                   itemBuilder:
-                              //                                       (context,
-                              //                                           index) {
-                              //                                     // return ProvinceDialog(
-                              //                                     //     provinceList[
-                              //                                     //         index]);
-                              //                                     return Padding(
-                              //                                       padding: EdgeInsets.symmetric(
-                              //                                           vertical:
-                              //                                               getVerticalSize(
-                              //                                                   14),
-                              //                                           horizontal:
-                              //                                               getHorizontalSize(4)),
-                              //                                       child:
-                              //                                           GestureDetector(
-                              //                                         onTap:
-                              //                                             () {
-                              //                                           setState(
-                              //                                               () {
-                              //                                             province =
-                              //                                                 provinceList[index];
-                              //                                           });
-                              //                                           Navigator.of(context,
-                              //                                                   rootNavigator: true)
-                              //                                               .pop();
-                              //                                         },
-                              //                                         child:
-                              //                                             Row(
-                              //                                           mainAxisAlignment:
-                              //                                               MainAxisAlignment.spaceBetween,
-                              //                                           children: [
-                              //                                             Text(
-                              //                                               provinceList[index],
-                              //                                               style:
-                              //                                                   TextStyle(
-                              //                                                 fontSize: getFontSize(
-                              //                                                   16,
-                              //                                                 ),
-                              //                                                 fontFamily: 'Poppins',
-                              //                                                 fontWeight: FontWeight.w500,
-                              //                                               ),
-                              //                                             ),
-                              //                                           ],
-                              //                                         ),
-                              //                                       ),
-                              //                                     );
-                              //                                   },
-                              //                                 ),
-                              //                               )),
-                              //                         );
-                              //                       });
-                              //                 },
-                              //                 child: Text(
-                              //                   province == ""
-                              //                       ? "กรุณาเลือกจังหวัด"
-                              //                       : province,
-                              //                   overflow: TextOverflow.ellipsis,
-                              //                   textAlign: TextAlign.start,
-                              //                   style: TextStyle(
-                              //                     fontSize: getFontSize(
-                              //                       18,
-                              //                     ),
-                              //                     fontFamily: 'Poppins',
-                              //                     fontWeight: FontWeight.w500,
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: DropdownSearch<String>.multiSelection(
+                                //     items: companyList,
+                                //     popupProps: PopupPropsMultiSelection.menu(
+                                //       showSelectedItems: true,
+                                //       disabledItemFn: (String s) => s.startsWith('I'),
+                                //     ),
+                                //     onChanged: ((value) {
+                                //       print(value);
+                                //     }),
+                                //   ),
+                                // ),
+
+                                StreamBuilder<QuerySnapshot>(
+                                    stream:
+                                        db.collection('joblist').snapshots(),
+                                    builder: (context, AsyncSnapshot snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text('ไม่พบข้อมูล');
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center();
+                                      }
+                                      var resumedata = snapshot.data!.docs;
+                                      var data = resumedata[0].data()
+                                          as Map<String, dynamic>;
+                                      List<String> jobdata = List<String>.from(
+                                          data['name'] as List);
+                                      // print(jobdata);
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: DropdownSearch<
+                                            String>.multiSelection(
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'กรุณาเลือกหมวดหมู่งานที่เกี่ยวข้อง';
+                                            }
+                                            return null;
+                                          },
+                                          popupProps:
+                                              PopupPropsMultiSelection.menu(
+                                            showSelectedItems: true,
+                                            disabledItemFn: (String s) =>
+                                                s.startsWith('I'),
+                                          ),
+                                          items: jobdata,
+                                          dropdownDecoratorProps:
+                                              DropDownDecoratorProps(
+                                            dropdownSearchDecoration:
+                                                InputDecoration(
+                                              // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
+                                              // labelText: "เลือกงาน",
+                                              hintText: "เลือกงาน",
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            dataaa = value;
+                                          },
+                                          // selectedItem: "Brazil",
+                                        ),
+                                      );
+                                    }),
+                                const SizedBox(width: 50),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('เพิ่มหมวดหมู่งาน'),
+                                            actions: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // // changenewpass();
+                                                  FirebaseFirestore.instance
+                                                      .collection("joblist")
+                                                      .doc('jobid')
+                                                      .set({
+                                                    "name":
+                                                        FieldValue.arrayUnion([
+                                                      _textFieldController.text
+                                                    ])
+                                                  }, SetOptions(merge: true));
+
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: getHorizontalSize(
+                                                        18.00,
+                                                      ),
+                                                      bottom: getVerticalSize(
+                                                        10.00,
+                                                      ),
+                                                      right: getHorizontalSize(
+                                                        18.00,
+                                                      ),
+                                                    ),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      height: getVerticalSize(
+                                                        56.00,
+                                                      ),
+                                                      width: getHorizontalSize(
+                                                        327.00,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: ColorConstant
+                                                            .blueA200,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          getHorizontalSize(
+                                                            16.00,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Text(
+                                                        "เพิ่ม",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: ColorConstant
+                                                              .whiteA700,
+                                                          fontSize: getFontSize(
+                                                            16,
+                                                          ),
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                            content: TextField(
+                                              controller: _textFieldController,
+                                              decoration: InputDecoration(
+                                                  hintText: "กรอกข้อมูล"),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration:
+                                        BoxDecoration(color: Colors.blue),
+                                    child: Text(
+                                      'เพิ่มหมวดหมู่งาน',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                // Align(
+                                //   alignment: Alignment.center,
+                                //   child: Padding(
+                                //     padding: EdgeInsets.only(
+                                //       left: getHorizontalSize(
+                                //         20.00,
+                                //       ),
+                                //       top: getVerticalSize(
+                                //         10.00,
+                                //       ),
+                                //       bottom: getVerticalSize(
+                                //         10.00,
+                                //       ),
+                                //       right: getHorizontalSize(
+                                //         20.00,
+                                //       ),
+                                //     ),
+                                //     child: Padding(
+                                //       padding: EdgeInsets.only(
+                                //         top: getVerticalSize(
+                                //           0.50,
+                                //         ),
+                                //         bottom: getVerticalSize(
+                                //           0.50,
+                                //         ),
+                                //       ),
+                                //       child: Row(
+                                //         crossAxisAlignment:
+                                //             CrossAxisAlignment.center,
+                                //         mainAxisSize: MainAxisSize.min,
+                                //         children: [
+                                //           Text(
+                                //             "เลือกจังหวัด",
+                                //             overflow: TextOverflow.ellipsis,
+                                //             textAlign: TextAlign.start,
+                                //             style: TextStyle(
+                                //               color: ColorConstant.gray800,
+                                //               fontSize: getFontSize(
+                                //                 20,
+                                //               ),
+                                //               fontFamily: 'Poppins',
+                                //               fontWeight: FontWeight.w500,
+                                //             ),
+                                //           ),
+                                //           Padding(
+                                //             padding: EdgeInsets.only(
+                                //               left: getHorizontalSize(
+                                //                 24.00,
+                                //               ),
+                                //               top: getVerticalSize(
+                                //                 2.00,
+                                //               ),
+                                //             ),
+                                //             child: Container(
+                                //               alignment: Alignment.center,
+                                //               width: 200,
+                                //               decoration: BoxDecoration(
+                                //                   border: Border.all(
+                                //                       color: ColorConstant
+                                //                           .blueA200)),
+                                //               child: GestureDetector(
+                                //                 onTap: () {
+                                //                   showDialog(
+                                //                       context: context,
+                                //                       builder:
+                                //                           (BuildContext context) {
+                                //                         return Dialog(
+                                //                           child: Container(
+                                //                               height:
+                                //                                   getVerticalSize(
+                                //                                       size
+                                //                                           .height),
+                                //                               width:
+                                //                                   getHorizontalSize(
+                                //                                       40),
+                                //                               padding: EdgeInsets.symmetric(
+                                //                                   horizontal:
+                                //                                       getHorizontalSize(
+                                //                                           16),
+                                //                                   vertical:
+                                //                                       getVerticalSize(
+                                //                                           30)),
+                                //                               child: Center(
+                                //                                 child: ListView
+                                //                                     .builder(
+                                //                                   itemCount:
+                                //                                       provinceList
+                                //                                           .length,
+                                //                                   shrinkWrap:
+                                //                                       true,
+                                //                                   itemBuilder:
+                                //                                       (context,
+                                //                                           index) {
+                                //                                     // return ProvinceDialog(
+                                //                                     //     provinceList[
+                                //                                     //         index]);
+                                //                                     return Padding(
+                                //                                       padding: EdgeInsets.symmetric(
+                                //                                           vertical:
+                                //                                               getVerticalSize(
+                                //                                                   14),
+                                //                                           horizontal:
+                                //                                               getHorizontalSize(4)),
+                                //                                       child:
+                                //                                           GestureDetector(
+                                //                                         onTap:
+                                //                                             () {
+                                //                                           setState(
+                                //                                               () {
+                                //                                             province =
+                                //                                                 provinceList[index];
+                                //                                           });
+                                //                                           Navigator.of(context,
+                                //                                                   rootNavigator: true)
+                                //                                               .pop();
+                                //                                         },
+                                //                                         child:
+                                //                                             Row(
+                                //                                           mainAxisAlignment:
+                                //                                               MainAxisAlignment.spaceBetween,
+                                //                                           children: [
+                                //                                             Text(
+                                //                                               provinceList[index],
+                                //                                               style:
+                                //                                                   TextStyle(
+                                //                                                 fontSize: getFontSize(
+                                //                                                   16,
+                                //                                                 ),
+                                //                                                 fontFamily: 'Poppins',
+                                //                                                 fontWeight: FontWeight.w500,
+                                //                                               ),
+                                //                                             ),
+                                //                                           ],
+                                //                                         ),
+                                //                                       ),
+                                //                                     );
+                                //                                   },
+                                //                                 ),
+                                //                               )),
+                                //                         );
+                                //                       });
+                                //                 },
+                                //                 child: Text(
+                                //                   province == ""
+                                //                       ? "กรุณาเลือกจังหวัด"
+                                //                       : province,
+                                //                   overflow: TextOverflow.ellipsis,
+                                //                   textAlign: TextAlign.start,
+                                //                   style: TextStyle(
+                                //                     fontSize: getFontSize(
+                                //                       18,
+                                //                     ),
+                                //                     fontFamily: 'Poppins',
+                                //                     fontWeight: FontWeight.w500,
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        10.00,
+                                      ),
+                                      right: getHorizontalSize(
+                                        20.00,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "ระบุค่าจ้าง",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          20,
+                                        ),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                      top: getVerticalSize(
+                                        16.00,
+                                      ),
+                                      bottom: getVerticalSize(
+                                        10.00,
+                                      ),
+                                    ),
+                                    child: Container(
+                                      height: getVerticalSize(40),
+                                      child: ListView.builder(
+                                          itemCount: payList.length,
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      payTypeIndex = index;
+                                                      index == 1
+                                                          ? Isshow = true
+                                                          : Isshow = false;
+                                                      salary = payList[index];
+                                                      _SalaryController.clear();
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: getVerticalSize(
+                                                      37.00,
+                                                    ),
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            getHorizontalSize(
+                                                                16)),
+                                                    decoration: BoxDecoration(
+                                                      color: payTypeIndex ==
+                                                              index
+                                                          ? ColorConstant
+                                                              .blueA200
+                                                          : isDark
+                                                              ? ColorConstant
+                                                                  .darkbutton
+                                                              : ColorConstant
+                                                                  .gray300,
+                                                    ),
+                                                    child: Text(
+                                                      payList[index],
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: payTypeIndex ==
+                                                                index
+                                                            ? Colors.white
+                                                            : isDark
+                                                                ? ColorConstant
+                                                                    .gray100
+                                                                : ColorConstant
+                                                                    .gray700,
+                                                        fontSize: getFontSize(
+                                                          18,
+                                                        ),
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          }),
+                                    )),
+                                Visibility(
+                                  visible: Isshow,
+                                  child: SizedBox(
+                                    width: 200,
+                                    child: TextFormField(
+                                      controller: _SalaryController,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          salary = _SalaryController.text;
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: '',
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 10.0),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
                                   padding: EdgeInsets.only(
                                     left: getHorizontalSize(
                                       20.00,
@@ -830,7 +988,7 @@ class _JobPostFormState extends State<JobPostForm> {
                                     ),
                                   ),
                                   child: Text(
-                                    "ระบุค่าจ้าง",
+                                    "กำหนดวันรับสมัครงาน",
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
@@ -843,146 +1001,25 @@ class _JobPostFormState extends State<JobPostForm> {
                                     ),
                                   ),
                                 ),
-                              ),
-
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                    top: getVerticalSize(
-                                      16.00,
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                      left: getHorizontalSize(
+                                        24.00,
+                                      ),
+                                      top: getVerticalSize(
+                                        2.00,
+                                      ),
                                     ),
-                                    bottom: getVerticalSize(
-                                      10.00,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: getVerticalSize(40),
-                                    child: ListView.builder(
-                                        itemCount: payList.length,
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    payTypeIndex = index;
-                                                    index == 1
-                                                        ? Isshow = true
-                                                        : Isshow = false;
-                                                    salary = payList[index];
-                                                    _SalaryController.clear();
-                                                  });
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  height: getVerticalSize(
-                                                    37.00,
-                                                  ),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          getHorizontalSize(
-                                                              16)),
-                                                  decoration: BoxDecoration(
-                                                    color: payTypeIndex == index
-                                                        ? ColorConstant.blueA200
-                                                        : isDark
-                                                            ? ColorConstant
-                                                                .darkbutton
-                                                            : ColorConstant
-                                                                .gray300,
-                                                  ),
-                                                  child: Text(
-                                                    payList[index],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: payTypeIndex ==
-                                                              index
-                                                          ? Colors.white
-                                                          : isDark
-                                                              ? ColorConstant
-                                                                  .gray100
-                                                              : ColorConstant
-                                                                  .gray700,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        }),
-                                  )),
-                              Visibility(
-                                visible: Isshow,
-                                child: SizedBox(
-                                  width: 200,
-                                  child: TextFormField(
-                                    controller: _SalaryController,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        salary = _SalaryController.text;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: '',
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 10.0),
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: getHorizontalSize(
-                                    20.00,
-                                  ),
-                                  top: getVerticalSize(
-                                    10.00,
-                                  ),
-                                  right: getHorizontalSize(
-                                    20.00,
-                                  ),
-                                ),
-                                child: Text(
-                                  "กำหนดวันรับสมัครงาน",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: ColorConstant.gray800,
-                                    fontSize: getFontSize(
-                                      20,
-                                    ),
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                    left: getHorizontalSize(
-                                      24.00,
-                                    ),
-                                    top: getVerticalSize(
-                                      2.00,
-                                    ),
-                                  ),
-                                  child: SfDateRangePicker(
-                                    onSelectionChanged: _onSelectionChanged,
-                                    selectionMode:
-                                        DateRangePickerSelectionMode.range,
-                                    minDate: DateTime.now(),
-                                    initialSelectedRange:
-                                        PickerDateRange(startdate, enddate),
-                                  )),
-                            ],
+                                    child: SfDateRangePicker(
+                                      onSelectionChanged: _onSelectionChanged,
+                                      selectionMode:
+                                          DateRangePickerSelectionMode.range,
+                                      minDate: DateTime.now(),
+                                      initialSelectedRange:
+                                          PickerDateRange(startdate, enddate),
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
 

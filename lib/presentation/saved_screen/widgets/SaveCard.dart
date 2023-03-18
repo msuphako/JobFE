@@ -37,8 +37,8 @@ class _SaveCardState extends State<SaveCard> {
   Widget build(BuildContext context) {
     Query jobpost = FirebaseFirestore.instance
         .collectionGroup('jobPost')
-        .where("JobId", isEqualTo: widget.savejob["JobId"])
-        .where("status", isEqualTo: 'กำลังเปิดรับสมัคร');
+        .where("JobId", isEqualTo: widget.savejob["JobId"]);
+    // .where("status", isEqualTo: 'กำลังเปิดรับสมัคร');
 
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return FutureBuilder<QuerySnapshot>(
@@ -61,41 +61,67 @@ class _SaveCardState extends State<SaveCard> {
             String showtime =
                 " ${dtime.day}/${dtime.month}/${dtime.year + 543}";
             // print(data!["JobId"]);
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        JobDetails1Screen(widget.savejob["JobId"])));
-              },
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: getVerticalSize(
-                    1.00,
-                  ),
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: getVerticalSize(
+                  1.00,
                 ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    child: Stack(alignment: Alignment.center, children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: FutureBuilder<DocumentSnapshot>(
-                              future:
-                                  db.collection('users').doc(data['eid']).get(),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Something went wrong');
-                                }
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  child: Stack(alignment: Alignment.center, children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: FutureBuilder<DocumentSnapshot>(
+                            future:
+                                db.collection('users').doc(data['eid']).get(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Something went wrong');
+                              }
 
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                }
-                                Map<String, dynamic> userdata = snapshot.data!
-                                    .data() as Map<String, dynamic>;
-                                return Container(
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              Map<String, dynamic> userdata =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              return GestureDetector(
+                                onTap: () {
+                                  if (data['status'] == "กำลังเปิดรับสมัคร") {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                JobDetails1Screen(
+                                                    widget.savejob["JobId"])));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: ColorConstant.red700,
+                                        behavior: SnackBarBehavior.floating,
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.warning_amber,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              data['status'],
+                                              style: TextStyle(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: lightCostumContainer(
@@ -460,22 +486,22 @@ class _SaveCardState extends State<SaveCard> {
                                                     33.00,
                                                   ),
                                                   width: getHorizontalSize(
-                                                    125.00,
+                                                    155.00,
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    color: Colors.blue.shade50,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      getHorizontalSize(
-                                                        52.00,
-                                                      ),
-                                                    ),
+                                                    color: data['status'] ==
+                                                            "กำลังเปิดรับสมัคร"
+                                                        ? Colors.green.shade50
+                                                        : Colors.red.shade50,
                                                   ),
                                                   child: Text(
-                                                    "รายละเอียด",
+                                                    data['status'],
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      color: Colors.blue,
+                                                      color: data['status'] ==
+                                                              "กำลังเปิดรับสมัคร"
+                                                          ? Colors.green
+                                                          : Colors.red,
                                                       fontSize: getFontSize(
                                                         18,
                                                       ),
@@ -492,12 +518,12 @@ class _SaveCardState extends State<SaveCard> {
                                       ),
                                     ),
                                   ),
-                                );
-                              }),
-                        ),
-                      )
-                    ]),
-                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    )
+                  ]),
                 ),
               ),
             );

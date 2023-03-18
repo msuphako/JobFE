@@ -145,8 +145,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // ),
                         Align(
                           alignment: context.locale == Constants.engLocal
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
+                              ? Alignment.center
+                              : Alignment.center,
                           child: Padding(
                             padding: EdgeInsets.only(
                               left: getHorizontalSize(
@@ -160,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             child: Text(
-                              "Registration 👍",
+                              "สมัครสมาชิก",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -175,8 +175,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         Align(
                           alignment: context.locale == Constants.engLocal
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
+                              ? Alignment.center
+                              : Alignment.center,
                           child: Padding(
                             padding: EdgeInsets.only(
                               left: getHorizontalSize(
@@ -190,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             child: Text(
-                              "Let’s Register. Apply to jobs!",
+                              "สมัครสมาชิกเพื่อค้นหางานที่ต้องการ",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -198,10 +198,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ? Colors.white
                                     : ColorConstant.gray9007e,
                                 fontSize: getFontSize(
-                                  14,
+                                  20,
                                 ),
                                 fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
@@ -262,15 +262,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       controller: namecontroller,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'Please enter some text';
+                                          return 'กรุณากรอกชื่อผู้ใช้งาน';
                                         }
                                         return null;
                                       },
                                       decoration: InputDecoration(
-                                        hintText: 'Username',
+                                        hintText: 'ชื่อผู้ใช้งาน',
                                         hintStyle: TextStyle(
                                           fontSize: getFontSize(
-                                            14.0,
+                                            18.0,
                                           ),
                                         ),
                                         prefixIcon: Padding(
@@ -312,7 +312,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       style: TextStyle(
                                         color: ColorConstant.gray900,
                                         fontSize: getFontSize(
-                                          14.0,
+                                          18.0,
                                         ),
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w500,
@@ -343,10 +343,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 controller: emailcontroller,
                                 validator: (value) => validateEmail(value),
                                 decoration: InputDecoration(
-                                  hintText: 'Email',
+                                  hintText: 'อีเมล',
                                   hintStyle: TextStyle(
                                     fontSize: getFontSize(
-                                      14.0,
+                                      18.0,
                                     ),
                                   ),
                                   prefixIcon: Padding(
@@ -389,7 +389,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 style: TextStyle(
                                   color: ColorConstant.gray900,
                                   fontSize: getFontSize(
-                                    14.0,
+                                    18.0,
                                   ),
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w500,
@@ -428,10 +428,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   validator: validatePassword,
                                   obscureText: obscure1,
                                   decoration: InputDecoration(
-                                    hintText: 'Password',
+                                    hintText: 'รหัสผ่าน',
                                     hintStyle: TextStyle(
                                       fontSize: getFontSize(
-                                        14.0,
+                                        18.0,
                                       ),
                                     ),
                                     prefixIcon: Padding(
@@ -505,7 +505,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   style: TextStyle(
                                     color: ColorConstant.gray900,
                                     fontSize: getFontSize(
-                                      14.0,
+                                      18.0,
                                     ),
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w500,
@@ -545,15 +545,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   }),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'กรุณากรอกรหัสผ่าน';
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
-                                    hintText: 'Confirm Password',
+                                    hintText: 'ยืนยันรหัสผ่าน',
                                     hintStyle: TextStyle(
                                       fontSize: getFontSize(
-                                        14.0,
+                                        18.0,
                                       ),
                                     ),
                                     prefixIcon: Padding(
@@ -627,7 +627,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   style: TextStyle(
                                     color: ColorConstant.gray900,
                                     fontSize: getFontSize(
-                                      14.0,
+                                      18.0,
                                     ),
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w500,
@@ -683,223 +683,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Register",
+                                    "สมัครสมาชิก",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: ColorConstant.whiteA700,
                                       fontSize: getFontSize(
-                                        16,
+                                        20,
                                       ),
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  24.00,
-                                ),
-                                top: getVerticalSize(
-                                  32.00,
-                                ),
-                                right: getHorizontalSize(
-                                  24.00,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                    height: getVerticalSize(
-                                      0.50,
-                                    ),
-                                    width: getHorizontalSize(
-                                      98.00,
-                                    ),
-                                    margin: EdgeInsets.only(
-                                      top: getVerticalSize(
-                                        8.00,
-                                      ),
-                                      bottom: getVerticalSize(
-                                        7.50,
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColorConstant.gray400,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: getHorizontalSize(
-                                        16.00,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "Or continue with",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: ColorConstant.gray400,
-                                        fontSize: getFontSize(
-                                          13,
-                                        ),
-                                        fontFamily: 'Circular Std',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: getVerticalSize(
-                                      0.50,
-                                    ),
-                                    width: getHorizontalSize(
-                                      98.00,
-                                    ),
-                                    margin: EdgeInsets.only(
-                                      left: getHorizontalSize(
-                                        16.00,
-                                      ),
-                                      top: getVerticalSize(
-                                        8.00,
-                                      ),
-                                      bottom: getVerticalSize(
-                                        7.50,
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColorConstant.gray400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  10.00,
-                                ),
-                                top: getVerticalSize(
-                                  48.00,
-                                ),
-                                right: getHorizontalSize(
-                                  10.00,
-                                ),
-                              ),
-                              child: Container(
-                                  height: getVerticalSize(
-                                    56.00,
-                                  ),
-                                  width: getHorizontalSize(
-                                    200.00,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: ColorConstant.whiteA700),
-                                          padding: EdgeInsets.all(getSize(8)),
-                                          child: SvgPicture.asset(
-                                              ImageConstant.appleLogo)),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: ColorConstant.whiteA700),
-                                          padding: EdgeInsets.all(getSize(8)),
-                                          child: SvgPicture.asset(
-                                              ImageConstant.googleLogo)),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: ColorConstant.whiteA700),
-                                          padding: EdgeInsets.all(getSize(8)),
-                                          child: SvgPicture.asset(
-                                              ImageConstant.facebookLogo)),
-                                    ],
-                                  )),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: getHorizontalSize(
-                                    24.00,
-                                  ),
-                                  top: getVerticalSize(
-                                    32.00,
-                                  ),
-                                  right: getHorizontalSize(
-                                    24.00,
-                                  ),
-                                ),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Have',
-                                        style: TextStyle(
-                                          color: ColorConstant.gray401,
-                                          fontSize: getFontSize(
-                                            14,
-                                          ),
-                                          fontFamily: 'Circular Std',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' ',
-                                        style: TextStyle(
-                                          color: ColorConstant.gray401,
-                                          fontSize: getFontSize(
-                                            14,
-                                          ),
-                                          fontFamily: 'Circular Std',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: 'an account? ',
-                                        style: TextStyle(
-                                          color: ColorConstant.gray401,
-                                          fontSize: getFontSize(
-                                            14,
-                                          ),
-                                          fontFamily: 'Circular Std',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: 'Log in',
-                                        style: TextStyle(
-                                          color: ColorConstant.teal600,
-                                          fontSize: getFontSize(
-                                            14,
-                                          ),
-                                          fontFamily: 'Circular Std',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ),
@@ -935,10 +729,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? validatePassword(String? value) {
     // add your custom validation here.
     if (value!.isEmpty) {
-      return 'Please enter some text';
+      return 'กรุณากรอกรหัสผ่าน';
     }
     if (value.length < 7) {
-      return 'Must be more than 6 charater';
+      return 'รหัสผ่านต้องมากกว่า 6 ตัวอักษร';
     }
     return null;
     //   RegExp regex =

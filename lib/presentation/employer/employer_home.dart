@@ -383,7 +383,6 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                            bottom: 10,
                                             left: context.locale ==
                                                     Constants.engLocal
                                                 ? getHorizontalSize(
@@ -437,8 +436,6 @@ class _EmpHomeScreenState extends State<EmpHomeScreen> {
                                         var resumedata = snapshot.data!.docs;
                                         int total = snapshot.data!.docs.length;
                                         return Container(
-                                          padding: EdgeInsets.only(
-                                              top: getVerticalSize(20)),
                                           child: Align(
                                             alignment: Alignment.center,
                                             child: ListView.builder(

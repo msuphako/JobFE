@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/main.dart';
@@ -33,10 +34,14 @@ class Auth {
   Future<void> sendPasswordResetEmail({
     required String email,
   }) async {
-    await _auth.sendPasswordResetEmail(email: email);
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
-  Future signIn(String email, String pass, context) async {
+  Future SignIn(String email, String pass, context) async {
     String errorMessage = "";
 
     showDialog(
@@ -88,6 +93,10 @@ class Auth {
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
+  void sendpasswordreset(String email) {
+    auth.sendPasswordResetEmail(email: email);
+  }
+
   void changePassword(String email, String password, context) async {
     //Create field for user to input old password
 
@@ -136,7 +145,7 @@ class Auth {
     }
   }
 
-  Future<User?> signInWithGoogle({required BuildContext context}) async {
+  Future<User?> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     if (kIsWeb) {
@@ -256,6 +265,7 @@ class Auth {
         password: password,
       );
       addEmpUser(user.uid, user.email, name, companyname);
+      await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       print(e);
       switch (e.code) {
@@ -294,16 +304,9 @@ class Auth {
       );
     } else {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => EmpHomeScreen()));
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
-
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );
 
   test() async {
     String? token = await FirebaseMessaging.instance.getToken();

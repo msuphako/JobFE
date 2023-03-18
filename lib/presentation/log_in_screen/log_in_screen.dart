@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/auth.dart';
 import 'package:hires/core/app_export.dart';
-import 'package:hires/main.dart';
 import 'package:hires/presentation/employer/employer_register.dart';
 import 'package:hires/presentation/forgot_password_page/forgot_password_page.dart';
-import 'package:hires/presentation/home_screen/home_screen.dart';
 import 'package:hires/presentation/register1_screen/register1_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LogInScreen extends StatefulWidget {
   static String id = "LogInScreen";
@@ -23,6 +20,7 @@ class _LogInScreenState extends State<LogInScreen> {
   bool isEmployee = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _textFieldController = TextEditingController();
 
   // final String email = "", pass = "";
   // @override
@@ -339,11 +337,11 @@ class _LogInScreenState extends State<LogInScreen> {
                                 child: TextFormField(
                                   controller: emailController,
                                   onFieldSubmitted: (value) {
-                                    auth.signIn(emailController.text,
+                                    auth.SignIn(emailController.text,
                                         passwordController.text, context);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: 'อีเมลล์',
+                                    hintText: 'อีเมล',
                                     hintStyle: TextStyle(
                                       fontSize: getFontSize(
                                         16.0,
@@ -430,7 +428,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                   controller: passwordController,
                                   obscureText: obscure1,
                                   onFieldSubmitted: (value) {
-                                    auth.signIn(emailController.text,
+                                    auth.SignIn(emailController.text,
                                         passwordController.text, context);
                                   },
                                   decoration: InputDecoration(
@@ -647,7 +645,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       alignment: Alignment.centerLeft,
                                       child: GestureDetector(
                                         onTap: () {
-                                          auth.signIn(emailController.text,
+                                          auth.SignIn(emailController.text,
                                               passwordController.text, context);
                                         },
                                         child: Container(
@@ -819,8 +817,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                           //         ImageConstant.appleLogo)),
                                           GestureDetector(
                                             onTap: () {
-                                              auth.signInWithGoogle(
-                                                  context: context);
+                                              auth.signInWithGoogle();
                                             },
                                             child: Container(
                                                 decoration: BoxDecoration(
@@ -849,8 +846,106 @@ class _LogInScreenState extends State<LogInScreen> {
                               alignment: Alignment.center,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, Register1Screen.id);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('อีเมล'),
+                                          actions: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                // changenewpass();
+                                                auth.sendpasswordreset(
+                                                    _textFieldController.text);
+                                                setState(() {});
+                                                Navigator.pop(context);
+                                                _textFieldController.clear();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        ColorConstant.teal600,
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.warning_amber,
+                                                          color: Colors.white,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          "ส่งคำขอไปที่อีเมลแล้ว",
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                    left: getHorizontalSize(
+                                                      18.00,
+                                                    ),
+                                                    bottom: getVerticalSize(
+                                                      10.00,
+                                                    ),
+                                                    right: getHorizontalSize(
+                                                      18.00,
+                                                    ),
+                                                  ),
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: getVerticalSize(
+                                                      56.00,
+                                                    ),
+                                                    width: getHorizontalSize(
+                                                      327.00,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          ColorConstant.teal600,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        getHorizontalSize(
+                                                          16.00,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "ยืนยัน",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: ColorConstant
+                                                            .whiteA700,
+                                                        fontSize: getFontSize(
+                                                          16,
+                                                        ),
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                          content: TextField(
+                                            controller: _textFieldController,
+                                            decoration: InputDecoration(
+                                                hintText:
+                                                    "กรอกอีเมลที่ต้องการ"),
+                                          ),
+                                        );
+                                      });
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(

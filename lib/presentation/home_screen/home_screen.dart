@@ -14,6 +14,8 @@ import '../../core/utils/math_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import '../../main.dart';
+
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,9 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print(user.uid);
     FirebaseMessaging.instance.getToken().then((token) {
       updateTokenToFirestore(token!);
     });
+    setState(() {});
     // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     //   final notification = message.data;
     //   print("onMessage: $notification");
@@ -67,80 +71,81 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedNavBarIndex = 0;
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference userdata =
+        FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(user.uid).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        future: userdata.doc(user.uid).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
-            return Center(child: CircularProgressIndicator());
+            return Text('ไม่พบข้อมูล');
           }
-          if (snapshot.hasData && !snapshot.data!.exists) {
-            return Center(child: CircularProgressIndicator());
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center();
           }
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
-            return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                showSelectedLabels: true,
-                selectedItemColor: ColorConstant.teal600,
-                unselectedItemColor: ColorConstant.gray600,
-                selectedLabelStyle: TextStyle(
-                  color: ColorConstant.teal600,
-                  fontSize: getFontSize(
-                    12,
-                  ),
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w900,
+          if (snapshot.data.data() == null) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MainPage()));
+          }
+          Map<String, dynamic> data =
+              snapshot.data.data() as Map<String, dynamic>;
+          return Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              showSelectedLabels: true,
+              selectedItemColor: ColorConstant.teal600,
+              unselectedItemColor: ColorConstant.gray600,
+              selectedLabelStyle: TextStyle(
+                color: ColorConstant.teal600,
+                fontSize: getFontSize(
+                  12,
                 ),
-                unselectedLabelStyle: TextStyle(
-                  color: ColorConstant.gray600,
-                  fontSize: getFontSize(
-                    12,
-                  ),
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
-                currentIndex: selectedNavBarIndex,
-                onTap: (index) {
-                  setState(() {
-                    selectedNavBarIndex = index;
-                  });
-                },
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home_filled, color: ColorConstant.gray402),
-                    activeIcon:
-                        Icon(Icons.home_filled, color: ColorConstant.teal600),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                      icon: SvgPicture.asset(ImageConstant.inActiveMsg),
-                      activeIcon: SvgPicture.asset(ImageConstant.inActiveMsg,
-                          color: ColorConstant.teal600),
-                      label: ""),
-                  // BottomNavigationBarItem(
-                  //     icon: SvgPicture.asset(ImageConstant.inActiveBookmark),
-                  //     activeIcon: SvgPicture.asset(
-                  //         ImageConstant.inActiveBookmark,
-                  //         color: ColorConstant.teal600),
-                  //     label: "."),
-                  BottomNavigationBarItem(
-                      icon: SvgPicture.asset(ImageConstant.inActiveCategory),
-                      activeIcon: SvgPicture.asset(
-                          ImageConstant.inActiveCategory,
-                          color: ColorConstant.teal600),
-                      label: ""),
-                ],
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w900,
               ),
-              body: data['usertype'] == "employee"
-                  ? screens[selectedNavBarIndex]
-                  : empscreens[selectedNavBarIndex],
-            );
-          }
+              unselectedLabelStyle: TextStyle(
+                color: ColorConstant.gray600,
+                fontSize: getFontSize(
+                  12,
+                ),
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+              ),
+              currentIndex: selectedNavBarIndex,
+              onTap: (index) {
+                setState(() {
+                  selectedNavBarIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_filled, color: ColorConstant.gray402),
+                  activeIcon:
+                      Icon(Icons.home_filled, color: ColorConstant.teal600),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(ImageConstant.inActiveMsg),
+                    activeIcon: SvgPicture.asset(ImageConstant.inActiveMsg,
+                        color: ColorConstant.teal600),
+                    label: ""),
+                // BottomNavigationBarItem(
+                //     icon: SvgPicture.asset(ImageConstant.inActiveBookmark),
+                //     activeIcon: SvgPicture.asset(
+                //         ImageConstant.inActiveBookmark,
+                //         color: ColorConstant.teal600),
+                //     label: "."),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(ImageConstant.inActiveCategory),
+                    activeIcon: SvgPicture.asset(ImageConstant.inActiveCategory,
+                        color: ColorConstant.teal600),
+                    label: ""),
+              ],
+            ),
+            body: data['usertype'] == "employee"
+                ? screens[selectedNavBarIndex]
+                : empscreens[selectedNavBarIndex],
+          );
           ;
-          return Center(child: CircularProgressIndicator());
         });
   }
 }

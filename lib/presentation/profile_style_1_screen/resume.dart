@@ -139,6 +139,11 @@ class _ProfileState extends State<Profile> {
   ];
 
   var resume = Resume();
+  final form1 = GlobalKey<FormState>();
+  final form2 = GlobalKey<FormState>();
+  final form3 = GlobalKey<FormState>();
+  final form4 = GlobalKey<FormState>();
+
   var _fullnameController = TextEditingController();
   var _ageController = TextEditingController();
   var _dateController = TextEditingController();
@@ -169,6 +174,8 @@ class _ProfileState extends State<Profile> {
   XFile? image;
   File? _photo;
   final ImagePicker picker = ImagePicker();
+
+  var check = false;
 
   void ShowSaveAlert() {
     showDialog(
@@ -572,55 +579,49 @@ class _ProfileState extends State<Profile> {
                                                                       .width,
                                                                   height: 300,
                                                                 )
-                                                              : Icon(
-                                                                  Icons.person,
-                                                                  size: 50,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                      Positioned.fill(
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .bottomCenter,
-                                                          child:
-                                                              GestureDetector(
-                                                            //if user click this button, user can upload image from gallery
-                                                            onTap: () {
-                                                              // Navigator.pop(context);
-                                                              getImage(
-                                                                  ImageSource
-                                                                      .gallery);
-                                                            },
-                                                            child: Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              height:
-                                                                  getVerticalSize(
-                                                                30.00,
-                                                              ),
-                                                              width:
-                                                                  getHorizontalSize(
-                                                                30.00,
-                                                              ),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .white,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                  getHorizontalSize(
-                                                                    52.00,
+                                                              : Positioned.fill(
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        GestureDetector(
+                                                                      //if user click this button, user can upload image from gallery
+                                                                      onTap:
+                                                                          () {
+                                                                        // Navigator.pop(context);
+                                                                        getImage(
+                                                                            ImageSource.gallery);
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        height:
+                                                                            getVerticalSize(
+                                                                          30.00,
+                                                                        ),
+                                                                        width:
+                                                                            getHorizontalSize(
+                                                                          30.00,
+                                                                        ),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(
+                                                                            getHorizontalSize(
+                                                                              52.00,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        child: Icon(
+                                                                            Icons.image),
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              child: Icon(
-                                                                  Icons.image),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
                                                     ],
                                                   )),
                                             ),
@@ -729,100 +730,1471 @@ class _ProfileState extends State<Profile> {
                                   left: 6.0,
                                   right: 6.0,
                                 ),
-                                child: ExpansionTile(
-                                  initiallyExpanded: isExpand,
-                                  textColor: ColorConstant.teal600,
-                                  title: Text('ข้อมูลส่วนตัว',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600)),
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
+                                child: Form(
+                                  key: form1,
+                                  child: ExpansionTile(
+                                    initiallyExpanded: isExpand,
+                                    textColor: ColorConstant.teal600,
+                                    title: Text('ข้อมูลส่วนตัว',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              10.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ชื่อ-นามสกุล",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _fullnameController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'กรุณากรอกชื่อ-นามสกุล';
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ระบุเพศ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            bottom: getVerticalSize(
+                                              6.00,
+                                            ),
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              height: getVerticalSize(40),
+                                              child: ListView.builder(
+                                                  itemCount: genderList.length,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  shrinkWrap: true,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left:
+                                                                      getHorizontalSize(
+                                                                    6.00,
+                                                                  ),
+                                                                  right:
+                                                                      getHorizontalSize(
+                                                                          6)),
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                GenderIndex =
+                                                                    index;
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              height:
+                                                                  getVerticalSize(
+                                                                37.00,
+                                                              ),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          getHorizontalSize(
+                                                                              16)),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: GenderIndex ==
+                                                                        index
+                                                                    ? ColorConstant
+                                                                        .blueA200
+                                                                    : isDark
+                                                                        ? ColorConstant
+                                                                            .darkbutton
+                                                                        : ColorConstant
+                                                                            .gray300,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  getHorizontalSize(
+                                                                    97.00,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              child: Text(
+                                                                genderList[
+                                                                    index],
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: GenderIndex ==
+                                                                          index
+                                                                      ? Colors
+                                                                          .white
+                                                                      : isDark
+                                                                          ? ColorConstant
+                                                                              .gray100
+                                                                          : ColorConstant
+                                                                              .gray700,
+                                                                  fontSize:
+                                                                      getFontSize(
+                                                                    14,
+                                                                  ),
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }),
+                                            ),
+                                          )),
+                                      Padding(
                                         padding: EdgeInsets.only(
                                           left: getHorizontalSize(
                                             20.00,
                                           ),
                                           top: getVerticalSize(
-                                            10.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ชื่อ-นามสกุล",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _fullnameController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
                                             6.00,
                                           ),
                                           right: getHorizontalSize(
                                             20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ระบุเพศ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          bottom: getVerticalSize(
-                                            6.00,
                                           ),
                                         ),
                                         child: Align(
                                           alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "วัน เดือน ปี ที่เกิด ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Column(
+                                                children: [
+                                                  TextFormField(
+                                                    controller: _dateController,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'กรุณาระบุวัน';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    maxLength: 2,
+                                                    inputFormatters: <
+                                                        TextInputFormatter>[
+                                                      // for below version 2 use this
+
+                                                      // for version 2 and greater youcan also use this
+                                                      FilteringTextInputFormatter
+                                                          .digitsOnly
+                                                    ],
+                                                    decoration: InputDecoration(
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 10.0,
+                                                              horizontal: 10.0),
+                                                      hintText: 'วัน',
+                                                      counterText: "",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: TextFormField(
+                                                controller: _monthController,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'กรุณาระบุเดือน';
+                                                  }
+                                                  return null;
+                                                },
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                maxLength: 2,
+                                                inputFormatters: <
+                                                    TextInputFormatter>[
+                                                  // for below version 2 use this
+
+                                                  // for version 2 and greater youcan also use this
+                                                  FilteringTextInputFormatter
+                                                      .digitsOnly
+                                                ],
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 10.0,
+                                                          horizontal: 10.0),
+                                                  counterText: "",
+                                                  hintText: 'เดือน',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: TextFormField(
+                                                controller: _yearController,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'กรุณาระบุปี';
+                                                  }
+                                                  return null;
+                                                },
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                maxLength: 4,
+                                                inputFormatters: <
+                                                    TextInputFormatter>[
+                                                  // for below version 2 use this
+
+                                                  // for version 2 and greater youcan also use this
+                                                  FilteringTextInputFormatter
+                                                      .digitsOnly
+                                                ],
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 10.0,
+                                                          horizontal: 10.0),
+                                                  hintText: 'ปี พ.ศ.',
+                                                  counterText: "",
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ]),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ระบุอายุ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            width: 100.0,
+                                            child: TextFormField(
+                                              controller: _ageController,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'กรุณาระบุอายุ';
+                                                }
+                                                return null;
+                                              },
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              maxLength: 2,
+                                              inputFormatters: <
+                                                  TextInputFormatter>[
+                                                // for below version 2 use this
+
+                                                // for version 2 and greater youcan also use this
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 10.0),
+                                                hintText: '',
+                                                counterText: '',
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0)),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: getHorizontalSize(
+                                            20.00,
+                                          ),
+                                          top: getVerticalSize(
+                                            6.00,
+                                          ),
+                                          right: getHorizontalSize(
+                                            20.00,
+                                          ),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "จังหวัด",
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: getHorizontalSize(
+                                            12.00,
+                                          ),
+                                          top: getVerticalSize(
+                                            6.00,
+                                          ),
+                                          right: getHorizontalSize(
+                                            20.00,
+                                          ),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Dialog(
+                                                      child: Container(
+                                                          height:
+                                                              getVerticalSize(
+                                                                  size.height),
+                                                          width:
+                                                              getHorizontalSize(
+                                                                  40),
+                                                          padding: EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  getHorizontalSize(
+                                                                      16),
+                                                              vertical:
+                                                                  getVerticalSize(
+                                                                      30)),
+                                                          child: Center(
+                                                            child: ListView
+                                                                .builder(
+                                                              itemCount:
+                                                                  provinceList
+                                                                      .length,
+                                                              shrinkWrap: true,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                // return ProvinceDialog(
+                                                                //     provinceList[
+                                                                //         index]);
+                                                                return Padding(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          getVerticalSize(
+                                                                              14),
+                                                                      horizontal:
+                                                                          getHorizontalSize(
+                                                                              4)),
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        province =
+                                                                            provinceList[index];
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context,
+                                                                              rootNavigator: true)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          provinceList[
+                                                                              index],
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                getFontSize(
+                                                                              16,
+                                                                            ),
+                                                                            fontFamily:
+                                                                                'Poppins',
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          )),
+                                                    );
+                                                  });
+                                            },
+                                            child: Container(
+                                              width: 200,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          255, 173, 173, 173),
+                                                      spreadRadius: 1),
+                                                ],
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: Text(
+                                                    province,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: getFontSize(
+                                                        18,
+                                                      ),
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              10.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ที่อยู่ปัจจุบัน",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _addressController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'กรุณาระบุที่อยู่ปัจจุบัน';
+                                            }
+                                            return null;
+                                          },
+                                          minLines: 5,
+                                          maxLines: 7,
+                                          decoration: InputDecoration(
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "เบอร์ติดต่อ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            width: 200.0,
+                                            child: TextFormField(
+                                              controller: _phoneController,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'กรุณาระบุเบอร์ติดต่อ';
+                                                }
+                                                return null;
+                                              },
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              maxLength: 10,
+                                              inputFormatters: <
+                                                  TextInputFormatter>[
+                                                // for below version 2 use this
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9]|')),
+                                                // for version 2 and greater youcan also use this
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 10.0),
+                                                hintText: '',
+                                                counterText: '',
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0)),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "อีเมลสำหรับติดต่อ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _emailController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 20),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor:
+                                                ColorConstant.teal600,
+                                          ),
+                                          onPressed: () {
+                                            if (form1.currentState!
+                                                .validate()) {
+                                              var userdata = {'userdata': 30};
+                                              CreateResume(userdata);
+                                            }
+                                          },
+                                          child: Text(
+                                            "บันทึก",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Card(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 6.0,
+                                  right: 6.0,
+                                ),
+                                child: Form(
+                                  key: form2,
+                                  child: ExpansionTile(
+                                    initiallyExpanded: isExpand,
+                                    textColor: ColorConstant.teal600,
+                                    title: Text('ทักษะความสามารถ',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ระบุความสามารถของตนเอง",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _skilldetailController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'กรุณากรอกข้อมูล';
+                                            }
+                                            return null;
+                                          },
+                                          minLines: 5,
+                                          maxLines: 7,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: getHorizontalSize(
+                                                  20.00,
+                                                ),
+                                                top: getVerticalSize(
+                                                  10.00,
+                                                ),
+                                                right: getHorizontalSize(
+                                                  20.00,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "ความสามารถไนการขับขี่",
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  color: ColorConstant.gray800,
+                                                  fontSize: getFontSize(
+                                                    18,
+                                                  ),
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 200,
+                                              child: Column(
+                                                  children:
+                                                      drivinglist.map((hobby) {
+                                                return CheckboxListTile(
+                                                    controlAffinity:
+                                                        ListTileControlAffinity
+                                                            .leading,
+                                                    value: hobby["isChecked"],
+                                                    title: Text(hobby["name"]),
+                                                    onChanged: (newValue) {
+                                                      setState(() {
+                                                        hobby["isChecked"] =
+                                                            newValue;
+                                                      });
+                                                      print(hobby);
+                                                    });
+                                              }).toList()),
+                                            ),
+                                            // Padding(
+                                            //   padding: EdgeInsets.only(
+                                            //     left: getHorizontalSize(
+                                            //       20.00,
+                                            //     ),
+                                            //     top: getVerticalSize(
+                                            //       10.00,
+                                            //     ),
+                                            //     right: getHorizontalSize(
+                                            //       20.00,
+                                            //     ),
+                                            //   ),
+                                            //   child: Text(
+                                            //     "ความสามารถไนการมอง",
+                                            //     overflow: TextOverflow.ellipsis,
+                                            //     textAlign: TextAlign.start,
+                                            //     style: TextStyle(
+                                            //       color: ColorConstant.gray800,
+                                            //       fontSize: getFontSize(
+                                            //         18,
+                                            //       ),
+                                            //       fontFamily: 'Poppins',
+                                            //       fontWeight: FontWeight.w500,
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            // Container(
+                                            //   width: 200,
+                                            //   child: Column(
+                                            //       children: drivinglist
+                                            //           .map((hobby) {
+                                            //     return CheckboxListTile(
+                                            //         controlAffinity:
+                                            //             ListTileControlAffinity
+                                            //                 .leading,
+                                            //         value: hobby["isChecked"],
+                                            //         title: Text(hobby["name"]),
+                                            //         onChanged: (newValue) {
+                                            //           setState(() {
+                                            //             hobby["isChecked"] =
+                                            //                 newValue;
+                                            //           });
+                                            //         });
+                                            //   }).toList()),
+                                            // ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 20),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor:
+                                                ColorConstant.teal600,
+                                          ),
+                                          onPressed: () {
+                                            if (form2.currentState!
+                                                .validate()) {
+                                              CreateResume({'skill': 30});
+                                            }
+                                            // resume.test(context);
+                                          },
+                                          child: Text(
+                                            "บันทึก",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Card(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 6.0,
+                                  right: 6.0,
+                                ),
+                                child: Form(
+                                  key: form3,
+                                  child: ExpansionTile(
+                                    initiallyExpanded: isExpand,
+                                    textColor: ColorConstant.teal600,
+                                    title: Text('ประวัติการทำงาน',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: getHorizontalSize(
+                                            20.00,
+                                          ),
+                                          top: getVerticalSize(
+                                            6.00,
+                                          ),
+                                          right: getHorizontalSize(
+                                            20.00,
+                                          ),
+                                        ),
+                                        // child: Row(
+                                        //   children: [
+                                        //     Text("No"),
+                                        //     Checkbox(
+                                        //       value: check,
+                                        //       onChanged: (value) {
+                                        //         setState(() {
+                                        //           check = !check;
+                                        //         });
+                                        //       },
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ชื่อบริษัท",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _companynameController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ระยะเวลา",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _durationController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "ตำแหน่ง",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _positionController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              6.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "รายละเอียดงานที่ทำ",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          controller: _jobdetailController,
+                                          minLines: 5,
+                                          maxLines: 7,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10.0),
+                                            hintText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 20),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor:
+                                                ColorConstant.teal600,
+                                          ),
+                                          onPressed: () {
+                                            CreateResume({'exp': 20});
+                                          },
+                                          child: Text(
+                                            "บันทึก",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Card(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 6.0,
+                                  right: 6.0,
+                                ),
+                                child: Form(
+                                  key: form4,
+                                  child: ExpansionTile(
+                                    initiallyExpanded: isExpand,
+                                    textColor: ColorConstant.teal600,
+                                    title: Text('งานที่ต้องการ',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                    children: <Widget>[
+                                      StreamBuilder<QuerySnapshot>(
+                                          stream: db
+                                              .collection('joblist')
+                                              .snapshots(),
+                                          builder: (context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.hasError) {
+                                              return Text('ไม่พบข้อมูล');
+                                            }
+
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center();
+                                            }
+                                            var resumedata =
+                                                snapshot.data!.docs;
+                                            var data = resumedata[0].data()
+                                                as Map<String, dynamic>;
+                                            List<String> jobdata =
+                                                List<String>.from(
+                                                    data['name'] as List);
+                                            // print(jobdata);
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: DropdownSearch<
+                                                  String>.multiSelection(
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'กรุณาเลือกหมวดมู่งาน';
+                                                  }
+                                                  return null;
+                                                },
+                                                popupProps:
+                                                    PopupPropsMultiSelection
+                                                        .menu(
+                                                  showSelectedItems: true,
+                                                  disabledItemFn: (String s) =>
+                                                      s.startsWith('I'),
+                                                ),
+                                                items: jobdata,
+                                                dropdownDecoratorProps:
+                                                    DropDownDecoratorProps(
+                                                  dropdownSearchDecoration:
+                                                      InputDecoration(
+                                                    // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
+                                                    // labelText: "เลือกงาน",
+                                                    hintText: "เลือกงาน",
+                                                  ),
+                                                ),
+                                                onChanged: (value) {
+                                                  jobwanteduserlist = value;
+                                                },
+                                                selectedItems:
+                                                    jobwanteduserlist,
+
+                                                // selectedItem: "Brazil",
+                                              ),
+                                            );
+                                          }),
+                                      const SizedBox(width: 50),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      Text('เพิ่มหมวดหมู่งาน'),
+                                                  actions: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        // // changenewpass();
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "joblist")
+                                                            .doc('jobid')
+                                                            .set(
+                                                                {
+                                                              "name": FieldValue
+                                                                  .arrayUnion([
+                                                                _textFieldController
+                                                                    .text
+                                                              ])
+                                                            },
+                                                                SetOptions(
+                                                                    merge:
+                                                                        true));
+                                                        _textFieldController
+                                                            .clear();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left:
+                                                                getHorizontalSize(
+                                                              18.00,
+                                                            ),
+                                                            bottom:
+                                                                getVerticalSize(
+                                                              10.00,
+                                                            ),
+                                                            right:
+                                                                getHorizontalSize(
+                                                              18.00,
+                                                            ),
+                                                          ),
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            height:
+                                                                getVerticalSize(
+                                                              56.00,
+                                                            ),
+                                                            width:
+                                                                getHorizontalSize(
+                                                              327.00,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  ColorConstant
+                                                                      .blueA200,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                getHorizontalSize(
+                                                                  16.00,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            child: Text(
+                                                              "เพิ่ม",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color: ColorConstant
+                                                                    .whiteA700,
+                                                                fontSize:
+                                                                    getFontSize(
+                                                                  16,
+                                                                ),
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  content: TextField(
+                                                    controller:
+                                                        _textFieldController,
+                                                    decoration: InputDecoration(
+                                                        hintText: "กรอกข้อมูล"),
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration:
+                                              BoxDecoration(color: Colors.blue),
+                                          child: Text(
+                                            'เพิ่มหมวดหมู่งาน',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            left: getHorizontalSize(
+                                              10.00,
+                                            ),
+                                            top: getVerticalSize(
+                                              10.00,
+                                            ),
+                                            right: getHorizontalSize(
+                                              20.00,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "รูปแบบงาน",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                            top: getVerticalSize(
+                                              10.00,
+                                            ),
+                                            bottom: getVerticalSize(
+                                              10.00,
+                                            ),
+                                          ),
                                           child: Container(
                                             height: getVerticalSize(40),
                                             child: ListView.builder(
-                                                itemCount: genderList.length,
+                                                itemCount: jobTypesList.length,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
@@ -834,15 +2206,15 @@ class _ProfileState extends State<Profile> {
                                                             EdgeInsets.only(
                                                                 left:
                                                                     getHorizontalSize(
-                                                                  6.00,
+                                                                  2.00,
                                                                 ),
                                                                 right:
                                                                     getHorizontalSize(
-                                                                        6)),
+                                                                        2)),
                                                         child: GestureDetector(
                                                           onTap: () {
                                                             setState(() {
-                                                              GenderIndex =
+                                                              jobTypeIndex =
                                                                   index;
                                                             });
                                                           },
@@ -860,7 +2232,7 @@ class _ProfileState extends State<Profile> {
                                                                             16)),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: GenderIndex ==
+                                                              color: jobTypeIndex ==
                                                                       index
                                                                   ? ColorConstant
                                                                       .blueA200
@@ -878,12 +2250,13 @@ class _ProfileState extends State<Profile> {
                                                               ),
                                                             ),
                                                             child: Text(
-                                                              genderList[index],
+                                                              jobTypesList[
+                                                                  index],
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
                                                               style: TextStyle(
-                                                                color: GenderIndex ==
+                                                                color: jobTypeIndex ==
                                                                         index
                                                                     ? Colors
                                                                         .white
@@ -909,131 +2282,8 @@ class _ProfileState extends State<Profile> {
                                                     ],
                                                   );
                                                 }),
-                                          ),
-                                        )),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          6.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "วัน เดือน ปี ที่เกิด ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Column(
-                                              children: [
-                                                TextFormField(
-                                                  controller: _dateController,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  maxLength: 2,
-                                                  inputFormatters: <
-                                                      TextInputFormatter>[
-                                                    // for below version 2 use this
-
-                                                    // for version 2 and greater youcan also use this
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                  decoration: InputDecoration(
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 10.0,
-                                                            horizontal: 10.0),
-                                                    hintText: 'วัน',
-                                                    counterText: "",
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: TextFormField(
-                                              controller: _monthController,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              maxLength: 2,
-                                              inputFormatters: <
-                                                  TextInputFormatter>[
-                                                // for below version 2 use this
-
-                                                // for version 2 and greater youcan also use this
-                                                FilteringTextInputFormatter
-                                                    .digitsOnly
-                                              ],
-                                              decoration: InputDecoration(
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10.0,
-                                                        horizontal: 10.0),
-                                                counterText: "",
-                                                hintText: 'เดือน',
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: TextFormField(
-                                              controller: _yearController,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              maxLength: 4,
-                                              inputFormatters: <
-                                                  TextInputFormatter>[
-                                                // for below version 2 use this
-
-                                                // for version 2 and greater youcan also use this
-                                                FilteringTextInputFormatter
-                                                    .digitsOnly
-                                              ],
-                                              decoration: InputDecoration(
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10.0,
-                                                        horizontal: 10.0),
-                                                hintText: 'ปี พ.ศ.',
-                                                counterText: "",
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
+                                          )),
+                                      Padding(
                                         padding: EdgeInsets.only(
                                           left: getHorizontalSize(
                                             20.00,
@@ -1045,269 +2295,25 @@ class _ProfileState extends State<Profile> {
                                             20.00,
                                           ),
                                         ),
-                                        child: Text(
-                                          "ระบุอายุ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SizedBox(
-                                          width: 100.0,
-                                          child: TextFormField(
-                                            controller: _ageController,
-                                            keyboardType: TextInputType.number,
-                                            maxLength: 2,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
-                                              // for below version 2 use this
-
-                                              // for version 2 and greater youcan also use this
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 10.0),
-                                              hintText: '',
-                                              counterText: '',
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "จังหวัดที่ต้องการทำงาน",
+                                            style: TextStyle(
+                                              color: ColorConstant.gray800,
+                                              fontSize: getFontSize(
+                                                18,
                                               ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          6.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "จังหวัด",
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          12.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          6.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                    child: Container(
-                                                        height: getVerticalSize(
-                                                            size.height),
-                                                        width:
-                                                            getHorizontalSize(
-                                                                40),
-                                                        padding: EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                getHorizontalSize(
-                                                                    16),
-                                                            vertical:
-                                                                getVerticalSize(
-                                                                    30)),
-                                                        child: Center(
-                                                          child:
-                                                              ListView.builder(
-                                                            itemCount:
-                                                                provinceList
-                                                                    .length,
-                                                            shrinkWrap: true,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              // return ProvinceDialog(
-                                                              //     provinceList[
-                                                              //         index]);
-                                                              return Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical:
-                                                                        getVerticalSize(
-                                                                            14),
-                                                                    horizontal:
-                                                                        getHorizontalSize(
-                                                                            4)),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      province =
-                                                                          provinceList[
-                                                                              index];
-                                                                    });
-                                                                    Navigator.of(
-                                                                            context,
-                                                                            rootNavigator:
-                                                                                true)
-                                                                        .pop();
-                                                                  },
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                        provinceList[
-                                                                            index],
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              getFontSize(
-                                                                            16,
-                                                                          ),
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        )),
-                                                  );
-                                                });
-                                          },
-                                          child: Container(
-                                            width: 200,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Color.fromARGB(
-                                                        255, 173, 173, 173),
-                                                    spreadRadius: 1),
-                                              ],
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
-                                                child: Text(
-                                                  province,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: getFontSize(
-                                                      18,
-                                                    ),
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(
                                           left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            10.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ที่อยู่ปัจจุบัน",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _addressController,
-                                        minLines: 5,
-                                        maxLines: 7,
-                                        decoration: InputDecoration(
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
+                                            12.00,
                                           ),
                                           top: getVerticalSize(
                                             6.00,
@@ -1316,991 +2322,125 @@ class _ProfileState extends State<Profile> {
                                             20.00,
                                           ),
                                         ),
-                                        child: Text(
-                                          "เบอร์ติดต่อ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SizedBox(
-                                          width: 200.0,
-                                          child: TextFormField(
-                                            controller: _phoneController,
-                                            keyboardType: TextInputType.number,
-                                            maxLength: 10,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
-                                              // for below version 2 use this
-                                              FilteringTextInputFormatter.allow(
-                                                  RegExp(r'[0-9]|')),
-                                              // for version 2 and greater youcan also use this
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 10.0),
-                                              hintText: '',
-                                              counterText: '',
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "อีเมลสำหรับติดต่อ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _emailController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, bottom: 20),
-                                      child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          backgroundColor:
-                                              ColorConstant.teal600,
-                                        ),
-                                        onPressed: () {
-                                          var userdata = {'userdata': 30};
-                                          CreateResume(userdata);
-                                        },
-                                        child: Text(
-                                          "บันทึก",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.0,
-                                  right: 6.0,
-                                ),
-                                child: ExpansionTile(
-                                  initiallyExpanded: isExpand,
-                                  textColor: ColorConstant.teal600,
-                                  title: Text('ทักษะความสามารถ',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600)),
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ระบุความสามารถของตนเอง",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _skilldetailController,
-                                        minLines: 5,
-                                        maxLines: 7,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: getHorizontalSize(
-                                                20.00,
-                                              ),
-                                              top: getVerticalSize(
-                                                10.00,
-                                              ),
-                                              right: getHorizontalSize(
-                                                20.00,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              "ความสามารถไนการขับขี่",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                color: ColorConstant.gray800,
-                                                fontSize: getFontSize(
-                                                  18,
-                                                ),
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 200,
-                                            child: Column(
-                                                children:
-                                                    drivinglist.map((hobby) {
-                                              return CheckboxListTile(
-                                                  controlAffinity:
-                                                      ListTileControlAffinity
-                                                          .leading,
-                                                  value: hobby["isChecked"],
-                                                  title: Text(hobby["name"]),
-                                                  onChanged: (newValue) {
-                                                    setState(() {
-                                                      hobby["isChecked"] =
-                                                          newValue;
-                                                    });
-                                                    print(hobby);
-                                                  });
-                                            }).toList()),
-                                          ),
-                                          // Padding(
-                                          //   padding: EdgeInsets.only(
-                                          //     left: getHorizontalSize(
-                                          //       20.00,
-                                          //     ),
-                                          //     top: getVerticalSize(
-                                          //       10.00,
-                                          //     ),
-                                          //     right: getHorizontalSize(
-                                          //       20.00,
-                                          //     ),
-                                          //   ),
-                                          //   child: Text(
-                                          //     "ความสามารถไนการมอง",
-                                          //     overflow: TextOverflow.ellipsis,
-                                          //     textAlign: TextAlign.start,
-                                          //     style: TextStyle(
-                                          //       color: ColorConstant.gray800,
-                                          //       fontSize: getFontSize(
-                                          //         18,
-                                          //       ),
-                                          //       fontFamily: 'Poppins',
-                                          //       fontWeight: FontWeight.w500,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // Container(
-                                          //   width: 200,
-                                          //   child: Column(
-                                          //       children: drivinglist
-                                          //           .map((hobby) {
-                                          //     return CheckboxListTile(
-                                          //         controlAffinity:
-                                          //             ListTileControlAffinity
-                                          //                 .leading,
-                                          //         value: hobby["isChecked"],
-                                          //         title: Text(hobby["name"]),
-                                          //         onChanged: (newValue) {
-                                          //           setState(() {
-                                          //             hobby["isChecked"] =
-                                          //                 newValue;
-                                          //           });
-                                          //         });
-                                          //   }).toList()),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, bottom: 20),
-                                      child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          backgroundColor:
-                                              ColorConstant.teal600,
-                                        ),
-                                        onPressed: () {
-                                          // resume.test(context);
-                                          CreateResume({'skill': 30});
-                                        },
-                                        child: Text(
-                                          "บันทึก",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.0,
-                                  right: 6.0,
-                                ),
-                                child: ExpansionTile(
-                                  initiallyExpanded: isExpand,
-                                  textColor: ColorConstant.teal600,
-                                  title: Text('ประวัติการทำงาน',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600)),
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ชื่อบริษัท",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _companynameController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ระยะเวลา",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _durationController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "ตำแหน่ง",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _positionController,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            6.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "รายละเอียดงานที่ทำ",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: _jobdetailController,
-                                        minLines: 5,
-                                        maxLines: 7,
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 10.0),
-                                          hintText: '',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, bottom: 20),
-                                      child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          backgroundColor:
-                                              ColorConstant.teal600,
-                                        ),
-                                        onPressed: () {
-                                          CreateResume({'exp': 20});
-                                        },
-                                        child: Text(
-                                          "บันทึก",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 6.0,
-                                  right: 6.0,
-                                ),
-                                child: ExpansionTile(
-                                  initiallyExpanded: isExpand,
-                                  textColor: ColorConstant.teal600,
-                                  title: Text('งานที่ต้องการ',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600)),
-                                  children: <Widget>[
-                                    StreamBuilder<QuerySnapshot>(
-                                        stream: db
-                                            .collection('joblist')
-                                            .snapshots(),
-                                        builder:
-                                            (context, AsyncSnapshot snapshot) {
-                                          if (snapshot.hasError) {
-                                            return Text('ไม่พบข้อมูล');
-                                          }
-
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center();
-                                          }
-                                          var resumedata = snapshot.data!.docs;
-                                          var data = resumedata[0].data()
-                                              as Map<String, dynamic>;
-                                          List<String> jobdata =
-                                              List<String>.from(
-                                                  data['name'] as List);
-                                          // print(jobdata);
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: DropdownSearch<
-                                                String>.multiSelection(
-                                              popupProps:
-                                                  PopupPropsMultiSelection.menu(
-                                                showSelectedItems: true,
-                                                disabledItemFn: (String s) =>
-                                                    s.startsWith('I'),
-                                              ),
-                                              items: jobdata,
-                                              dropdownDecoratorProps:
-                                                  DropDownDecoratorProps(
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  // labelStyle: TextStyle(fontSize: 20,color: ColorConstant.red300),
-                                                  // labelText: "เลือกงาน",
-                                                  hintText: "เลือกงาน",
-                                                ),
-                                              ),
-                                              onChanged: (value) {
-                                                jobwanteduserlist = value;
-                                              },
-                                              selectedItems: jobwanteduserlist,
-
-                                              // selectedItem: "Brazil",
-                                            ),
-                                          );
-                                        }),
-                                    const SizedBox(width: 50),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text('เพิ่มหมวดหมู่งาน'),
-                                                actions: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      // // changenewpass();
-                                                      FirebaseFirestore.instance
-                                                          .collection("joblist")
-                                                          .doc('jobid')
-                                                          .set(
-                                                              {
-                                                            "name": FieldValue
-                                                                .arrayUnion([
-                                                              _textFieldController
-                                                                  .text
-                                                            ])
-                                                          },
-                                                              SetOptions(
-                                                                  merge: true));
-                                                      _textFieldController
-                                                          .clear();
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                          left:
-                                                              getHorizontalSize(
-                                                            18.00,
-                                                          ),
-                                                          bottom:
-                                                              getVerticalSize(
-                                                            10.00,
-                                                          ),
-                                                          right:
-                                                              getHorizontalSize(
-                                                            18.00,
-                                                          ),
-                                                        ),
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Dialog(
+                                                      child: Container(
                                                           height:
                                                               getVerticalSize(
-                                                            56.00,
-                                                          ),
+                                                                  size.height),
                                                           width:
                                                               getHorizontalSize(
-                                                            327.00,
-                                                          ),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: ColorConstant
-                                                                .blueA200,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              getHorizontalSize(
-                                                                16.00,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          child: Text(
-                                                            "เพิ่ม",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  ColorConstant
-                                                                      .whiteA700,
-                                                              fontSize:
-                                                                  getFontSize(
-                                                                16,
-                                                              ),
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                                content: TextField(
-                                                  controller:
-                                                      _textFieldController,
-                                                  decoration: InputDecoration(
-                                                      hintText: "กรอกข้อมูล"),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration:
-                                            BoxDecoration(color: Colors.blue),
-                                        child: Text(
-                                          'เพิ่มหมวดหมู่งาน',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: getHorizontalSize(
-                                            10.00,
-                                          ),
-                                          top: getVerticalSize(
-                                            10.00,
-                                          ),
-                                          right: getHorizontalSize(
-                                            20.00,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "รูปแบบงาน",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                          top: getVerticalSize(
-                                            10.00,
-                                          ),
-                                          bottom: getVerticalSize(
-                                            10.00,
-                                          ),
-                                        ),
-                                        child: Container(
-                                          height: getVerticalSize(40),
-                                          child: ListView.builder(
-                                              itemCount: jobTypesList.length,
-                                              scrollDirection: Axis.horizontal,
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                return Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left:
-                                                              getHorizontalSize(
-                                                            2.00,
-                                                          ),
-                                                          right:
-                                                              getHorizontalSize(
-                                                                  2)),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            jobTypeIndex =
-                                                                index;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          height:
-                                                              getVerticalSize(
-                                                            37.00,
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      getHorizontalSize(
-                                                                          16)),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: jobTypeIndex ==
-                                                                    index
-                                                                ? ColorConstant
-                                                                    .blueA200
-                                                                : isDark
-                                                                    ? ColorConstant
-                                                                        .darkbutton
-                                                                    : ColorConstant
-                                                                        .gray300,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                              getHorizontalSize(
-                                                                97.00,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          child: Text(
-                                                            jobTypesList[index],
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color: jobTypeIndex ==
-                                                                      index
-                                                                  ? Colors.white
-                                                                  : isDark
-                                                                      ? ColorConstant
-                                                                          .gray100
-                                                                      : ColorConstant
-                                                                          .gray700,
-                                                              fontSize:
-                                                                  getFontSize(
-                                                                14,
-                                                              ),
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              }),
-                                        )),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          6.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "จังหวัดที่ต้องการทำงาน",
-                                          style: TextStyle(
-                                            color: ColorConstant.gray800,
-                                            fontSize: getFontSize(
-                                              18,
-                                            ),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: getHorizontalSize(
-                                          12.00,
-                                        ),
-                                        top: getVerticalSize(
-                                          6.00,
-                                        ),
-                                        right: getHorizontalSize(
-                                          20.00,
-                                        ),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                    child: Container(
-                                                        height: getVerticalSize(
-                                                            size.height),
-                                                        width:
-                                                            getHorizontalSize(
-                                                                40),
-                                                        padding: EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                getHorizontalSize(
-                                                                    16),
-                                                            vertical:
-                                                                getVerticalSize(
-                                                                    30)),
-                                                        child: Center(
-                                                          child:
-                                                              ListView.builder(
-                                                            itemCount:
-                                                                provinceList
-                                                                    .length,
-                                                            shrinkWrap: true,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              // return ProvinceDialog(
-                                                              //     provinceList[
-                                                              //         index]);
-                                                              return Padding(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    vertical:
-                                                                        getVerticalSize(
-                                                                            14),
-                                                                    horizontal:
-                                                                        getHorizontalSize(
-                                                                            4)),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      province_work =
+                                                                  40),
+                                                          padding: EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  getHorizontalSize(
+                                                                      16),
+                                                              vertical:
+                                                                  getVerticalSize(
+                                                                      30)),
+                                                          child: Center(
+                                                            child: ListView
+                                                                .builder(
+                                                              itemCount:
+                                                                  provinceList
+                                                                      .length,
+                                                              shrinkWrap: true,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                // return ProvinceDialog(
+                                                                //     provinceList[
+                                                                //         index]);
+                                                                return Padding(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          getVerticalSize(
+                                                                              14),
+                                                                      horizontal:
+                                                                          getHorizontalSize(
+                                                                              4)),
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        province_work =
+                                                                            provinceList[index];
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context,
+                                                                              rootNavigator: true)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
                                                                           provinceList[
-                                                                              index];
-                                                                    });
-                                                                    Navigator.of(
-                                                                            context,
-                                                                            rootNavigator:
-                                                                                true)
-                                                                        .pop();
-                                                                  },
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                        provinceList[
-                                                                            index],
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              getFontSize(
-                                                                            16,
+                                                                              index],
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                getFontSize(
+                                                                              16,
+                                                                            ),
+                                                                            fontFamily:
+                                                                                'Poppins',
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
                                                                           ),
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
                                                                         ),
-                                                                      ),
-                                                                    ],
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        )),
-                                                  );
-                                                });
-                                          },
-                                          child: Container(
-                                            width: 200,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Color.fromARGB(
-                                                        255, 173, 173, 173),
-                                                    spreadRadius: 1),
-                                              ],
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
-                                                child: Text(
-                                                  province_work,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: getFontSize(
-                                                      18,
+                                                                );
+                                                              },
+                                                            ),
+                                                          )),
+                                                    );
+                                                  });
+                                            },
+                                            child: Container(
+                                              width: 200,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Color.fromARGB(
+                                                          255, 173, 173, 173),
+                                                      spreadRadius: 1),
+                                                ],
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: Text(
+                                                    province_work,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: getFontSize(
+                                                        18,
+                                                      ),
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
                                               ),
@@ -2308,26 +2448,29 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, bottom: 20),
-                                      child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          backgroundColor:
-                                              ColorConstant.teal600,
-                                        ),
-                                        onPressed: () {
-                                          CreateResume({'jobwanted': 20});
-                                        },
-                                        child: Text(
-                                          "บันทึก",
-                                          style: TextStyle(fontSize: 18),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 20),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor:
+                                                ColorConstant.teal600,
+                                          ),
+                                          onPressed: () {
+                                            if (form4.currentState!
+                                                .validate()) {
+                                              CreateResume({'jobwanted': 20});
+                                            }
+                                          },
+                                          child: Text(
+                                            "บันทึก",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

@@ -2,9 +2,40 @@ const functions = require("firebase-functions");
 
 
 const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
 
 
+
+const cors = require('cors')({origin: true});
 admin.initializeApp();
+let transporter = nodemailer.createTransport({
+service: 'gmail',
+auth: {
+user: 'cryzeo1686@gmail.com',
+pass: 'kbwrqmfjtxbjikzk' 
+}
+});
+exports.sendMail = functions.region('asia-southeast1').https.onRequest((req, res) => {
+cors(req, res, () => {
+// getting dest email by query string
+const dest = req.query.dest;
+console.log(dest);
+
+const mailOptions = {
+from: 'JobFE <cryzeo1686@gmail.com>', // 
+to: dest,
+subject: 'คำขอการสมัครงาน', // email subject
+html: `คำขอการสมัครงานของท่านได้รับการตอบรับแล้ว กรุณารอการติดต่อกลับจากเจ้าหน้าที่`
+};
+// returning result
+return transporter.sendMail(mailOptions, (erro, info) => {
+if(erro){
+return res.send(erro.toString());
+}
+return res.send('Sended');
+});
+});
+});
 
 exports.sendNotification = functions.region('asia-southeast1').firestore.document('/users/{userId}/messages/{messageId}/chats/{chatId}')
 .onCreate((snap, context) => {

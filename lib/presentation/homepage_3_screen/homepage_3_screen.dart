@@ -564,7 +564,7 @@ class _Homepage3ScreenState extends State<Homepage3Screen> {
                                                   context, PopularJobes.id);
                                             },
                                             child: Text(
-                                              "ดูทั้งหมด",
+                                              "",
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.right,
                                               style: TextStyle(

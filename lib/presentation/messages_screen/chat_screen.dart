@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'message_textfield.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = "ChatScreen";
@@ -41,15 +42,28 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstant.teal600,
+        // automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: 5,
-            ),
             Text(
               widget.name,
               style: TextStyle(fontSize: 20, color: Colors.white),
-            )
+            ),
+            // GestureDetector(
+            //   onTap: (() async {
+            //     String phoneNumber = "0922787339";
+            //     if (await canLaunchUrl(Uri.parse(phoneNumber))) {
+            //       await launchUrl(Uri.parse(phoneNumber));
+            //     } else {
+            //       throw 'Could not launch $phoneNumber';
+            //     }
+            //   }),
+            //   child: Icon(
+            //     Icons.phone,
+            //     color: Colors.white,
+            //   ),
+            // ),
           ],
         ),
       ),

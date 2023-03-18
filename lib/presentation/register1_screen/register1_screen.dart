@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hires/core/app_export.dart';
 
 class Register1Screen extends StatelessWidget {
-  static String id="Register1Screen";
+  static String id = "Register1Screen";
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -99,7 +99,7 @@ class Register1Screen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              "Registration 👍",
+                              "สมัครสมาชิก 👍",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,
                               style: TextStyle(
@@ -128,7 +128,7 @@ class Register1Screen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              "Let’s Register. Apply to jobs!",
+                              "",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,
                               style: TextStyle(

@@ -43,10 +43,13 @@ import 'package:hires/presentation/set_b2_screen/set_b2_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hires/presentation/set_b3_screen/set_b3_screen.dart';
+import 'package:hires/presentation/settings_screen/about_screen.dart';
 
 import 'package:hires/presentation/settings_screen/settings_screen.dart';
 import 'package:hires/presentation/solo_category_job_listing_screen/solo_category_job_listing_screen.dart';
 import 'package:hires/presentation/start1_screen/start1_screen.dart';
+import 'package:hires/presentation/verify1_screen/verify1_screen.dart';
+import 'package:hires/presentation/verify_screen/passwordreset.dart';
 
 import 'package:hires/translations/codegen_loader.g.dart';
 import 'core/theme/theme_constants.dart';
@@ -142,6 +145,7 @@ class _MyAppState extends State<MyApp> {
           EmpHomeScreen.id: (context) => EmpHomeScreen(),
           EmpCategories.id: (context) => EmpCategories(),
           SettingsScreen.id: (context) => SettingsScreen(),
+          About_Screen.id: (context) => About_Screen(),
           ShowJobPost.id: (context) => ShowJobPost(),
           ShowOldJobPost.id: (context) => ShowOldJobPost(),
 
@@ -200,8 +204,8 @@ class _MyAppState extends State<MyApp> {
           //       SetB4Screen.id:(context)=>SetB4Screen(),
           //       SetB5Screen.id:(context)=>SetB5Screen(),
           //       SetB6Screen.id:(context)=>SetB6Screen(),
-          //       VerifyScreen.id:(context)=>VerifyScreen(),
-          //       Verify1Screen.id:(context)=>Verify1Screen(),
+          // VerifyScreen.id: (context) => VerifyScreen(),
+          PasswordReset.id: (context) => PasswordReset(),
           // Homepage3Screen.id:(context)=>Homepage3Screen(),
           SearchResultPerson.id: (context) => SearchResultPerson({}),
           SearchResult2Screen.id: (context) => SearchResult2Screen("", [], ""),

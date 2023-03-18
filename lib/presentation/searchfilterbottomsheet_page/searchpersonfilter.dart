@@ -391,103 +391,6 @@ class _SearchPerfilterbottomsheetPageState
                                 }),
                           )),
                       Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: getHorizontalSize(
-                              20.00,
-                            ),
-                            top: getVerticalSize(
-                              10.00,
-                            ),
-                            right: getHorizontalSize(
-                              20.00,
-                            ),
-                          ),
-                          child: Text(
-                            "เลือกหมวดหมู่งาน",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: ColorConstant.gray700,
-                              fontSize: getFontSize(
-                                20,
-                              ),
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      FutureBuilder<QuerySnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection('joblist')
-                              .get(),
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('ไม่พบข้อมูล');
-                            }
-
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center();
-                            }
-                            var resumedata = snapshot.data!.docs;
-                            var data =
-                                resumedata[0].data() as Map<String, dynamic>;
-                            List<String> jobdata =
-                                List<String>.from(data['name'] as List);
-
-                            // print(jobdata);
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                left: getHorizontalSize(
-                                  20.00,
-                                ),
-                                top: getVerticalSize(
-                                  10.00,
-                                ),
-                                right: getHorizontalSize(
-                                  20.00,
-                                ),
-                              ),
-                              child: DropdownSearch<String>.multiSelection(
-                                popupProps: PopupPropsMultiSelection.menu(
-                                  showSelectedItems: true,
-                                ),
-                                items: jobdata,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintStyle: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                    // labelText: "เลือกงาน",
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: "ทั้งหมด",
-                                    labelStyle: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                    floatingLabelStyle: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  dataaa = value;
-                                },
-                                validator: (item) {
-                                  if (item == null)
-                                    return "Required field";
-                                  else if (item == "Brazil")
-                                    return "Invalid item";
-                                  else
-                                    return null;
-                                },
-                                // selectedItem: "Brazil",
-                              ),
-                            );
-                          }),
-                      Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: EdgeInsets.only(
@@ -786,6 +689,103 @@ class _SearchPerfilterbottomsheetPageState
                                   );
                                 }),
                           )),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: getHorizontalSize(
+                              20.00,
+                            ),
+                            top: getVerticalSize(
+                              10.00,
+                            ),
+                            right: getHorizontalSize(
+                              20.00,
+                            ),
+                          ),
+                          child: Text(
+                            "เลือกหมวดหมู่งาน",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: ColorConstant.gray700,
+                              fontSize: getFontSize(
+                                20,
+                              ),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      FutureBuilder<QuerySnapshot>(
+                          future: FirebaseFirestore.instance
+                              .collection('joblist')
+                              .get(),
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('ไม่พบข้อมูล');
+                            }
+
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center();
+                            }
+                            var resumedata = snapshot.data!.docs;
+                            var data =
+                                resumedata[0].data() as Map<String, dynamic>;
+                            List<String> jobdata =
+                                List<String>.from(data['name'] as List);
+
+                            // print(jobdata);
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                left: getHorizontalSize(
+                                  20.00,
+                                ),
+                                top: getVerticalSize(
+                                  10.00,
+                                ),
+                                right: getHorizontalSize(
+                                  20.00,
+                                ),
+                              ),
+                              child: DropdownSearch<String>.multiSelection(
+                                popupProps: PopupPropsMultiSelection.menu(
+                                  showSelectedItems: true,
+                                ),
+                                items: jobdata,
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    hintStyle: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                    // labelText: "เลือกงาน",
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText: "ทั้งหมด",
+                                    labelStyle: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                    floatingLabelStyle: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  dataaa = value;
+                                },
+                                validator: (item) {
+                                  if (item == null)
+                                    return "Required field";
+                                  else if (item == "Brazil")
+                                    return "Invalid item";
+                                  else
+                                    return null;
+                                },
+                                // selectedItem: "Brazil",
+                              ),
+                            );
+                          }),
                       Padding(
                         padding: EdgeInsets.only(top: 40, bottom: 20),
                         child: Container(
@@ -802,10 +802,8 @@ class _SearchPerfilterbottomsheetPageState
                                 'jobtype': jobTypesList[jobTypeIndex],
                                 'jobdetail': dataaa,
                                 'province': province,
-                                "agestart": num.parse(
-                                    _currentRangeValues.start.toString()),
-                                "ageend": num.parse(
-                                    _currentRangeValues.end.toString()),
+                                "agestart": _currentRangeValues.start,
+                                "ageend": _currentRangeValues.end,
                                 "Gender": genderList[GenderIndex],
                               };
                               Navigator.of(context).push(MaterialPageRoute(

@@ -76,13 +76,13 @@ class _FeaturedJobsWidgetState extends State<FeaturedJobsWidget> {
                       child: Padding(
                         padding: EdgeInsets.only(
                           left: getHorizontalSize(
-                            40.00,
+                            20.00,
                           ),
                           top: getVerticalSize(
                             12.00,
                           ),
                           right: getHorizontalSize(
-                            40.00,
+                            20.00,
                           ),
                           bottom: getVerticalSize(
                             30.00,

@@ -87,13 +87,13 @@ class JobCardSearchState extends State<JobCardSearch> {
                                           Padding(
                                             padding: EdgeInsets.only(
                                               left: getHorizontalSize(
-                                                12.00,
+                                                5.00,
                                               ),
                                               top: getVerticalSize(
                                                 10.00,
                                               ),
                                               right: getHorizontalSize(
-                                                12.00,
+                                                5.00,
                                               ),
                                             ),
                                             child: ClipRRect(
@@ -136,13 +136,13 @@ class JobCardSearchState extends State<JobCardSearch> {
                                           Padding(
                                             padding: EdgeInsets.only(
                                               left: getHorizontalSize(
-                                                24.00,
+                                                0.00,
                                               ),
                                               right: getHorizontalSize(
                                                 24.00,
                                               ),
                                               top: getVerticalSize(
-                                                10.00,
+                                                0.00,
                                               ),
                                             ),
                                             child: Column(
@@ -159,86 +159,40 @@ class JobCardSearchState extends State<JobCardSearch> {
                                                     ),
                                                   ),
                                                   child: Row(
+                                                    verticalDirection:
+                                                        VerticalDirection.up,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
                                                     children: [
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding: EdgeInsets
-                                                                .only(),
-                                                            child: Text(
-                                                              data["Title"],
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                              style: TextStyle(
-                                                                color: isDark
-                                                                    ? Colors
-                                                                        .white
-                                                                    : ColorConstant
-                                                                        .gray800,
-                                                                fontSize:
-                                                                    getFontSize(
-                                                                  18,
-                                                                ),
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(),
+                                                        child: Text(
+                                                          data["Title"],
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : ColorConstant
+                                                                    .gray800,
+                                                            fontSize:
+                                                                getFontSize(
+                                                              18,
                                                             ),
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontWeight:
+                                                                FontWeight.w800,
                                                           ),
-                                                          Text(
-                                                            "",
-                                                            maxLines: 5,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  getFontSize(
-                                                                18,
-                                                              ),
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color:
-                                                                  ColorConstant
-                                                                      .gray800,
-                                                            ),
-                                                          ),
-                                                          // Padding(
-                                                          //   padding:
-                                                          //       EdgeInsets.only(left: 8.0),
-                                                          //   child: Text(
-                                                          //     showtime,
-                                                          //     overflow: TextOverflow.ellipsis,
-                                                          //     textAlign: TextAlign.left,
-                                                          //     style: TextStyle(
-                                                          //       fontSize: getFontSize(
-                                                          //         14,
-                                                          //       ),
-                                                          //       fontFamily: 'Poppins',
-                                                          //       fontWeight: FontWeight.w500,
-                                                          //     ),
-                                                          //   ),
-                                                          // ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ],
                                                   ),

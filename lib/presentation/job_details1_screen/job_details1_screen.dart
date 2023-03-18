@@ -46,6 +46,44 @@ void ShowSaveAlert(BuildContext context, bool issaved) {
       });
 }
 
+void ShowAlert(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(const Duration(seconds: 5), () {
+          Navigator.pop(context);
+        });
+        return Dialog(
+          child: Container(
+            height: getVerticalSize(125),
+            width: getHorizontalSize(500),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: getVerticalSize(5)),
+                  child: Icon(Icons.highlight_off,
+                      color: ColorConstant.red300, size: 40.0),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: getVerticalSize(5), bottom: getVerticalSize(10)),
+                  child: Text(
+                    "กรุณาเปิดการมองเห็นที่ เรซูเม่ ก่อน",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: getFontSize(20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
+
 void ShowApplyAlert(BuildContext context, bool isApply) {
   showDialog(
       context: context,
@@ -163,9 +201,14 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                         letterSpacing: 0.07,
                       ),
                       onPressed: () async {
-                        bool IsApplied = await job.AppliedJob(
-                            user.uid, data["JobId"], data["Title"]);
-                        ShowApplyAlert(context, IsApplied);
+                        bool isresume = await job.IsResume(user.uid);
+                        if (isresume) {
+                          bool IsApplied = await job.AppliedJob(
+                              user.uid, data["JobId"], data["Title"]);
+                          ShowApplyAlert(context, IsApplied);
+                        } else {
+                          ShowAlert(context);
+                        }
                       },
                       // onPressed: () {
                       //   Navigator.pushNamed(context, ApplyScreen.id);
@@ -299,7 +342,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                       ),
                                                       child:
                                                           userdata["imgurl"] !=
-                                                                  null
+                                                                  ""
                                                               ? Image.network(
                                                                   userdata[
                                                                       "imgurl"],
@@ -312,7 +355,8 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                                   height: 300,
                                                                 )
                                                               : Icon(
-                                                                  Icons.person,
+                                                                  Icons
+                                                                      .maps_home_work_rounded,
                                                                   size: 50,
                                                                   color: Colors
                                                                       .white,

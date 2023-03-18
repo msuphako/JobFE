@@ -13,6 +13,7 @@ import 'package:hires/presentation/messages_screen/message_textfield.dart';
 import 'package:hires/presentation/messages_screen/messages_screen.dart';
 import 'package:hires/thdate.dart' as timeago;
 import 'package:timeago/timeago.dart';
+import 'package:http/http.dart' as http;
 
 class AppCard extends StatefulWidget {
   Map<String, dynamic> appliedata;
@@ -588,6 +589,18 @@ class _AppCardState extends State<AppCard> {
                                                       user.uid,
                                                       widget.appliedata["uid"],
                                                     );
+                                                    var url =
+                                                        'https://asia-southeast1-jobfe-a636f.cloudfunctions.net/sendMail?dest=${_data['email']}';
+                                                    // print(url);
+                                                    var response = await http
+                                                        .get(Uri.parse(url));
+                                                    if (response.statusCode ==
+                                                        200) {
+                                                      print(response.body);
+                                                    } else {
+                                                      throw Exception(
+                                                          'Failed to send email');
+                                                    }
                                                   },
                                                   child: Text(
                                                     "ตกลง",
