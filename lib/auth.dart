@@ -1,17 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hires/core/app_export.dart';
 import 'package:hires/main.dart';
-import 'package:hires/presentation/employer/employer_home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'presentation/home_screen/home_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
-import 'presentation/verify_screen/verify_screen.dart';
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 FirebaseAuth auth = FirebaseAuth.instance;

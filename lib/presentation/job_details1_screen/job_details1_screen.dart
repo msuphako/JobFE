@@ -249,7 +249,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                 children: [
                                   Container(
                                     height: getVerticalSize(
-                                      255.92,
+                                      265.92,
                                     ),
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(

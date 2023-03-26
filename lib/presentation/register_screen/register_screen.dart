@@ -95,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                Navigator.pushNamed(context, LogInScreen.id);
                               },
                               child: Container(
                                   height: getSize(
