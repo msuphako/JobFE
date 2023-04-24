@@ -57,7 +57,7 @@ class _FeaturedJobsWidgetState extends State<FeaturedJobsWidget> {
                         width: getHorizontalSize(450),
                         decoration: BoxDecoration(
                           color: isDark
-                              ? ColorConstant.gray90087
+                              ? ColorConstant.teal600
                               : ColorConstant.teal600,
                           boxShadow: [
                             BoxShadow(

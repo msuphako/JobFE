@@ -318,14 +318,22 @@ class _ProfileStyle1Screen extends State<ProfileStyle1Screen> {
                                                       height: 300,
                                                     )
                                                   : data["imgurl"] != ""
-                                                      ? Image.network(
-                                                          data["imgurl"],
-                                                          fit: BoxFit.cover,
-                                                          width: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .width,
-                                                          height: 300,
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            // Navigator.pop(context);
+                                                            getImage(ImageSource
+                                                                .gallery);
+                                                          },
+                                                          child: Image.network(
+                                                            data["imgurl"],
+                                                            fit: BoxFit.cover,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: 300,
+                                                          ),
                                                         )
                                                       : Positioned.fill(
                                                           child: Align(

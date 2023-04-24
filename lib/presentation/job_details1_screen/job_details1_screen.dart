@@ -32,7 +32,7 @@ void ShowSaveAlert(BuildContext context, bool issaved) {
                   padding: EdgeInsets.only(
                       top: getVerticalSize(5), bottom: getVerticalSize(10)),
                   child: Text(
-                    issaved ? "Already Saved" : "Saved",
+                    issaved ? "ถูกบันทึกไปแล้ว" : "บันทึกสำเร็จ",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: getFontSize(20),
@@ -172,8 +172,9 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
             var data = snapshot.data?.docs[0];
             DateTime start = data["start_date"].toDate();
             DateTime end = data["due_date"].toDate();
-            String start_end =
-                "${start.day}/${start.month}/${start.year + 543} - ${end.day}/${end.month}/${end.year + 543}";
+            // String start_end =
+            //     "${start.day}/${start.month}/${start.year + 543} - ${end.day}/${end.month}/${end.year + 543}";
+            String start_end = "${end.day}/${end.month}/${end.year + 543}";
             // print(data!["JobId"]);
             return Scaffold(
               resizeToAvoidBottomInset: false,
@@ -240,16 +241,16 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              height: getVerticalSize(
-                                281.92,
-                              ),
+                              // height: getVerticalSize(
+                              //   320.92,
+                              // ),
                               width: size.width,
                               child: Stack(
                                 alignment: Alignment.topCenter,
                                 children: [
                                   Container(
                                     height: getVerticalSize(
-                                      265.92,
+                                      300.92,
                                     ),
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -462,7 +463,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                           Padding(
                                             padding: EdgeInsets.only(
                                               top: getVerticalSize(
-                                                24.00,
+                                                18.00,
                                               ),
                                             ),
                                             child: Row(
@@ -476,7 +477,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                     left: getHorizontalSize(
-                                                      30.00,
+                                                      12.00,
                                                     ),
                                                   ),
                                                   child: Row(
@@ -495,7 +496,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                           color: ColorConstant
                                                               .whiteA700,
                                                           fontSize: getFontSize(
-                                                            18,
+                                                            19,
                                                           ),
                                                           fontFamily: 'Poppins',
                                                           fontWeight:
@@ -507,18 +508,21 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
+                                                    left: getHorizontalSize(
+                                                      12.00,
+                                                    ),
                                                     right: getHorizontalSize(
-                                                      25.00,
+                                                      12.00,
                                                     ),
                                                   ),
                                                   child: Row(
                                                     children: [
                                                       Icon(
-                                                        Icons.location_on,
+                                                        Icons.access_time,
                                                         color: Colors.white,
                                                       ),
                                                       Text(
-                                                        userdata['province'],
+                                                        " " + data['Jobtype'],
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         textAlign:
@@ -527,7 +531,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                           color: ColorConstant
                                                               .whiteA700,
                                                           fontSize: getFontSize(
-                                                            18,
+                                                            19,
                                                           ),
                                                           fontFamily: 'Poppins',
                                                           fontWeight:
@@ -535,6 +539,41 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                                         ),
                                                       ),
                                                     ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                              bottom: getHorizontalSize(
+                                                10.00,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.white,
+                                                ),
+                                                Text(
+                                                  userdata['province'],
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConstant.whiteA700,
+                                                    fontSize: getFontSize(
+                                                      19,
+                                                    ),
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
                                               ],
@@ -567,95 +606,96 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.access_time_filled,
-                                                    color:
-                                                        ColorConstant.teal600,
-                                                  ),
-                                                  Text(
-                                                    " " + data["Jobtype"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                      color:
-                                                          ColorConstant.gray800,
-                                                      fontSize: getFontSize(
-                                                        18,
-                                                      ),
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                          Padding(
-                                              padding: EdgeInsets.only(
-                                                left: getHorizontalSize(
-                                                  10.00,
-                                                ),
-                                                top: getVerticalSize(
-                                                  10.00,
-                                                ),
-                                                bottom: getVerticalSize(
-                                                  10.00,
-                                                ),
-                                                right: getHorizontalSize(
-                                                  20.00,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons
-                                                        .calendar_month_outlined,
-                                                    color:
-                                                        ColorConstant.teal600,
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      right: getHorizontalSize(
-                                                        24.00,
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      start_end,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      style: TextStyle(
-                                                        color: isDark
-                                                            ? Colors.white
-                                                            : ColorConstant
-                                                                .gray800,
-                                                        fontSize: getFontSize(
-                                                          18,
-                                                        ),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
+                                          // Padding(
+                                          //     padding: EdgeInsets.only(
+                                          //       left: getHorizontalSize(
+                                          //         10.00,
+                                          //       ),
+                                          //       right: getHorizontalSize(
+                                          //         20.00,
+                                          //       ),
+                                          //     ),
+                                          //     child: Row(
+                                          //       mainAxisAlignment:
+                                          //           MainAxisAlignment.center,
+                                          //       children: [
+                                          //         Icon(
+                                          //           Icons.access_time_filled,
+                                          //           color:
+                                          //               ColorConstant.teal600,
+                                          //         ),
+                                          //         Text(
+                                          //           " " + data["Jobtype"],
+                                          //           overflow:
+                                          //               TextOverflow.ellipsis,
+                                          //           textAlign: TextAlign.start,
+                                          //           style: TextStyle(
+                                          //             color:
+                                          //                 ColorConstant.gray800,
+                                          //             fontSize: getFontSize(
+                                          //               18,
+                                          //             ),
+                                          //             fontFamily: 'Poppins',
+                                          //             fontWeight:
+                                          //                 FontWeight.w700,
+                                          //           ),
+                                          //         ),
+                                          //       ],
+                                          //     )),
+                                          // Padding(
+                                          //     padding: EdgeInsets.only(
+                                          //       left: getHorizontalSize(
+                                          //         10.00,
+                                          //       ),
+                                          //       top: getVerticalSize(
+                                          //         10.00,
+                                          //       ),
+                                          //       bottom: getVerticalSize(
+                                          //         10.00,
+                                          //       ),
+                                          //       right: getHorizontalSize(
+                                          //         20.00,
+                                          //       ),
+                                          //     ),
+                                          //     child: Row(
+                                          //       mainAxisAlignment:
+                                          //           MainAxisAlignment.center,
+                                          //       children: [
+                                          //         Icon(
+                                          //           Icons
+                                          //               .calendar_month_outlined,
+                                          //           color:
+                                          //               ColorConstant.teal600,
+                                          //         ),
+                                          //         Padding(
+                                          //           padding: EdgeInsets.only(
+                                          //             right: getHorizontalSize(
+                                          //               24.00,
+                                          //             ),
+                                          //           ),
+                                          //           child: Text(
+                                          //             "หมดเขตวันที่ " +
+                                          //                 start_end,
+                                          //             overflow:
+                                          //                 TextOverflow.ellipsis,
+                                          //             textAlign:
+                                          //                 TextAlign.right,
+                                          //             style: TextStyle(
+                                          //               color: isDark
+                                          //                   ? Colors.white
+                                          //                   : ColorConstant
+                                          //                       .gray800,
+                                          //               fontSize: getFontSize(
+                                          //                 18,
+                                          //               ),
+                                          //               fontFamily: 'Poppins',
+                                          //               fontWeight:
+                                          //                   FontWeight.w600,
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //       ],
+                                          //     )),
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Padding(
@@ -854,7 +894,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                               Padding(
                                                 padding: EdgeInsets.only(
                                                   left: getHorizontalSize(
-                                                    40.00,
+                                                    20.00,
                                                   ),
                                                   top: getVerticalSize(
                                                     10.00,
@@ -898,7 +938,7 @@ class _JobDetails1ScreenState extends State<JobDetails1Screen>
                                               Padding(
                                                 padding: EdgeInsets.only(
                                                   left: getHorizontalSize(
-                                                    40.00,
+                                                    20.00,
                                                   ),
                                                   top: getVerticalSize(
                                                     10.00,

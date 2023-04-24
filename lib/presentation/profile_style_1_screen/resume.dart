@@ -569,15 +569,24 @@ class _ProfileState extends State<Profile> {
                                                               height: 300,
                                                             )
                                                           : userimage != ""
-                                                              ? Image.network(
-                                                                  userimage,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                                  height: 300,
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    // Navigator.pop(context);
+                                                                    getImage(
+                                                                        ImageSource
+                                                                            .gallery);
+                                                                  },
+                                                                  child: Image
+                                                                      .network(
+                                                                    userimage,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width,
+                                                                    height: 300,
+                                                                  ),
                                                                 )
                                                               : Positioned.fill(
                                                                   child: Align(

@@ -1,6 +1,6 @@
 class ImageConstant {
   static String appIcon = 'assets/images/hires.png';
-  
+
   static String imgTeenyiconstick11 = 'assets/images/img_teenyiconstick_11.svg';
 
   static String imgImage97 = 'assets/images/img_image97.png';
@@ -34,7 +34,6 @@ class ImageConstant {
   static String appleLogo = 'assets/images/cib_apple.svg';
   static String education = 'assets/images/image 8.png';
   static String greenBg = 'assets/images/Green BG.svg';
-
 
   static String imgTeenyiconstickcirclesolid =
       'assets/images/img_teenyiconstickcirclesolid.svg';
@@ -203,6 +202,8 @@ class ImageConstant {
   static String imgMaskgroup22 = 'assets/images/img_maskgroup_22.svg';
 
   static String imgEllipse782 = 'assets/images/img_ellipse782.png';
+
+  static String imgbot = 'assets/images/bot.png';
 
   static String imgMaleholdingma1 = 'assets/images/img_maleholdingma_1.png';
 

@@ -117,7 +117,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                                   padding: EdgeInsets.only(
                                                       top: getVerticalSize(30)),
                                                   child: Text(
-                                                    "Logout From your account?",
+                                                    "ต้องการออกจากระบบ?",
                                                     style: TextStyle(
                                                       fontFamily: "Poppins",
                                                       fontSize: getFontSize(18),
@@ -144,7 +144,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                                               context);
                                                         },
                                                         child: Text(
-                                                          "Cancel",
+                                                          "ยกเลิก",
                                                           style: TextStyle(
                                                             fontFamily:
                                                                 "Poppins",
@@ -160,7 +160,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                                           auth.signOut();
                                                         },
                                                         child: Text(
-                                                          "Logout",
+                                                          "ออกจากระบบ",
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   "Poppins",
